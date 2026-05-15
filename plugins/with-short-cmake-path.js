@@ -1,5 +1,5 @@
-const { withAppBuildGradle } = require("expo/config-plugins");
-const os = require("node:os");
+const os = require('node:os');
+const { withAppBuildGradle } = require('expo/config-plugins');
 
 /**
  * Expo config plugin to use a shorter CMake build path.
@@ -8,14 +8,14 @@ const os = require("node:os");
  */
 function withShortCmakePath(config) {
   // Only apply this fix on Windows
-  if (os.platform() !== "win32") {
+  if (os.platform() !== 'win32') {
     return config;
   }
 
   return withAppBuildGradle(config, (config) => {
-    if (config.modResults.language === "groovy") {
+    if (config.modResults.language === 'groovy') {
       config.modResults.contents = addShortCmakePath(
-        config.modResults.contents
+        config.modResults.contents,
       );
     }
 
@@ -25,7 +25,7 @@ function withShortCmakePath(config) {
 
 function addShortCmakePath(appBuildGradle) {
   // Check if already added
-  if (appBuildGradle.includes("buildStagingDirectory")) {
+  if (appBuildGradle.includes('buildStagingDirectory')) {
     return appBuildGradle;
   }
 

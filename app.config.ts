@@ -115,7 +115,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-router',
     ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
-    "./plugins/withShortCmakePath.js"
+    './plugins/with-short-cmake-path.js',
   ],
   extra: {
     eas: {
