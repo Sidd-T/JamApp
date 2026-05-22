@@ -1,11 +1,11 @@
-import type { OptionType } from '@/components/ui';
+import type { MultiSelectOptionType } from '@/components/ui';
 
 import * as React from 'react';
 import { Checkbox, Input, Radio, Select, Switch, View } from '@/components/ui';
 
 import { Title } from './title';
 
-const options: OptionType[] = [
+const options: MultiSelectOptionType[] = [
   { value: 'chocolate', label: 'Chocolate' },
   { value: 'strawberry', label: 'Strawberry' },
   { value: 'vanilla', label: 'Vanilla' },

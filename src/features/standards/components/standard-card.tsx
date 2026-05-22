@@ -10,7 +10,7 @@ type StandardCardProps = {
 export function StandardCard({ standard, onPress }: StandardCardProps) {
   return (
     <Pressable onPress={onPress} className="flex-1">
-      <View className="mb-3 rounded-sm border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
+      <View className="mb-3 rounded-xl border border-gray-200 bg-neutral-100 p-4 shadow-md dark:border-gray-800 dark:bg-gray-900">
         <Text className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
           {standard.Title}
         </Text>

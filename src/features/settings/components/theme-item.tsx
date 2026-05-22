@@ -1,4 +1,4 @@
-import type { OptionType } from '@/components/ui';
+import type { MultiSelectOptionType } from '@/components/ui';
 
 import type { ColorSchemeType } from '@/lib/hooks/use-selected-theme';
 import * as React from 'react';
@@ -13,7 +13,7 @@ export function ThemeItem() {
   const modal = useModal();
 
   const onSelect = React.useCallback(
-    (option: OptionType) => {
+    (option: MultiSelectOptionType) => {
       setSelectedTheme(option.value as ColorSchemeType);
       modal.dismiss();
     },

@@ -92,25 +92,51 @@ export function filterBySearchTerm(term: string): Song[] {
   );
 }
 
-export type FilterType = 'rhythm' | 'key' | 'timeSignature' | 'composer' | 'all';
+export type SongSource = 'jazz-standards' | 'user-created';
 
 export type FilterState = {
-  type: FilterType;
-  value: string;
+  searchTerm: string;
+  rhythms: string[];
+  timeSignatures: string[];
+  sources: SongSource[];
 };
 
 export function getFilteredStandards(filter: FilterState): Song[] {
-  if (filter.type === 'all')
-    return getAllStandards();
-  if (filter.type === 'rhythm')
-    return filterByRhythm(filter.value);
-  if (filter.type === 'key')
-    return filterByKey(filter.value);
-  if (filter.type === 'timeSignature')
-    return filterByTimeSignature(filter.value);
-  if (filter.type === 'composer')
-    return filterByComposer(filter.value);
-  return getAllStandards();
+  let results = getAllStandards();
+
+  // Filter by search term (title or composer)
+  if (filter.searchTerm) {
+    const lowerTerm = filter.searchTerm.toLowerCase();
+    results = results.filter(
+      song =>
+        song.Title.toLowerCase().includes(lowerTerm)
+        || song.Composer.toLowerCase().includes(lowerTerm),
+    );
+  }
+
+  // Filter by rhythms (multi-select)
+  if (filter.rhythms.length > 0) {
+    results = results.filter(song => filter.rhythms.includes(song.Rhythm || ''));
+  }
+
+  // Filter by time signatures (multi-select)
+  if (filter.timeSignatures.length > 0) {
+    results = results.filter(song =>
+      filter.timeSignatures.includes(song.TimeSignature || ''),
+    );
+  }
+
+  // Filter by sources (multi-select)
+  if (filter.sources.length > 0) {
+    results = results.filter((_song) => {
+      // For now, all songs in the data are jazz-standards
+      // This will be updated when user-created songs are added
+      const songSource: SongSource = 'jazz-standards';
+      return filter.sources.includes(songSource);
+    });
+  }
+
+  return results;
 }
 
 export function normalizeChordString(chordString: string): string[] {

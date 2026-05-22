@@ -1,4 +1,4 @@
-import type { FilterState, Song } from './standards';
+import type { FilterState, Song, SongSource } from './standards';
 import { create } from 'zustand';
 import {
 
@@ -12,7 +12,10 @@ import {
 
 type StandardsStore = {
   filter: FilterState;
-  setFilter: (type: FilterState['type'], value: string) => void;
+  setSearchTerm: (term: string) => void;
+  setRhythms: (rhythms: string[]) => void;
+  setTimeSignatures: (timeSignatures: string[]) => void;
+  setSources: (sources: SongSource[]) => void;
   filteredStandards: Song[];
   uniqueRhythms: string[];
   uniqueKeys: string[];
@@ -21,18 +24,60 @@ type StandardsStore = {
 };
 
 export const useStandardsStore = create<StandardsStore>(set => ({
-  filter: { type: 'all', value: '' },
-  filteredStandards: getFilteredStandards({ type: 'all', value: '' }),
+  filter: {
+    searchTerm: '',
+    rhythms: [],
+    timeSignatures: [],
+    sources: [],
+  },
+  filteredStandards: getFilteredStandards({
+    searchTerm: '',
+    rhythms: [],
+    timeSignatures: [],
+    sources: [],
+  }),
   uniqueRhythms: getUniqueRhythms(),
   uniqueKeys: getUniqueKeys(),
   uniqueTimeSignatures: getUniqueTimeSignatures(),
   uniqueComposers: getUniqueComposers(),
 
-  setFilter: (type, value) => {
-    const newFilter: FilterState = { type, value };
-    set({
-      filter: newFilter,
-      filteredStandards: getFilteredStandards(newFilter),
+  setSearchTerm: (term) => {
+    set((state) => {
+      const newFilter: FilterState = { ...state.filter, searchTerm: term };
+      return {
+        filter: newFilter,
+        filteredStandards: getFilteredStandards(newFilter),
+      };
+    });
+  },
+
+  setRhythms: (rhythms) => {
+    set((state) => {
+      const newFilter: FilterState = { ...state.filter, rhythms };
+      return {
+        filter: newFilter,
+        filteredStandards: getFilteredStandards(newFilter),
+      };
+    });
+  },
+
+  setTimeSignatures: (timeSignatures) => {
+    set((state) => {
+      const newFilter: FilterState = { ...state.filter, timeSignatures };
+      return {
+        filter: newFilter,
+        filteredStandards: getFilteredStandards(newFilter),
+      };
+    });
+  },
+
+  setSources: (sources) => {
+    set((state) => {
+      const newFilter: FilterState = { ...state.filter, sources };
+      return {
+        filter: newFilter,
+        filteredStandards: getFilteredStandards(newFilter),
+      };
     });
   },
 }));

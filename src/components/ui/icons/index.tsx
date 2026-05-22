@@ -2,6 +2,7 @@
 export * from './arrow-right';
 export * from './caret-down';
 export * from './feed';
+export * from './filter';
 export * from './github';
 export * from './home';
 export * from './language';

@@ -4,8 +4,9 @@ export default function StandardsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         headerShadowVisible: false,
+        headerStyle: { backgroundColor: 'neutral-100' },
       }}
     >
       <Stack.Screen
