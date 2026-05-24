@@ -10,9 +10,9 @@ export type Ending = {
 
 export type Section = {
   Label?: string;
-  Repeats?: number;
-  MainSegment?: MainSegment;
-  Endings?: Ending[];
+  Repeat?: number; // was: boolean
+  MainSegment?: { Chords: string };
+  Endings?: { Chords: string }[];
 };
 
 export type Song = {
