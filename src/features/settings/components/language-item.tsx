@@ -1,4 +1,4 @@
-import type { OptionType } from '@/components/ui';
+import type { MultiSelectOptionType } from '@/components/ui';
 
 import type { Language } from '@/lib/i18n/resources';
 import * as React from 'react';
@@ -11,7 +11,7 @@ export function LanguageItem() {
   const { language, setLanguage } = useSelectedLanguage();
   const modal = useModal();
   const onSelect = React.useCallback(
-    (option: OptionType) => {
+    (option: MultiSelectOptionType) => {
       setLanguage(option.value as Language);
       modal.dismiss();
     },
