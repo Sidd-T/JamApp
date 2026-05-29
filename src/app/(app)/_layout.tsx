@@ -44,12 +44,12 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="style"
+        name="create"
         options={{
-          title: 'Style',
+          title: 'Create',
           headerShown: false,
           tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
+          tabBarButtonTestID: 'create-tab',
         }}
       />
       <Tabs.Screen
