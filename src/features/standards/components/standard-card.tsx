@@ -19,23 +19,22 @@ export function StandardCard({ standard, onPress }: StandardCardProps) {
         </Text>
         <View className="flex-row flex-wrap gap-2">
           {standard.Key && (
-            <View className="rounded-sm bg-blue-100 px-2 py-1 dark:bg-blue-900/30">
-              <Text className="text-xs text-blue-900 dark:text-blue-300">
-                Key:
+            <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
+              <Text className="text-xs text-black dark:text-primary-200">
                 {standard.Key}
               </Text>
             </View>
           )}
           {standard.TimeSignature && (
-            <View className="rounded-sm bg-green-100 px-2 py-1 dark:bg-green-900/30">
-              <Text className="text-xs text-green-900 dark:text-green-300">
+            <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
+              <Text className="text-xs text-black dark:text-primary-200">
                 {standard.TimeSignature}
               </Text>
             </View>
           )}
           {standard.Rhythm && (
-            <View className="rounded-sm bg-purple-100 px-2 py-1 dark:bg-purple-900/30">
-              <Text className="text-xs text-purple-900 dark:text-purple-300">
+            <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
+              <Text className="text-xs text-black dark:text-primary-200">
                 {standard.Rhythm}
               </Text>
             </View>

@@ -21,7 +21,7 @@ export { ErrorBoundary } from 'expo-router';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const unstable_settings = {
-  initialRouteName: '(app)',
+  initialRouteName: '(app)/standards',
 };
 
 hydrateAuth();

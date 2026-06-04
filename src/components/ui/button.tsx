@@ -20,8 +20,8 @@ const button = tv({
         indicator: 'text-white dark:text-black',
       },
       secondary: {
-        container: 'bg-primary-600',
-        label: 'text-secondary-600',
+        container: 'bg-primary-800 dark:bg-primary-700',
+        label: 'text-white',
         indicator: 'text-white',
       },
       outline: {
@@ -36,7 +36,7 @@ const button = tv({
       },
       ghost: {
         container: 'bg-transparent',
-        label: 'text-black underline dark:text-white',
+        label: 'text-black dark:text-white',
         indicator: 'text-black dark:text-white',
       },
       link: {

@@ -1,57 +1,24 @@
-import type { Song } from '@/features/standards/standards';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { View } from 'react-native';
-import { Button, FocusAwareStatusBar, Modal, SafeAreaView, ScrollView, Text, useModal } from '@/components/ui';
-import { SongForm } from '@/features/create/components';
+import { Pressable, View } from 'react-native';
+import { Button, colors, FocusAwareStatusBar, SafeAreaView, ScrollView, Text } from '@/components/ui';
+import { Edit, Trash } from '@/components/ui/icons';
+import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { useSongsStore } from '@/features/create/use-songs-store';
-import { addSong, deleteSong, updateSong } from './use-songs-store';
+import { deleteSong } from './use-songs-store';
 
 export function CreateScreen() {
   const router = useRouter();
   const songs = useSongsStore.use.songs();
   const [deleteConfirmId, setDeleteConfirmId] = React.useState<string | null>(null);
-  const [editingSongId, setEditingSongId] = React.useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const formModal = useModal();
+  const theme = useThemeConfig();
 
   const handleAddPress = () => {
-    setEditingSongId(null);
     router.push('/create/new');
-    // formModal.present();
   };
 
   const handleEditPress = (songId: string) => {
-    setEditingSongId(songId);
-    router.push('/create/edit');
-    // formModal.present();
-  };
-
-  const handleFormSave = async (songData: Omit<Song, 'id'>) => {
-    try {
-      setIsSubmitting(true);
-      if (editingSongId) {
-        // Update existing song
-        await updateSong(editingSongId, songData);
-      }
-      else {
-        // Create new song
-        await addSong(songData);
-      }
-      formModal.dismiss();
-      setEditingSongId(null);
-    }
-    catch (error) {
-      console.error('Failed to save song:', error);
-    }
-    finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleFormCancel = () => {
-    formModal.dismiss();
-    setEditingSongId(null);
+    router.push(`/create/edit?id=${encodeURIComponent(songId)}`);
   };
 
   const handleDeletePress = async (id: string) => {
@@ -64,18 +31,6 @@ export function CreateScreen() {
     }
   };
 
-  const editingSong = editingSongId ? songs.find(s => s.id === editingSongId) : null;
-  const songDataForForm = editingSong
-    ? {
-        Title: editingSong.Title,
-        Composer: editingSong.Composer,
-        Key: editingSong.Key,
-        Rhythm: editingSong.Rhythm,
-        TimeSignature: editingSong.TimeSignature,
-        Sections: editingSong.Sections,
-      }
-    : null;
-
   return (
     <>
       <FocusAwareStatusBar />
@@ -83,11 +38,11 @@ export function CreateScreen() {
         <SafeAreaView className="flex-1">
           {/* Header */}
           <View className="-mt-8 mb-6">
-            <Text className="text-sm text-gray-600">Create and manage your jazz standards</Text>
+            <Text className="text-sm text-neutral-600 dark:text-neutral-300">Create and manage your jazz standards</Text>
           </View>
 
           {/* Add New Song Button */}
-          <Button label="+ Add New Song" onPress={handleAddPress} className="mb-6" />
+          <Button label="+ Add New Song" onPress={handleAddPress} className="mb-6 shadow-lg" variant="secondary" />
 
           {/* Songs List or Empty State */}
           {songs.length === 0
@@ -105,73 +60,76 @@ export function CreateScreen() {
                   {songs.map(song => (
                     <View
                       key={song.id}
-                      className="gap-2 rounded-lg border border-gray-200 bg-white p-4"
+                      className="rounded-xl border border-gray-200 bg-neutral-100 p-4 shadow-md dark:border-gray-800 dark:bg-neutral-800"
                     >
-                      {/* Song Header with Source Badge */}
-                      <View className="flex-row items-start justify-between">
+                      {/* Song Header */}
+                      <View className="mb-3 flex-row items-start justify-between">
                         <View className="flex-1">
-                          <Text className="text-lg font-semibold">{song.Title}</Text>
-                          <Text className="text-sm text-gray-600">{song.Composer}</Text>
-                        </View>
-                        <View className="rounded-sm bg-blue-100 px-2 py-1">
-                          <Text className="text-xs font-medium text-blue-700">User Created</Text>
+                          <Text className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">{song.Title}</Text>
+                          <Text className="text-sm text-gray-600 dark:text-gray-400">{song.Composer}</Text>
                         </View>
                       </View>
 
-                      {/* Song Details */}
-                      <View className="flex-row gap-3 py-2">
+                      {/* Song Details - Badge Style */}
+                      <View className="mb-3 flex-row flex-wrap gap-2">
                         {song.Key && (
-                          <Text className="text-xs text-gray-500">
-                            Key:
-                            {song.Key}
-                          </Text>
-                        )}
-                        {song.Rhythm && (
-                          <Text className="text-xs text-gray-500">
-                            Rhythm:
-                            {song.Rhythm}
-                          </Text>
+                          <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
+                            <Text className="text-xs text-black dark:text-primary-200">
+                              Key:
+                              {' '}
+                              {song.Key}
+                            </Text>
+                          </View>
                         )}
                         {song.TimeSignature && (
-                          <Text className="text-xs text-gray-500">
-                            Time:
-                            {song.TimeSignature}
-                          </Text>
+                          <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
+                            <Text className="text-xs text-black dark:text-primary-200">
+                              {song.TimeSignature}
+                            </Text>
+                          </View>
+                        )}
+                        {song.Rhythm && (
+                          <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
+                            <Text className="text-xs text-black dark:text-primary-200">
+                              {song.Rhythm}
+                            </Text>
+                          </View>
                         )}
                       </View>
 
-                      {/* Action Buttons */}
-                      <View className="mt-2 flex-row gap-2">
-                        <Button
-                          label="Edit"
+                      {/* Edit and Delete Buttons */}
+                      <View className="flex-row gap-2">
+                        <Pressable
                           onPress={() => handleEditPress(song.id)}
-                          variant="outline"
-                          className="flex-1"
-                        />
-                        {deleteConfirmId === song.id
-                          ? (
-                              <>
-                                <Button
-                                  label="Confirm"
-                                  onPress={() => handleDeletePress(song.id)}
-                                  className="flex-1 bg-red-500"
-                                />
-                                <Button
-                                  label="Cancel"
-                                  onPress={() => setDeleteConfirmId(null)}
-                                  variant="outline"
-                                  className="flex-1"
-                                />
-                              </>
-                            )
-                          : (
-                              <Button
-                                label="Delete"
-                                onPress={() => setDeleteConfirmId(song.id)}
-                                className="flex-1 bg-red-100"
-                              />
-                            )}
+                          className="rounded-lg bg-transparent p-2"
+                        >
+                          <Edit width={20} height={20} color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+                        </Pressable>
+                        <Pressable
+                          onPress={() => setDeleteConfirmId(deleteConfirmId === song.id ? null : song.id)}
+                          className="rounded-lg bg-transparent p-2"
+                        >
+                          <Trash width={20} height={20} color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+                        </Pressable>
                       </View>
+
+                      {/* Delete Confirmation Buttons */}
+                      {deleteConfirmId === song.id && (
+                        <View className="mt-2 flex-row gap-2">
+                          <Button
+                            label="Cancel"
+                            onPress={() => setDeleteConfirmId(null)}
+                            variant="outline"
+                            className="flex-1"
+                          />
+                          <Button
+                            label="Delete"
+                            onPress={() => handleDeletePress(song.id)}
+                            variant="destructive"
+                            className="flex-1"
+                          />
+                        </View>
+                      )}
                     </View>
                   ))}
                 </View>
@@ -179,19 +137,7 @@ export function CreateScreen() {
         </SafeAreaView>
       </ScrollView>
 
-      {/* Song Form Modal */}
-      <Modal
-        ref={formModal.ref}
-        snapPoints={['85%']}
-        title={editingSong ? 'Edit Song' : 'Create Song'}
-      >
-        <SongForm
-          song={songDataForForm}
-          onSave={handleFormSave}
-          onCancel={handleFormCancel}
-          isLoading={isSubmitting}
-        />
-      </Modal>
+      {/* Song form is rendered as its own screen via routing */}
     </>
   );
 }

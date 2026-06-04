@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 
-export default function CreateLayout() {
+export default function JamsLayout() {
   const theme = useThemeConfig();
 
   return (
@@ -19,17 +19,14 @@ export default function CreateLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'My Songs',
+          title: 'Jams',
           headerLargeTitle: true,
         }}
       />
       <Stack.Screen
-        name="[option]"
+        name="[id]"
         options={({ route }: any) => ({
-          title:
-            route.params?.option && decodeURIComponent(route.params.option) === 'edit'
-              ? 'Edit Song'
-              : 'Create Song',
+          title: route.params?.id ? decodeURIComponent(route.params.id) : 'Standard',
           headerBackTitle: 'Back',
         })}
       />
