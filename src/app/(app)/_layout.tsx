@@ -3,9 +3,10 @@ import * as React from 'react';
 import { useCallback, useEffect } from 'react';
 
 import {
-  Music as MusicIcon,
+  Add as AddIcon,
+  MusicList as MusicIcon,
+  People as PeopleIcon,
   Settings as SettingsIcon,
-  Style as StyleIcon,
 } from '@/components/ui/icons';
 import { useAuthStore as useAuth } from '@/features/auth/use-auth-store';
 import { useIsFirstTime } from '@/lib/hooks/use-is-first-time';
@@ -44,14 +45,25 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="style"
+        name="create"
         options={{
-          title: 'Style',
+          title: 'Create',
           headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
+          tabBarIcon: ({ color }) => <AddIcon color={color} />,
+          tabBarButtonTestID: 'create-tab',
         }}
       />
+
+      <Tabs.Screen
+        name="jams"
+        options={{
+          title: 'Jams',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <PeopleIcon color={color} />,
+          tabBarButtonTestID: 'jams-tab',
+        }}
+      />
+
       <Tabs.Screen
         name="settings"
         options={{
@@ -64,13 +76,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-// function CreateNewPostLink() {
-//   return (
-//     <Link href="/feed/add-post" asChild>
-//       <Pressable>
-//         <Text className="px-3 text-primary-300">Create</Text>
-//       </Pressable>
-//     </Link>
-//   );
-// }

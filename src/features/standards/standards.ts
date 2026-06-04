@@ -16,6 +16,7 @@ export type Section = {
 };
 
 export type Song = {
+  id: string; // UUID for user-created songs, or title-based for jazz-standards
   Title: string;
   Composer: string;
   Key?: string;
@@ -24,68 +25,80 @@ export type Song = {
   Sections: Section[];
 };
 
-export function getAllStandards(): Song[] {
-  return jazzStandards as Song[];
+export type SongWithSource = Song & {
+  source: SongSource;
+};
+
+function getAllJazzStandards(): Song[] {
+  // Add title as ID for jazz-standards (backward compatible)
+  return (jazzStandards as Omit<Song, 'id'>[]).map(song => ({
+    ...song,
+    id: song.Title, // Use title as ID for built-in standards
+  }));
 }
 
-export function findStandardByTitle(title: string): Song | undefined {
-  return getAllStandards().find(song => song.Title === title);
+export function getAllStandards(userSongs: Song[] = []): Song[] {
+  return [...getAllJazzStandards(), ...userSongs];
 }
 
-export function getUniqueRhythms(): string[] {
+export function findStandardByTitle(title: string, userSongs: Song[] = []): Song | undefined {
+  return getAllStandards(userSongs).find(song => song.Title === title);
+}
+
+export function getUniqueRhythms(userSongs: Song[] = []): string[] {
   const rhythms = new Set<string>();
-  getAllStandards().forEach((song) => {
+  getAllStandards(userSongs).forEach((song) => {
     if (song.Rhythm)
       rhythms.add(song.Rhythm);
   });
   return Array.from(rhythms).sort();
 }
 
-export function getUniqueKeys(): string[] {
+export function getUniqueKeys(userSongs: Song[] = []): string[] {
   const keys = new Set<string>();
-  getAllStandards().forEach((song) => {
+  getAllStandards(userSongs).forEach((song) => {
     if (song.Key)
       keys.add(song.Key);
   });
   return Array.from(keys).sort();
 }
 
-export function getUniqueTimeSignatures(): string[] {
+export function getUniqueTimeSignatures(userSongs: Song[] = []): string[] {
   const sigs = new Set<string>();
-  getAllStandards().forEach((song) => {
+  getAllStandards(userSongs).forEach((song) => {
     if (song.TimeSignature)
       sigs.add(song.TimeSignature);
   });
   return Array.from(sigs).sort();
 }
 
-export function getUniqueComposers(): string[] {
+export function getUniqueComposers(userSongs: Song[] = []): string[] {
   const composers = new Set<string>();
-  getAllStandards().forEach((song) => {
+  getAllStandards(userSongs).forEach((song) => {
     composers.add(song.Composer);
   });
   return Array.from(composers).sort();
 }
 
-export function filterByRhythm(rhythm: string): Song[] {
-  return getAllStandards().filter(song => song.Rhythm === rhythm);
+export function filterByRhythm(rhythm: string, userSongs: Song[] = []): Song[] {
+  return getAllStandards(userSongs).filter(song => song.Rhythm === rhythm);
 }
 
-export function filterByKey(key: string): Song[] {
-  return getAllStandards().filter(song => song.Key === key);
+export function filterByKey(key: string, userSongs: Song[] = []): Song[] {
+  return getAllStandards(userSongs).filter(song => song.Key === key);
 }
 
-export function filterByTimeSignature(timeSignature: string): Song[] {
-  return getAllStandards().filter(song => song.TimeSignature === timeSignature);
+export function filterByTimeSignature(timeSignature: string, userSongs: Song[] = []): Song[] {
+  return getAllStandards(userSongs).filter(song => song.TimeSignature === timeSignature);
 }
 
-export function filterByComposer(composer: string): Song[] {
-  return getAllStandards().filter(song => song.Composer === composer);
+export function filterByComposer(composer: string, userSongs: Song[] = []): Song[] {
+  return getAllStandards(userSongs).filter(song => song.Composer === composer);
 }
 
-export function filterBySearchTerm(term: string): Song[] {
+export function filterBySearchTerm(term: string, userSongs: Song[] = []): Song[] {
   const lowerTerm = term.toLowerCase();
-  return getAllStandards().filter(
+  return getAllStandards(userSongs).filter(
     song =>
       song.Title.toLowerCase().includes(lowerTerm)
       || song.Composer.toLowerCase().includes(lowerTerm),
@@ -101,8 +114,17 @@ export type FilterState = {
   sources: SongSource[];
 };
 
-export function getFilteredStandards(filter: FilterState): Song[] {
-  let results = getAllStandards();
+export function getUniqueSources(userSongs: Song[] = []): SongSource[] {
+  const sources = new Set<SongSource>();
+  sources.add('jazz-standards');
+  if (userSongs.length > 0) {
+    sources.add('user-created');
+  }
+  return Array.from(sources);
+}
+
+export function getFilteredStandards(filter: FilterState, userSongs: Song[] = []): Song[] {
+  let results = getAllStandards(userSongs);
 
   // Filter by search term (title or composer)
   if (filter.searchTerm) {
@@ -128,10 +150,8 @@ export function getFilteredStandards(filter: FilterState): Song[] {
 
   // Filter by sources (multi-select)
   if (filter.sources.length > 0) {
-    results = results.filter((_song) => {
-      // For now, all songs in the data are jazz-standards
-      // This will be updated when user-created songs are added
-      const songSource: SongSource = 'jazz-standards';
+    results = results.filter((song) => {
+      const songSource: SongSource = song.id === song.Title ? 'jazz-standards' : 'user-created';
       return filter.sources.includes(songSource);
     });
   }

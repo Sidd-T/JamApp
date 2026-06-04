@@ -1,10 +1,11 @@
 import type { SongSource } from '../standards';
 import { useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import { Text } from '@/components/ui';
+import { Button, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
 import { Filter } from '@/components/ui/icons';
 import { MultiSelect } from '@/components/ui/multi-select';
+import { useThemeConfig } from '@/components/ui/use-theme-config';
 
 type StandardsFilterProps = {
   searchTerm: string;
@@ -35,6 +36,8 @@ export function StandardsFilter({
   onSourcesChange,
 }: StandardsFilterProps) {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const theme = useThemeConfig();
+  const filterIconColor = theme.dark ? colors.neutral[300] : colors.neutral[800];
 
   const sourceOptions = [
     { label: 'Jazz Standards', value: 'jazz-standards' },
@@ -51,7 +54,7 @@ export function StandardsFilter({
   };
 
   return (
-    <View className="relative border-b border-neutral-300 bg-neutral-200 px-4 pt-16 pb-4 dark:border-neutral-700 dark:bg-gray-950">
+    <View className="relative border-b border-neutral-300 bg-neutral-200 px-4 pt-12 pb-4 dark:border-neutral-700 dark:bg-neutral-900">
       {/* Search Bar with Filter Icon */}
       <View className="flex-row items-center gap-2 rounded-3xl border-[0.5px] border-neutral-100 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
         <TextInput
@@ -65,9 +68,9 @@ export function StandardsFilter({
           onPress={() => setIsFilterModalVisible(true)}
           className="flex-row items-center gap-1 pr-4"
         >
-          <Filter width={20} height={20} className="mr-4 text-neutral-600 dark:text-neutral-300" />
+          <Filter width={20} height={20} active={activeFilterCount > 0} color={filterIconColor} />
           {activeFilterCount > 0 && (
-            <View className="size-5 items-center justify-center rounded-full bg-blue-500">
+            <View className="size-5 items-center justify-center rounded-full bg-primary-600 dark:bg-primary-500">
               <Text className="text-xs font-bold text-white">{activeFilterCount}</Text>
             </View>
           )}
@@ -141,18 +144,18 @@ export function StandardsFilter({
 
             {/* Modal Footer */}
             <View className="flex-row gap-2 px-4 pb-4">
-              <Pressable
+              <Button
+                label="Reset"
                 onPress={() => resetFilters()}
-                className="w-1/2 rounded-lg bg-neutral-500 px-4 py-2 dark:bg-neutral-700"
-              >
-                <Text className="text-center font-semibold text-white">Reset</Text>
-              </Pressable>
-              <Pressable
+                variant="outline"
+                className="flex-1"
+              />
+              <Button
+                label="Done"
                 onPress={() => setIsFilterModalVisible(false)}
-                className="w-1/2 rounded-lg bg-blue-500 py-2 dark:bg-blue-600"
-              >
-                <Text className="text-center font-semibold text-white">Done</Text>
-              </Pressable>
+                className="flex-1"
+                variant="secondary"
+              />
             </View>
           </View>
         </View>
