@@ -175,7 +175,7 @@ export function JamsHomeScreen() {
 
       {currentRoom
         ? (
-            <View className="dark:bg-primary-950 mt-8 rounded-3xl border border-primary-200 bg-primary-50 p-4 dark:border-primary-700">
+            <View className="mt-8 rounded-3xl border border-primary-200 bg-primary-50 p-4 dark:border-primary-700 dark:bg-primary-900">
               <Text className="font-semibold text-black dark:text-white">Active room</Text>
               <Text className="mt-2 text-sm text-neutral-600 dark:text-neutral-300">{currentRoom.name}</Text>
               <Text className="text-sm text-neutral-600 dark:text-neutral-300">
