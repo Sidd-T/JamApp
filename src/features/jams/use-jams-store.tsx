@@ -36,7 +36,6 @@ const newJamSongSchema = z.object({
 });
 
 type JamPersistedState = {
-  rooms: JamRoom[];
   currentRoom: JamRoom | null;
   participants: JamParticipant[];
   setlist: JamSetlistEntry[];
@@ -50,7 +49,6 @@ type JamPersistedState = {
 type JamStore = JamPersistedState & {
   createRoom: (roomName: string, hostName: string) => Promise<JamRoom>;
   joinRoom: (roomCode: string, displayName: string) => Promise<JamRoom>;
-  selectRoom: (roomId: string) => void;
   leaveRoom: () => Promise<void>;
   addSetlistSong: (songData: NewJamSongPayload) => Promise<void>;
   removeSetlistSong: (entryId: string) => Promise<void>;
@@ -60,6 +58,7 @@ type JamStore = JamPersistedState & {
 };
 
 const network = createJamNetwork();
+let hydrated = false;
 
 function generateId(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
@@ -84,7 +83,6 @@ function buildSongPayload(songData: NewJamSongPayload): Song {
 }
 
 const _useJamStore = create<JamStore>((set, get) => ({
-  rooms: [],
   currentRoom: null,
   participants: [],
   setlist: [],
@@ -95,7 +93,12 @@ const _useJamStore = create<JamStore>((set, get) => ({
   networkStatus: 'idle',
 
   createRoom: async (roomName, hostName) => {
+    if (get().currentRoom) {
+      throw new Error('Already in an active room');
+    }
     const validated = createRoomSchema.parse({ roomName, hostName });
+
+    await network.stopDiscovery();
 
     const room: JamRoom = {
       id: generateId('room'),
@@ -112,9 +115,11 @@ const _useJamStore = create<JamStore>((set, get) => ({
       joinedAt: new Date().toISOString(),
     };
 
+    const state = get() as JamStore & { rooms?: JamRoom[] };
+    const { rooms, ...currentState } = state;
+
     const nextState = {
-      ...get(),
-      rooms: [...get().rooms, room],
+      ...currentState,
       currentRoom: room,
       participants: [participant],
       setlist: [],
@@ -138,6 +143,9 @@ const _useJamStore = create<JamStore>((set, get) => ({
   },
 
   joinRoom: async (roomCode, displayName) => {
+    if (get().currentRoom) {
+      throw new Error('Already in an active room');
+    }
     const validated = joinRoomSchema.parse({ roomCode, displayName });
     const discovered = get().discoveredRooms.find(room => room.roomCode === validated.roomCode);
 
@@ -164,13 +172,10 @@ const _useJamStore = create<JamStore>((set, get) => ({
     };
 
     set((state) => {
-      const nextRooms = state.rooms.some(existing => existing.roomCode === room.roomCode)
-        ? state.rooms
-        : [...state.rooms, room];
-
+      const currentState = state as JamStore & { rooms?: JamRoom[] };
+      const { rooms, ...rest } = currentState;
       const nextState = {
-        ...state,
-        rooms: nextRooms,
+        ...rest,
         currentRoom: room,
         participants: [participant],
         setlist: [],
@@ -192,20 +197,6 @@ const _useJamStore = create<JamStore>((set, get) => ({
     return room;
   },
 
-  selectRoom: (roomId) => {
-    set((state) => {
-      const room = state.rooms.find(candidate => candidate.id === roomId);
-      if (!room) {
-        return state;
-      }
-      return {
-        ...state,
-        currentRoom: room,
-        mode: state.mode === 'hosting' ? 'hosting' : 'joined',
-      };
-    });
-  },
-
   leaveRoom: async () => {
     if (get().mode === 'hosting') {
       await network.stopAdvertising();
@@ -213,9 +204,11 @@ const _useJamStore = create<JamStore>((set, get) => ({
     else {
       await network.closeConnection();
     }
-
+    hydrated = false;
+    const state = get() as JamStore & { rooms?: JamRoom[] };
+    const { rooms, ...currentState } = state;
     const nextState = {
-      ...get(),
+      ...currentState,
       currentRoom: null,
       participants: [],
       setlist: [],
@@ -281,11 +274,20 @@ const _useJamStore = create<JamStore>((set, get) => ({
   },
 
   startDiscovery: async () => {
+    if (get().networkStatus !== 'idle') {
+      return;
+    }
+
     set({ networkStatus: 'discovering' });
     await network.startDiscovery((room) => {
       set((state) => {
+        // Don't show your own hosted room
+        if (state.mode === 'hosting' && state.currentRoom?.roomCode === room.roomCode) {
+          return state;
+        }
+
         const exists = state.discoveredRooms.some(
-          candidate => candidate.serviceName === room.serviceName && candidate.address === room.address,
+          candidate => candidate.roomCode === room.roomCode && candidate.address === room.address && candidate.port === room.port,
         );
 
         if (exists) {
@@ -301,26 +303,34 @@ const _useJamStore = create<JamStore>((set, get) => ({
   },
 
   stopDiscovery: async () => {
+    if (get().networkStatus !== 'discovering') {
+      return;
+    }
+
     await network.stopDiscovery();
     set({ networkStatus: 'idle' });
   },
 
   hydrate: async () => {
-    const stored = getItem<JamPersistedState>(JAM_STORAGE_KEY);
-    if (stored) {
-      set(stored);
+    if (hydrated)
+      return;
+    hydrated = true;
 
-      if (stored.mode === 'hosting' && stored.currentRoom) {
-        try {
-          await network.advertise(stored.currentRoom);
-          set({ networkStatus: 'hosting' });
-        }
-        catch (error) {
-          console.error('Failed to restore hosting advertisement:', error);
-          set({ networkStatus: 'error' });
-        }
-      }
-    }
+    const stored = getItem<JamPersistedState>(JAM_STORAGE_KEY);
+    if (!stored)
+      return;
+
+    set({
+      currentRoom: stored.currentRoom,
+      participants: stored.participants,
+      setlist: stored.setlist,
+      localUserId: stored.localUserId,
+      localDisplayName: stored.localDisplayName,
+      mode: stored.mode,
+      discoveredRooms: [],
+      networkStatus: 'idle', // don't restore network state
+    });
+    // Don't re-advertise — user must explicitly re-host
   },
 }));
 
