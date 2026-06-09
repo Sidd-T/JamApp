@@ -128,9 +128,6 @@ importers:
       react-native-tcp-socket:
         specifier: ^6.4.1
         version: 6.4.1(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))
-      react-native-udp:
-        specifier: ^4.1.7
-        version: 4.1.7
       react-native-url-polyfill:
         specifier: ^3.0.0
         version: 3.0.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))
@@ -6885,9 +6882,6 @@ packages:
     resolution: {integrity: sha512-2+zya9ielB8nWfMYVULB64ZqLzQD32qIzTnDef7NM1BChaJiA1btkJTBL+8WnyBrujjlCBVxBC3gAkXtG5hmvQ==}
     peerDependencies:
       react-native: '>=0.60.0'
-
-  react-native-udp@4.1.7:
-    resolution: {integrity: sha512-NUE3zewu61NCdSsLlj+l0ad6qojcVEZPT4hVG/x6DU9U4iCzwtfZSASh9vm7teAcVzLkdD+cO3411LHshAi/wA==}
 
   react-native-url-polyfill@3.0.0:
     resolution: {integrity: sha512-aA5CiuUCUb/lbrliVCJ6lZ17/RpNJzvTO/C7gC/YmDQhTUoRD5q5HlJfwLWcxz4VgAhHwXKzhxH+wUN24tAdqg==}
@@ -16179,11 +16173,6 @@ snapshots:
       buffer: 5.7.1
       eventemitter3: 4.0.7
       react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
-
-  react-native-udp@4.1.7:
-    dependencies:
-      buffer: 5.7.1
-      events: 3.3.0
 
   react-native-url-polyfill@3.0.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)):
     dependencies:
