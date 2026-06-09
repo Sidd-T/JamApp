@@ -37,12 +37,12 @@ export function CreateScreen() {
       <ScrollView className="flex-1 px-4">
         <SafeAreaView className="flex-1">
           {/* Header */}
-          <View className="-mt-8 mb-6">
+          <View className="-mt-6 mb-6">
             <Text className="text-sm text-neutral-600 dark:text-neutral-300">Create and manage your jazz standards</Text>
           </View>
 
           {/* Add New Song Button */}
-          <Button label="+ Add New Song" onPress={handleAddPress} className="mb-6 shadow-lg" variant="secondary" />
+          <Button label="+ Add New Song" onPress={handleAddPress} className="mb-6" variant="secondary" />
 
           {/* Songs List or Empty State */}
           {songs.length === 0
