@@ -79,7 +79,7 @@ export function JamsHomeScreen() {
   return (
     <ScrollView className="flex-1 bg-white px-4 py-6 dark:bg-neutral-900">
       <View className="-mt-6">
-        <Text className="text-sm text-neutral-500 dark:text-neutral-400">Create a local room or join another player on the same network.</Text>
+        <Text className="text-sm text-neutral-500 dark:text-neutral-400">Create a local room or join others on the same network</Text>
       </View>
 
       {!currentRoom || isCreating || isJoining
