@@ -8,29 +8,22 @@ import {
   People as PeopleIcon,
   Settings as SettingsIcon,
 } from '@/components/ui/icons';
-import { useAuthStore as useAuth } from '@/features/auth/use-auth-store';
 import { useIsFirstTime } from '@/lib/hooks/use-is-first-time';
 
 export default function TabLayout() {
-  const status = useAuth.use.status();
   const [isFirstTime] = useIsFirstTime();
   const hideSplash = useCallback(async () => {
     await SplashScreen.hideAsync();
   }, []);
   useEffect(() => {
-    if (status !== 'idle') {
-      const timer = setTimeout(() => {
-        hideSplash();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [hideSplash, status]);
+    const timer = setTimeout(() => {
+      hideSplash();
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [hideSplash]);
 
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
-  }
-  if (status === 'signOut') {
-    return <Redirect href="/login" />;
   }
   return (
     <Tabs>
