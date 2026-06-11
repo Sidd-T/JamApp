@@ -44,6 +44,7 @@ type JamPersistedState = {
   mode: JamMode;
   discoveredRooms: LanDiscoveredRoom[];
   networkStatus: 'idle' | 'discovering' | 'hosting' | 'connected' | 'error';
+  pickMode: boolean;
 };
 
 type JamStore = JamPersistedState & {
@@ -55,6 +56,7 @@ type JamStore = JamPersistedState & {
   startDiscovery: () => Promise<void>;
   stopDiscovery: () => Promise<void>;
   hydrate: () => Promise<void>;
+  setPickMode: (enabled: boolean) => void;
 };
 
 const network = createJamNetwork();
@@ -91,6 +93,7 @@ const _useJamStore = create<JamStore>((set, get) => ({
   mode: 'idle',
   discoveredRooms: [],
   networkStatus: 'idle',
+  pickMode: false,
 
   createRoom: async (roomName, hostName) => {
     if (get().currentRoom) {
@@ -332,6 +335,10 @@ const _useJamStore = create<JamStore>((set, get) => ({
     });
     // Don't re-advertise — user must explicitly re-host
   },
+
+  setPickMode: (enabled: boolean) => { // ← add this
+    set({ pickMode: enabled });
+  },
 }));
 
 function handleNetworkMessage(message: JamNetworkMessage) {
@@ -458,4 +465,8 @@ export function stopDiscovery() {
 
 export function hydrateJams() {
   return _useJamStore.getState().hydrate();
+}
+
+export function setPickMode(enabled: boolean) {
+  return _useJamStore.getState().setPickMode(enabled);
 }
