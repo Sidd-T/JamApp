@@ -333,10 +333,9 @@ const _useJamStore = create<JamStore>((set, get) => ({
       discoveredRooms: [],
       networkStatus: 'idle', // don't restore network state
     });
-    // Don't re-advertise — user must explicitly re-host
   },
 
-  setPickMode: (enabled: boolean) => { // ← add this
+  setPickMode: (enabled: boolean) => {
     set({ pickMode: enabled });
   },
 }));
