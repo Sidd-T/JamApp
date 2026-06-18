@@ -1,5 +1,5 @@
-import type { Section } from '../standards';
-import { View } from 'react-native';
+import type { Section, SegmentRef } from '../standards';
+import { Pressable, View } from 'react-native';
 import { Text } from '@/components/ui';
 import { generateListKey } from '@/lib/utils';
 import { ChordDisplay } from './chord-display';
@@ -8,15 +8,30 @@ type SectionDisplayProps = {
   section: Section;
   index: number;
   timeSignature?: string;
+  /**
+   * Called when the user taps a specific bar. `localIndex` is the bar's
+   * index within its own segment (MainSegment, or the given ending) —
+   * matching what normalizeChordString produces for that segment.
+   */
+  onBarPress?: (segment: SegmentRef, localIndex: number) => void;
 };
 
 const MAX_BARS_PER_ROW = 4;
 
-function countBars(chordString: string): number {
-  return chordString.split('|').map(b => b.trim()).filter(Boolean).length;
+function parseBars(chordString: string): string[] {
+  const bars = chordString.split('|').map(b => b.trim());
+
+  if (bars.length > 1 && bars.at(-1) === '')
+    return bars;
+
+  return bars.filter(Boolean);
 }
 
-export function SectionDisplay({ section, index, timeSignature }: SectionDisplayProps) {
+function countBars(chordString: string): number {
+  return parseBars(chordString).length;
+}
+
+export function SectionDisplay({ section, index, timeSignature, onBarPress }: SectionDisplayProps) {
   const label = section.Label || `${index + 1}`;
   const hasEndings = section.Endings && section.Endings.length > 0;
   const mainChords = section.MainSegment?.Chords;
@@ -52,7 +67,7 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
   const anyEndingInline = endingFits.some(Boolean);
 
   const allMainBars = mainChords
-    ? mainChords.split('|').map(b => b.trim()).filter(Boolean)
+    ? parseBars(mainChords)
     : [];
 
   // Split main bars into leading rows and the last row
@@ -60,6 +75,13 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
   const lastRowBars = allMainBars.slice(mainBarCount - lastRowBarCount);
   const leadingChords = leadingBars.join('|');
   const lastRowChords = lastRowBars.join('|');
+
+  // Local bar index (within MainSegment) that the leading row starts at,
+  // so ChordDisplay can offset its own bar indices when reporting taps.
+  const leadingStartIndex = 0;
+  const lastRowStartIndex = leadingBars.length;
+
+  const mainSegmentRef: SegmentRef = { segment: 'main' };
 
   // showTimeSignature only on the very first rendered chord row
   const timeSigOnLeading = index === 0 && leadingChords.length > 0;
@@ -76,6 +98,23 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
         <View className="h-px flex-1 bg-gray-300 dark:bg-gray-700" />
       </View>
 
+      {!mainChords && onBarPress && (
+        <View className="mb-1 flex-row items-stretch">
+          <View className="mb-2 w-px bg-black dark:bg-white" />
+          <Pressable
+            style={{ flex: 1 }}
+            onPress={() => onBarPress(mainSegmentRef, 0)}
+          >
+            <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
+              <Text className="text-base text-gray-400 dark:text-gray-600">
+                + chord
+              </Text>
+            </View>
+          </Pressable>
+          <View className="w-px bg-black dark:bg-white" />
+        </View>
+      )}
+
       {mainChords && (
         <>
           {leadingChords.length > 0 && (
@@ -83,6 +122,11 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
               chordString={leadingChords}
               showTimeSignature={timeSigOnLeading}
               timeSignature={timeSignature}
+              onBarPress={
+                onBarPress
+                  ? localIndex => onBarPress(mainSegmentRef, leadingStartIndex + localIndex)
+                  : undefined
+              }
             />
           )}
 
@@ -99,6 +143,11 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
                       chordString={lastRowChords}
                       showTimeSignature={timeSigOnLastRow}
                       timeSignature={timeSignature}
+                      onBarPress={
+                        onBarPress
+                          ? localIndex => onBarPress(mainSegmentRef, lastRowStartIndex + localIndex)
+                          : undefined
+                      }
                     />
                   </View>
 
@@ -108,6 +157,7 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
                       return null;
                     const isLastEnding = endingIndex === section.Endings!.length - 1;
                     const barCount = countBars(ending.Chords);
+                    const endingRef: SegmentRef = { segment: 'ending', endingIndex };
                     return (
                       <View key={generateListKey(`section-${index}-ending-${ending.Chords}`, endingIndex)} style={{ flex: barCount }}>
                         <View className={`mb-1 border-t border-l border-black dark:border-white${!isLastEnding ? 'border-r' : ''}`}>
@@ -121,6 +171,11 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
                           showTimeSignature={false}
                           timeSignature={timeSignature}
                           repeat={!isLastEnding ? 2 : undefined}
+                          onBarPress={
+                            onBarPress
+                              ? localIndex => onBarPress(endingRef, localIndex)
+                              : undefined
+                          }
                         />
                       </View>
                     );
@@ -133,6 +188,11 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
                   showTimeSignature={timeSigOnLastRow}
                   timeSignature={timeSignature}
                   repeat={!hasEndings ? section.Repeat : undefined}
+                  onBarPress={
+                    onBarPress
+                      ? localIndex => onBarPress(mainSegmentRef, lastRowStartIndex + localIndex)
+                      : undefined
+                  }
                 />
               )}
         </>
@@ -145,6 +205,7 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
             if (endingFits[endingIndex])
               return null;
             const isLastEnding = endingIndex === section.Endings!.length - 1;
+            const endingRef: SegmentRef = { segment: 'ending', endingIndex };
             return (
               <View key={generateListKey(`section-${index}-ending-${ending.Chords}`, endingIndex)}>
                 <View className={`mb-1 flex-row items-stretch border-t border-black dark:border-white ${!isLastEnding ? 'border-r' : ''}`}>
@@ -160,6 +221,11 @@ export function SectionDisplay({ section, index, timeSignature }: SectionDisplay
                   showTimeSignature={false}
                   timeSignature={timeSignature}
                   repeat={!isLastEnding ? 2 : undefined}
+                  onBarPress={
+                    onBarPress
+                      ? localIndex => onBarPress(endingRef, localIndex)
+                      : undefined
+                  }
                 />
               </View>
             );

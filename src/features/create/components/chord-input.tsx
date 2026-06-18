@@ -22,7 +22,7 @@ export function ChordInput({ ref, value, selection, onChangeText, onSelectionCha
         width: '100%',
         paddingHorizontal: 16,
         paddingVertical: 0,
-        borderRadius: 16,
+        borderRadius: 8,
 
         borderWidth: 1,
         borderColor: isDark ? '#404040' : '#d4d4d4',

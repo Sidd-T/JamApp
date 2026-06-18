@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import { Button } from '@/components/ui';
 import {
+  ACCIDENTALS,
   KEY_CLASS,
   KEY_TEXT_CLASS,
   NOTE_LETTERS,
@@ -66,7 +67,7 @@ export function ChordKeyboard({
         />
       </View>
 
-      {/* Letters */}
+      {/* Letters + accidentals (same row) */}
       <View className="flex-row flex-wrap justify-center gap-0.5">
         {NOTE_LETTERS.map(n => (
           <Button
@@ -74,6 +75,22 @@ export function ChordKeyboard({
             label={n}
             onPress={() => {
               insertAtCursor(n);
+              inputRef.current?.focus();
+            }}
+            variant="outline"
+            size="sm"
+            fullWidth={false}
+            className={KEY_CLASS}
+            textClassName={KEY_TEXT_CLASS}
+          />
+        ))}
+
+        {ACCIDENTALS.map(a => (
+          <Button
+            key={a.key}
+            label={a.label}
+            onPress={() => {
+              insertAtCursor(a.value);
               inputRef.current?.focus();
             }}
             variant="outline"
@@ -146,7 +163,7 @@ export function ChordKeyboard({
           variant="default"
           size="sm"
           fullWidth={false}
-          className="min-w-48 rounded-xl border border-neutral-300 bg-white shadow-sm dark:bg-neutral-700"
+          className="min-w-[40%] rounded-xl border border-neutral-300 bg-white shadow-sm dark:bg-neutral-700"
           textClassName={KEY_TEXT_CLASS}
         />
 
