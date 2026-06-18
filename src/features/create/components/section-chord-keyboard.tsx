@@ -32,29 +32,30 @@ export function SectionChordKeyboard({
     setSelection,
     insertAtCursor,
     backspace,
-    moveCursorToEnd,
   } = useChordEditor({
     value: currentChord,
     onChange: value => onBarChange(barIndex, value),
   });
 
-  const previousBarIndex = React.useRef(barIndex);
-
-  React.useEffect(() => {
-    if (previousBarIndex.current !== barIndex) {
-      previousBarIndex.current = barIndex;
-      moveCursorToEnd();
-    }
-  }, [barIndex, moveCursorToEnd]);
-
   return (
-    <View className="border-t border-neutral-300 bg-neutral-200 px-3 dark:border-neutral-800 dark:bg-black">
+    <View className="border-t border-neutral-300 bg-neutral-200 px-2 dark:border-neutral-800 dark:bg-black">
 
       {/* Header */}
       <View className="flex-row items-center justify-between">
         <Text className="ml-2 text-base font-semibold text-black dark:text-white">
           {`Bar ${barIndex + 1}:`}
         </Text>
+
+        {/* Input */}
+        <View className="mx-2 grow">
+          <ChordInput
+            ref={inputRef}
+            value={currentChord}
+            selection={selection}
+            onChangeText={text => onBarChange(barIndex, text)}
+            onSelectionChange={setSelection}
+          />
+        </View>
 
         <Button
           label="Done"
@@ -66,15 +67,6 @@ export function SectionChordKeyboard({
           textClassName="text-base text-primary-600 dark:text-primary-500 font-semibold"
         />
       </View>
-
-      {/* Input */}
-      <ChordInput
-        ref={inputRef}
-        value={currentChord}
-        selection={selection}
-        onChangeText={text => onBarChange(barIndex, text)}
-        onSelectionChange={setSelection}
-      />
 
       {/* Keyboard */}
       <ChordKeyboard

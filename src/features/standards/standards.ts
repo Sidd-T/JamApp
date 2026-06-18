@@ -162,3 +162,26 @@ export function getFilteredStandards(filter: FilterState, userSongs: Song[] = []
 export function normalizeChordString(chordString: string): string[] {
   return chordString.split('|').map(chord => chord.trim());
 }
+
+// Identifies which segment of a section is currently being edited.
+// 'main' -> Section.MainSegment
+// 'ending' -> Section.Endings[endingIndex]
+export type SegmentRef
+  = | { segment: 'main' }
+    | { segment: 'ending'; endingIndex: number };
+
+export type ActiveTarget = {
+  sectionIndex: number;
+  segment: SegmentRef;
+  /** Bar index within the active segment (matches normalizeChordString output for that segment). */
+  localIndex: number;
+} | null;
+
+export function segmentsEqual(a: SegmentRef, b: SegmentRef): boolean {
+  if (a.segment !== b.segment)
+    return false;
+  if (a.segment === 'ending' && b.segment === 'ending') {
+    return a.endingIndex === b.endingIndex;
+  }
+  return true;
+}

@@ -9,7 +9,7 @@ export default function StandardsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         headerShadowVisible: false,
         headerStyle: { backgroundColor: theme.colors.background },
         headerTitleStyle: { fontSize: 24, color: theme.colors.text },
@@ -21,6 +21,7 @@ export default function StandardsLayout() {
         options={{
           title: 'Jazz Standards',
           headerLargeTitle: true,
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -28,6 +29,7 @@ export default function StandardsLayout() {
         options={({ route }: any) => ({
           title: route.params?.id ? decodeURIComponent(route.params.id) : 'Standard',
           headerBackTitle: 'Back',
+          headerTitleAlign: 'center',
         })}
       />
     </Stack>

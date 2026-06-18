@@ -1,4 +1,4 @@
-import type { Section, Song } from '@/features/standards/standards';
+import type { ActiveTarget, Section, Song } from '@/features/standards/standards';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { SongFormActions, SongFormChordKeyboardOverlay, SongFormFields, SongFormSectionsPreview } from './components';
@@ -13,6 +13,18 @@ type SongFormProps = {
 const DEFAULT_SECTION: Section = { Label: 'A', MainSegment: { Chords: '' } };
 const DEFAULT_NEW_SONG: Omit<Song, 'id'> = { Title: '', Composer: 'user', Sections: [DEFAULT_SECTION] };
 
+function nextSectionLabel(sections: Section[]): string {
+  // A, B, C, ... Z, AA, AB, ... — simple increment off the count of
+  // existing sections. Good enough until someone needs 27 sections.
+  let num = sections.length;
+  let label = '';
+  do {
+    label = String.fromCharCode(65 + (num % 26)) + label;
+    num = Math.floor(num / 26) - 1;
+  } while (num >= 0);
+  return label;
+}
+
 export function SongFormScreen({
   song,
   onSave,
@@ -24,8 +36,7 @@ export function SongFormScreen({
   );
 
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [activeSectionIndex, setActiveSectionIndex] = React.useState<number | null>(null);
-  const [activeBarIndex, setActiveBarIndex] = React.useState(0);
+  const [activeTarget, setActiveTarget] = React.useState<ActiveTarget>(null);
 
   const isEditing = !!song;
 
@@ -62,6 +73,104 @@ export function SongFormScreen({
     await onSave(formData);
   };
 
+  const handleRepeatChange = (sectionIndex: number, repeat: number) => {
+    setFormData(prev => ({
+      ...prev,
+      Sections: prev.Sections.map((s, i) => (i === sectionIndex ? { ...s, Repeat: repeat } : s)),
+    }));
+  };
+
+  const handleModeChange = (sectionIndex: number, mode: 'repeat' | 'endings') => {
+    setFormData(prev => ({
+      ...prev,
+      Sections: prev.Sections.map((s, i) => {
+        if (i !== sectionIndex)
+          return s;
+        if (mode === 'endings') {
+          // Switching into endings mode clears Repeat. Endings starts
+          // empty — the user dials it up via the same stepper.
+          return { ...s, Repeat: undefined, Endings: [] };
+        }
+        // Switching into repeat mode clears Endings.
+        return { ...s, Endings: undefined, Repeat: 1 };
+      }),
+    }));
+
+    // Leaving endings mode (or re-entering repeat mode) invalidates any
+    // open keyboard pointed at an ending in this section.
+    setActiveTarget(prev =>
+      prev && prev.sectionIndex === sectionIndex && prev.segment.segment === 'ending'
+        ? null
+        : prev);
+  };
+
+  const handleEndingCountChange = (sectionIndex: number, count: number) => {
+    setFormData(prev => ({
+      ...prev,
+      Sections: prev.Sections.map((s, i) => {
+        if (i !== sectionIndex)
+          return s;
+        const current = s.Endings ?? [];
+        if (count <= current.length) {
+          return { ...s, Endings: current.slice(0, count) };
+        }
+        const additions = Array.from({ length: count - current.length }, () => ({ Chords: '' }));
+        return { ...s, Endings: [...current, ...additions] };
+      }),
+    }));
+
+    // If the keyboard is open on an ending that just got removed by a
+    // decrement, close it rather than point at a stale index.
+    setActiveTarget(prev =>
+      prev
+      && prev.sectionIndex === sectionIndex
+      && prev.segment.segment === 'ending'
+      && prev.segment.endingIndex >= count
+        ? null
+        : prev);
+  };
+
+  const handleDeleteSection = (sectionIndex: number) => {
+    setFormData((prev) => {
+      if (prev.Sections.length <= 1)
+        return prev; // always keep at least one section
+      return {
+        ...prev,
+        Sections: prev.Sections.filter((_, i) => i !== sectionIndex),
+      };
+    });
+
+    // Close the keyboard if it was pointed at the section being deleted,
+    // or shift its sectionIndex down if it was pointed at a later one.
+    setActiveTarget((prev) => {
+      if (!prev)
+        return prev;
+      if (formData.Sections.length <= 1)
+        return prev;
+      if (prev.sectionIndex === sectionIndex)
+        return null;
+      if (prev.sectionIndex > sectionIndex) {
+        return { ...prev, sectionIndex: prev.sectionIndex - 1 };
+      }
+      return prev;
+    });
+  };
+
+  const handleAddSection = () => {
+    const newSection: Section = {
+      Label: nextSectionLabel(formData.Sections),
+      MainSegment: { Chords: '' },
+    };
+    const insertAt = formData.Sections.length;
+
+    setFormData(prev => ({
+      ...prev,
+      Sections: [...prev.Sections, newSection],
+    }));
+
+    setActiveTarget({ sectionIndex: insertAt, segment: { segment: 'main' }, localIndex: 0 });
+  };
+
   return (
     <View className="flex-1 bg-white dark:bg-black">
       {/* SCROLLABLE CONTENT */}
@@ -80,10 +189,14 @@ export function SongFormScreen({
         <SongFormSectionsPreview
           sections={formData.Sections}
           timeSignature={formData.TimeSignature}
-          onSelectSection={(i: number) => {
-            setActiveSectionIndex(i);
-            setActiveBarIndex(0);
+          onSelectBar={(sectionIndex, segment, localIndex) => {
+            setActiveTarget({ sectionIndex, segment, localIndex });
           }}
+          onRepeatChange={handleRepeatChange}
+          onModeChange={handleModeChange}
+          onEndingCountChange={handleEndingCountChange}
+          onDeleteSection={handleDeleteSection}
+          onAddSection={handleAddSection}
         />
       </ScrollView>
 
@@ -99,11 +212,9 @@ export function SongFormScreen({
 
       {/* OVERLAY */}
       <SongFormChordKeyboardOverlay
-        activeSectionIndex={activeSectionIndex}
+        activeTarget={activeTarget}
         sections={formData.Sections}
-        activeBarIndex={activeBarIndex}
-        setActiveBarIndex={setActiveBarIndex}
-        setActiveSectionIndex={setActiveSectionIndex}
+        setActiveTarget={setActiveTarget}
         setFormData={setFormData}
       />
     </View>

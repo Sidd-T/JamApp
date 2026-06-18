@@ -14,12 +14,33 @@ export function useChordEditor({
   value,
   onChange,
 }: Params) {
-  const [selection, setSelection] = React.useState<Selection>({
+  const [selection, setSelectionState] = React.useState<Selection>({
     start: value.length,
     end: value.length,
   });
 
+  // Render-phase sync: when `value` changes for a reason other than our
+  // own onChange (e.g. the caller switched to editing a different bar),
+  // snap the cursor to the end of the new value immediately, rather than
+  // leaving `selection` pointing at an offset that belonged to the
+  // previous bar's string until a later effect catches up. This is what
+  // was breaking Prev/Next Bar: the input would render for a frame (or
+  // longer, if a key press landed first) with a selection computed
+  // against the old bar's text length.
+  const lastSyncedValueRef = React.useRef(value);
+  if (lastSyncedValueRef.current !== value) {
+    lastSyncedValueRef.current = value;
+    if (selection.start > value.length || selection.end > value.length) {
+      setSelectionState({ start: value.length, end: value.length });
+    }
+  }
+
   const lastInsertedRef = React.useRef<string | null>(null);
+
+  const setSelection = React.useCallback((next: Selection) => {
+    lastSyncedValueRef.current = value;
+    setSelectionState(next);
+  }, [value]);
 
   const insertAtCursor = React.useCallback(
     (text: string) => {
@@ -34,7 +55,8 @@ export function useChordEditor({
 
       const next = start + text.length;
 
-      setSelection({
+      lastSyncedValueRef.current = updated;
+      setSelectionState({
         start: next,
         end: next,
       });
@@ -55,7 +77,8 @@ export function useChordEditor({
 
       onChange(updated);
 
-      setSelection({
+      lastSyncedValueRef.current = updated;
+      setSelectionState({
         start,
         end: start,
       });
@@ -78,7 +101,8 @@ export function useChordEditor({
 
       const newPos = start - last.length;
 
-      setSelection({
+      lastSyncedValueRef.current = updated;
+      setSelectionState({
         start: newPos,
         end: newPos,
       });
@@ -94,18 +118,20 @@ export function useChordEditor({
 
     onChange(updated);
 
-    setSelection({
+    lastSyncedValueRef.current = updated;
+    setSelectionState({
       start: start - 1,
       end: start - 1,
     });
   }, [value, selection, onChange]);
 
   const moveCursorToEnd = React.useCallback(() => {
-    setSelection({
+    lastSyncedValueRef.current = value;
+    setSelectionState({
       start: value.length,
       end: value.length,
     });
-  }, [value.length]);
+  }, [value]);
 
   return {
     selection,
