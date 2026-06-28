@@ -137,6 +137,7 @@ export type SelectProps = {
   onSelect?: (value: string | number) => void;
   placeholder?: string;
   testID?: string;
+  className?: string;
 };
 
 export function Select(props: SelectProps) {
@@ -149,6 +150,7 @@ export function Select(props: SelectProps) {
     disabled = false,
     onSelect,
     testID,
+    className,
   } = props;
   const modal = useModal();
 
@@ -179,7 +181,7 @@ export function Select(props: SelectProps) {
 
   return (
     <>
-      <View className={styles.container()}>
+      <View className={`${styles.container()} ${className ?? ''}`}>
         {label && (
           <Text
             testID={testID ? `${testID}-label` : undefined}

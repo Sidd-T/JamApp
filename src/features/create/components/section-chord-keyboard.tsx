@@ -8,23 +8,25 @@ import { ChordKeyboard } from './chord-keyboard';
 import { useChordEditor } from './use-chord-editor';
 
 type SectionChordKeyboardProps = {
-  bars: string[];
-  barIndex: number;
-  onBarChange: (barIndex: number, chordToken: string) => void;
-  onPrevBar: () => void;
-  onNextBar: () => void;
+  beats: string[];
+  beatIndex: number;
+  barLabel: string;
+  onBeatChange: (beatIndex: number, text: string) => void;
+  onPrevBeat: () => void;
+  onNextBeat: () => void;
   onClose: () => void;
 };
 
 export function SectionChordKeyboard({
-  bars,
-  barIndex,
-  onBarChange,
-  onPrevBar,
-  onNextBar,
+  beats,
+  beatIndex,
+  barLabel,
+  onBeatChange,
+  onPrevBeat,
+  onNextBeat,
   onClose,
 }: SectionChordKeyboardProps) {
-  const currentChord = bars[barIndex] ?? '';
+  const currentBeat = beats[beatIndex] ?? '';
   const inputRef = React.useRef<TextInput>(null);
 
   const {
@@ -33,8 +35,8 @@ export function SectionChordKeyboard({
     insertAtCursor,
     backspace,
   } = useChordEditor({
-    value: currentChord,
-    onChange: value => onBarChange(barIndex, value),
+    value: currentBeat,
+    onChange: text => onBeatChange(beatIndex, text),
   });
 
   return (
@@ -43,16 +45,16 @@ export function SectionChordKeyboard({
       {/* Header */}
       <View className="flex-row items-center justify-between">
         <Text className="ml-2 text-base font-semibold text-black dark:text-white">
-          {`Bar ${barIndex + 1}:`}
+          {barLabel}
+          :
         </Text>
 
-        {/* Input */}
         <View className="mx-2 grow">
           <ChordInput
             ref={inputRef}
-            value={currentChord}
+            value={currentBeat}
             selection={selection}
-            onChangeText={text => onBarChange(barIndex, text)}
+            onChangeText={text => onBeatChange(beatIndex, text)}
             onSelectionChange={setSelection}
           />
         </View>
@@ -68,14 +70,13 @@ export function SectionChordKeyboard({
         />
       </View>
 
-      {/* Keyboard */}
       <ChordKeyboard
         insertAtCursor={insertAtCursor}
         backspace={backspace}
         inputRef={inputRef}
-        onPrevBar={onPrevBar}
-        onNextBar={onNextBar}
-        barIndex={barIndex}
+        onPrevBeat={onPrevBeat}
+        onNextBeat={onNextBeat}
+        beatIndex={beatIndex}
       />
     </View>
   );

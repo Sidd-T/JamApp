@@ -17,18 +17,18 @@ type Props = {
   insertAtCursor: (value: string) => void;
   backspace: () => void;
   inputRef: React.RefObject<TextInput | null>;
-  onPrevBar: () => void;
-  onNextBar: () => void;
-  barIndex: number;
+  onPrevBeat: () => void;
+  onNextBeat: () => void;
+  beatIndex: number;
 };
 
 export function ChordKeyboard({
   insertAtCursor,
   backspace,
   inputRef,
-  onPrevBar,
-  onNextBar,
-  barIndex,
+  onPrevBeat,
+  onNextBeat,
+  beatIndex,
 }: Props) {
   return (
     <View className="mt-4 gap-0.5">
@@ -67,7 +67,7 @@ export function ChordKeyboard({
         />
       </View>
 
-      {/* Letters + accidentals (same row) */}
+      {/* Letters + accidentals */}
       <View className="flex-row flex-wrap justify-center gap-0.5">
         {NOTE_LETTERS.map(n => (
           <Button
@@ -137,43 +137,29 @@ export function ChordKeyboard({
         ))}
       </View>
 
-      {/* Bottom row */}
+      {/* Bottom row: Prev / Next beat */}
       <View className="flex-row items-center justify-center gap-0.5">
-
         <Button
-          label="< Prev Bar"
-          onPress={onPrevBar}
-          disabled={barIndex <= 0}
+          label="< Prev"
+          onPress={onPrevBeat}
+          disabled={beatIndex <= 0}
           variant="outline"
           size="sm"
           fullWidth={false}
           className={
-            barIndex <= 0
-              ? 'rounded-xl bg-neutral-300 opacity-50'
-              : KEY_CLASS
+            beatIndex <= 0
+              ? 'min-w-[48%] rounded-xl bg-neutral-300 opacity-50'
+              : `min-w-[48%] ${KEY_CLASS}`
           }
           textClassName={KEY_TEXT_CLASS}
         />
         <Button
-          label="Add Chord"
-          onPress={() => {
-            insertAtCursor(',');
-            inputRef.current?.focus();
-          }}
-          variant="default"
-          size="sm"
-          fullWidth={false}
-          className="min-w-[40%] rounded-xl border border-neutral-300 bg-white shadow-sm dark:bg-neutral-700"
-          textClassName={KEY_TEXT_CLASS}
-        />
-
-        <Button
-          label="Next Bar >"
-          onPress={onNextBar}
+          label="Next >"
+          onPress={onNextBeat}
           variant="outline"
           size="sm"
           fullWidth={false}
-          className={KEY_CLASS}
+          className={`min-w-[48%] ${KEY_CLASS}`}
           textClassName={KEY_TEXT_CLASS}
         />
       </View>

@@ -1,4 +1,4 @@
-import type { SegmentRef } from '@/features/standards/standards';
+import type { Section, SegmentRef } from '@/features/standards/standards';
 
 export type FlatBar = {
   /** Index into the flattened sequence across the whole section */
@@ -9,11 +9,6 @@ export type FlatBar = {
   localIndex: number;
   /** Raw bar text, e.g. "C,,Dm7," */
   raw: string;
-};
-
-type SectionLike = {
-  MainSegment?: { Chords?: string };
-  Endings?: { Chords: string }[];
 };
 
 function splitBars(chordString: string | undefined): string[] {
@@ -34,7 +29,7 @@ function splitBars(chordString: string | undefined): string[] {
  * sequence, so Prev/Next Bar can walk across segment boundaries as a
  * single continuous list.
  */
-export function flattenSectionBars(section: SectionLike): FlatBar[] {
+export function flattenSectionBars(section: Section): FlatBar[] {
   const result: FlatBar[] = [];
   let flatIndex = 0;
 

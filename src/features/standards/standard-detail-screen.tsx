@@ -1,7 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { Text } from '@/components/ui';
-import { generateListKey } from '@/lib/utils';
 import { SectionDisplay } from './components';
 import { findStandardByTitle } from './standards';
 
@@ -40,7 +39,7 @@ export function StandardDetailScreen() {
         {/* ── Sections ── */}
         {standard.Sections.map((section, index) => (
           <SectionDisplay
-            key={generateListKey(`${standard.Title}-section-${section.Label || ''}`, index)}
+            key={`${standard.Title}-section-${section.Label || ''}-${index}`}
             section={section}
             index={index}
             timeSignature={standard.TimeSignature}
