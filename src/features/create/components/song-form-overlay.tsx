@@ -1,12 +1,21 @@
 import type { ActiveTarget, Section, Song } from '@/features/standards/standards';
 import * as React from 'react';
 import { View } from 'react-native';
-import { findFlatIndex, flattenSectionBars } from '@/features/standards/helpers/flatten-sections-bars';
+import {
+  beatsPerBar,
+  collapseBeatsToBar,
+  expandBarToBeats,
+} from '@/features/standards/helpers/bar-beats';
+import {
+  findFlatBeatIndex,
+  flattenSectionBeats,
+} from '@/features/standards/helpers/flatten-section-beats';
 import { SectionChordKeyboard } from './section-chord-keyboard';
 
 type SongFormChordKeyboardOverlayProps = {
   activeTarget: ActiveTarget;
   sections: Section[];
+  timeSignature?: string;
   setActiveTarget: React.Dispatch<React.SetStateAction<ActiveTarget>>;
   setFormData: React.Dispatch<React.SetStateAction<Omit<Song, 'id'>>>;
 };
@@ -14,25 +23,37 @@ type SongFormChordKeyboardOverlayProps = {
 export function SongFormChordKeyboardOverlay({
   activeTarget,
   sections,
+  timeSignature,
   setActiveTarget,
   setFormData,
 }: SongFormChordKeyboardOverlayProps) {
   if (activeTarget === null)
     return null;
 
-  const { sectionIndex, segment, localIndex } = activeTarget;
+  const { sectionIndex, segment, localIndex, beatIndex } = activeTarget;
   const section = sections[sectionIndex];
   if (!section)
     return null;
 
-  // Flattened bar sequence for the whole section (main + all endings, in
-  // order), so Prev/Next Bar can walk across segment boundaries.
-  const flatBars = flattenSectionBars(section);
-  const bars = flatBars.map(b => b.raw);
-  const flatIndex = Math.max(0, findFlatIndex(flatBars, segment, localIndex));
+  const n = beatsPerBar(timeSignature);
+  const flatBeats = flattenSectionBeats(section, timeSignature);
+  const beats = flatBeats.map(b => b.raw);
+  const flatIndex = Math.max(
+    0,
+    findFlatBeatIndex(flatBeats, segment, localIndex, beatIndex),
+  );
 
+  const currentFlat = flatBeats[flatIndex];
+  const barLabel = currentFlat
+    ? `Bar ${currentFlat.barLocalIndex + 1}, Beat ${currentFlat.beatIndex + 1}`
+    : 'Beat';
+
+  // Appends one blank bar (N empty beats) to whichever segment owns the
+  // last flat beat, then moves the cursor to its first beat.
   const appendBar = () => {
-    const lastFlatBar = flatBars[flatBars.length - 1];
+    const lastFlat = flatBeats[flatBeats.length - 1];
+    const targetSegment = lastFlat?.segment ?? { segment: 'main' as const };
+    const blankBar = collapseBeatsToBar(Array.from({ length: n }, () => ''));
 
     setFormData(prev => ({
       ...prev,
@@ -40,70 +61,39 @@ export function SongFormChordKeyboardOverlay({
         if (i !== sectionIndex)
           return s;
 
-        // no endings => extend MainSegment
-        if (!s.Endings?.length) {
+        if (targetSegment.segment === 'main') {
           const chords = s.MainSegment?.Chords ?? '';
-
           return {
             ...s,
             MainSegment: {
               ...s.MainSegment,
-              Chords: chords ? `${chords}|` : '|',
-            },
-          };
-        }
-
-        // extend whichever segment owns final flat bar
-        if (lastFlatBar?.segment.segment === 'main') {
-          const chords = s.MainSegment?.Chords ?? '';
-
-          return {
-            ...s,
-            MainSegment: {
-              ...s.MainSegment,
-              Chords: chords ? `${chords}|` : '|',
+              Chords: chords ? `${chords}|${blankBar}` : blankBar,
             },
           };
         }
 
         const endings = [...(s.Endings ?? [])];
-        const endingIndex = lastFlatBar.segment.endingIndex;
-
-        const ending = endings[endingIndex];
+        const ending = endings[targetSegment.endingIndex];
         if (!ending)
           return s;
-
-        endings[endingIndex] = {
+        endings[targetSegment.endingIndex] = {
           ...ending,
-          Chords: ending.Chords ? `${ending.Chords}|` : '|',
+          Chords: ending.Chords ? `${ending.Chords}|${blankBar}` : blankBar,
         };
-
-        return {
-          ...s,
-          Endings: endings,
-        };
+        return { ...s, Endings: endings };
       }),
     }));
 
-    if (!lastFlatBar) {
-      setActiveTarget({
-        sectionIndex,
-        segment: { segment: 'main' },
-        localIndex: 0,
-      });
-
-      return;
-    }
-
     setActiveTarget({
       sectionIndex,
-      segment: lastFlatBar.segment,
-      localIndex: lastFlatBar.localIndex + 1,
+      segment: targetSegment,
+      localIndex: lastFlat ? lastFlat.barLocalIndex + 1 : 0,
+      beatIndex: 0,
     });
   };
 
-  const writeBar = (targetFlatIndex: number, chordToken: string) => {
-    const fb = flatBars[targetFlatIndex];
+  const writeBeat = (targetFlatIndex: number, text: string) => {
+    const fb = flatBeats[targetFlatIndex];
     if (!fb)
       return;
 
@@ -113,53 +103,63 @@ export function SongFormChordKeyboardOverlay({
         if (i !== sectionIndex)
           return s;
 
-        if (fb.segment.segment === 'main') {
-          const mainBars = (s.MainSegment?.Chords ?? '')
+        const updateBars = (chordString: string): string => {
+          const bars = chordString
             .split('|')
             .map(b => b.trim())
             .filter(Boolean);
-          while (mainBars.length <= fb.localIndex) mainBars.push('');
-          mainBars[fb.localIndex] = chordToken;
+          while (bars.length <= fb.barLocalIndex) bars.push('');
+          const beatSlots = expandBarToBeats(bars[fb.barLocalIndex], n);
+          beatSlots[fb.beatIndex] = text;
+          bars[fb.barLocalIndex] = collapseBeatsToBar(beatSlots);
+          return bars.join('|');
+        };
+
+        if (fb.segment.segment === 'main') {
           return {
             ...s,
-            MainSegment: { ...s.MainSegment, Chords: mainBars.join('|') },
+            MainSegment: {
+              ...s.MainSegment,
+              Chords: updateBars(s.MainSegment?.Chords ?? ''),
+            },
           };
         }
 
-        // segment === 'ending'
         const endings = [...(s.Endings ?? [])];
         const ending = endings[fb.segment.endingIndex];
         if (!ending)
           return s;
-        const endingBars = ending.Chords.split('|').map(b => b.trim()).filter(Boolean);
-        while (endingBars.length <= fb.localIndex) endingBars.push('');
-        endingBars[fb.localIndex] = chordToken;
-        endings[fb.segment.endingIndex] = { ...ending, Chords: endingBars.join('|') };
+        endings[fb.segment.endingIndex] = {
+          ...ending,
+          Chords: updateBars(ending.Chords),
+        };
         return { ...s, Endings: endings };
       }),
     }));
   };
 
   const moveTo = (targetFlatIndex: number) => {
-    const fb = flatBars[targetFlatIndex];
+    const fb = flatBeats[targetFlatIndex];
     if (!fb)
       return;
     setActiveTarget({
       sectionIndex,
       segment: fb.segment,
-      localIndex: fb.localIndex,
+      localIndex: fb.barLocalIndex,
+      beatIndex: fb.beatIndex,
     });
   };
 
   return (
     <View className="absolute inset-x-0 bottom-0 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-black">
       <SectionChordKeyboard
-        bars={bars}
-        barIndex={flatIndex}
-        onBarChange={(barIndex, chordToken) => writeBar(barIndex, chordToken)}
-        onPrevBar={() => moveTo(Math.max(0, flatIndex - 1))}
-        onNextBar={() => {
-          if (flatIndex < bars.length - 1) {
+        beats={beats}
+        beatIndex={flatIndex}
+        barLabel={barLabel}
+        onBeatChange={(idx, text) => writeBeat(idx, text)}
+        onPrevBeat={() => moveTo(Math.max(0, flatIndex - 1))}
+        onNextBeat={() => {
+          if (flatIndex < beats.length - 1) {
             moveTo(flatIndex + 1);
           }
           else {

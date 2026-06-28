@@ -173,8 +173,10 @@ export type SegmentRef
 export type ActiveTarget = {
   sectionIndex: number;
   segment: SegmentRef;
-  /** Bar index within the active segment (matches normalizeChordString output for that segment). */
+  /** Bar index within the active segment. */
   localIndex: number;
+  /** Beat index within that bar (0..beatsPerBar-1). */
+  beatIndex: number;
 } | null;
 
 export function segmentsEqual(a: SegmentRef, b: SegmentRef): boolean {

@@ -52,6 +52,7 @@ export default antfu(
       'react/destructuring-assignment': 'off',
       'react/require-default-props': 'off',
       'react-refresh/only-export-components': 'warn', // Too strict for React Native
+      'react/no-array-index-key': 'off',
       'unicorn/filename-case': [
         'error',
         {
@@ -149,7 +150,6 @@ export default antfu(
       'style/semi': 'off',
       'style/comma-dangle': 'off',
       'style/quotes': 'off',
-      'unused-imports/no-unused-vars': 'off',
     },
   },
 

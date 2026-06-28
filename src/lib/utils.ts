@@ -18,14 +18,3 @@ export function createSelectors<S extends UseBoundStore<StoreApi<object>>>(_stor
 
   return store;
 }
-
-/**
- * Generate a unique key for list items that combines semantic content with position.
- * This ensures uniqueness even when items have identical content (e.g., repeated sections).
- * @param semanticBase - A meaningful identifier based on the item's content
- * @param position - The index/position of the item in the array
- * @returns A unique key string
- */
-export function generateListKey(semanticBase: string, position: number): string {
-  return `${semanticBase}-pos-${position}`;
-}
