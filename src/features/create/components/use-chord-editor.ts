@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 type Selection = {
   start: number;
@@ -14,7 +14,7 @@ export function useChordEditor({
   value,
   onChange,
 }: Params) {
-  const [selection, setSelectionState] = React.useState<Selection>({
+  const [selection, setSelectionState] = useState<Selection>({
     start: value.length,
     end: value.length,
   });
@@ -27,7 +27,7 @@ export function useChordEditor({
   // was breaking Prev/Next Bar: the input would render for a frame (or
   // longer, if a key press landed first) with a selection computed
   // against the old bar's text length.
-  const lastSyncedValueRef = React.useRef(value);
+  const lastSyncedValueRef = useRef(value);
   if (lastSyncedValueRef.current !== value) {
     lastSyncedValueRef.current = value;
     if (selection.start > value.length || selection.end > value.length) {
@@ -35,14 +35,14 @@ export function useChordEditor({
     }
   }
 
-  const lastInsertedRef = React.useRef<string | null>(null);
+  const lastInsertedRef = useRef<string | null>(null);
 
-  const setSelection = React.useCallback((next: Selection) => {
+  const setSelection = useCallback((next: Selection) => {
     lastSyncedValueRef.current = value;
     setSelectionState(next);
   }, [value]);
 
-  const insertAtCursor = React.useCallback(
+  const insertAtCursor = useCallback(
     (text: string) => {
       const { start, end } = selection;
 
@@ -66,7 +66,7 @@ export function useChordEditor({
     [value, selection, onChange],
   );
 
-  const backspace = React.useCallback(() => {
+  const backspace = useCallback(() => {
     const { start, end } = selection;
 
     // selection delete
@@ -125,7 +125,7 @@ export function useChordEditor({
     });
   }, [value, selection, onChange]);
 
-  const moveCursorToEnd = React.useCallback(() => {
+  const moveCursorToEnd = useCallback(() => {
     lastSyncedValueRef.current = value;
     setSelectionState({
       start: value.length,
