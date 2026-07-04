@@ -1,11 +1,11 @@
 import type TranslateOptions from 'i18next';
 import type { Language, resources } from './resources';
 import type { RecursiveKeyOf } from './types';
+import * as WebBrowser from 'expo-web-browser';
 import i18n from 'i18next';
 import memoize from 'lodash.memoize';
 import { useCallback } from 'react';
 import { I18nManager, NativeModules, Platform } from 'react-native';
-
 import { useMMKVString } from 'react-native-mmkv';
 import RNRestart from 'react-native-restart';
 import { storage } from '../storage';
@@ -55,4 +55,8 @@ export function useSelectedLanguage() {
   );
 
   return { language: language as Language, setLanguage };
+}
+
+export async function openBrowser(url: string) {
+  await WebBrowser.openBrowserAsync(encodeURI(url));
 }

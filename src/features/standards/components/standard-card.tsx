@@ -48,7 +48,7 @@ export function StandardCard({ standard, onPress, onAdd, added = false }: Standa
             </View>
           </View>
 
-          {/* Right: star top, add button bottom */}
+          {/* Right: favourite top, add button bottom */}
           <View className="items-end justify-between">
             <Pressable
               onPress={(e) => {

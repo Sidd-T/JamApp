@@ -7,6 +7,9 @@ import {
   expandBarToBeats,
 } from '@/features/standards/helpers/bar-beats';
 import {
+  flattenSectionBars,
+} from '@/features/standards/helpers/flatten-section-bars';
+import {
   findFlatBeatIndex,
   flattenSectionBeats,
 } from '@/features/standards/helpers/flatten-section-beats';
@@ -48,9 +51,8 @@ export function SongFormChordKeyboardOverlay({
     ? `Bar ${currentFlat.barLocalIndex + 1}.${currentFlat.beatIndex + 1}`
     : 'Beat';
 
-  const totalBars = flatBeats.length > 0
-    ? (flatBeats[flatBeats.length - 1].barLocalIndex + 1) // highest bar index + 1
-    : 0;
+  const flatBars = flattenSectionBars(section);
+  const totalBars = flatBars.length;
 
   const deleteBar = () => {
     const fb = flatBeats[flatIndex];
@@ -122,8 +124,7 @@ export function SongFormChordKeyboardOverlay({
   // Appends one blank bar (N empty beats) to whichever segment owns the
   // last flat beat, then moves the cursor to its first beat.
   const appendBar = () => {
-    const lastFlat = flatBeats[flatBeats.length - 1];
-    const targetSegment = lastFlat?.segment ?? { segment: 'main' as const };
+    const targetSegment = activeTarget.segment;
     const blankBar = collapseBeatsToBar(Array.from({ length: n }, () => ''));
 
     setFormData(prev => ({
@@ -158,7 +159,7 @@ export function SongFormChordKeyboardOverlay({
     setActiveTarget({
       sectionIndex,
       segment: targetSegment,
-      localIndex: lastFlat ? lastFlat.barLocalIndex + 1 : 0,
+      localIndex: activeTarget.localIndex + 1,
       beatIndex: 0,
     });
   };

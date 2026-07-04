@@ -1,9 +1,9 @@
 import type { Section, SegmentRef } from '../standards';
 import { View } from 'react-native';
-import { Text } from '@/components/ui';
 import { ChordDisplay } from './chord-display';
 import { EmptyEndingSegment } from './empty-segments';
 import { countBars, isEmptyChords } from './section-display-utils';
+import { VoltaBracket } from './volta-bracket';
 
 type EndingsCommonProps = {
   section: Section;
@@ -33,14 +33,18 @@ function endingActiveBar(
   return activeBarLocalIndex;
 }
 
-function renderEndingContent(
-  ending: { Chords: string },
-  endingIndex: number,
-  isLastEnding: boolean,
-  props: EndingsCommonProps,
-) {
+// ── Single ending ────────────────────────────────────────────────────────────
+type EndingProps = {
+  ending: { Chords: string };
+  endingIndex: number;
+  endingCount: number;
+  sectionIndex: number;
+  props: EndingsCommonProps;
+  showOpeningLine: boolean;
+};
+
+function Ending({ ending, endingIndex, endingCount, sectionIndex, props, showOpeningLine }: EndingProps) {
   const {
-    section,
     timeSignature,
     editMode,
     activeSegment,
@@ -51,109 +55,104 @@ function renderEndingContent(
   } = props;
 
   const endingRef: SegmentRef = { segment: 'ending', endingIndex };
+  const isLastEnding = endingIndex === endingCount - 1;
   const isThisEndingActive
     = activeSegment?.segment === 'ending'
       && (activeSegment as any).endingIndex === endingIndex;
+  const barCount = isEmptyChords(ending.Chords) ? 1 : countBars(ending.Chords);
 
-  if (section && isEmptyChords(ending.Chords)) {
-    return (
-      <EmptyEndingSegment
-        endingRef={endingRef}
-        timeSignature={timeSignature}
-        editMode={editMode}
-        isThisEndingActive={isThisEndingActive}
-        activeBeatIndex={activeBeatIndex}
-        onBarPress={onBarPress}
-        onBeatPress={onBeatPress}
-      />
-    );
-  }
+  // Content passed to ChordDisplay as emptyContent when there are no chords,
+  // so ChordDisplay always owns the closing bar line.
+  const emptyContent = (
+    <EmptyEndingSegment
+      endingRef={endingRef}
+      timeSignature={timeSignature}
+      editMode={editMode}
+      isThisEndingActive={isThisEndingActive}
+      activeBeatIndex={activeBeatIndex}
+      onBarPress={onBarPress}
+      onBeatPress={onBeatPress}
+    />
+  );
 
   return (
-    <ChordDisplay
-      chordString={ending.Chords}
-      showTimeSignature={false}
-      timeSignature={timeSignature}
-      repeat={!isLastEnding ? 2 : undefined}
-      editMode={editMode}
-      activeBarLocalIndex={endingActiveBar(endingIndex, activeSegment, activeBarLocalIndex)}
-      activeBeatIndex={activeBeatIndex}
-      onBeatPress={
-        onBeatPress
-          ? (localBar, bi) => onBeatPress(endingRef, localBar, bi)
-          : undefined
-      }
-      onBarPress={
-        onBarPress
-          ? localIndex => onBarPress(endingRef, localIndex)
-          : undefined
-      }
-    />
+    <View
+      key={`section-${sectionIndex}-ending-${endingIndex}-of-${endingCount}`}
+      style={{ flex: barCount }}
+    >
+      <VoltaBracket number={endingIndex + 1} open={isLastEnding} />
+      <ChordDisplay
+        chordString={ending.Chords}
+        timeSignature={timeSignature}
+        repeat={undefined} // no repeat for endings
+        editMode={editMode}
+        activeBarLocalIndex={endingActiveBar(endingIndex, activeSegment, activeBarLocalIndex)}
+        activeBeatIndex={activeBeatIndex}
+        emptyContent={emptyContent}
+        showOpeningLine={showOpeningLine}
+        onBeatPress={
+          onBeatPress
+            ? (localBar, bi) => onBeatPress(endingRef, localBar, bi)
+            : undefined
+        }
+        onBarPress={
+          onBarPress
+            ? localIndex => onBarPress(endingRef, localIndex)
+            : undefined
+        }
+      />
+    </View>
   );
 }
 
-// Renders the ending boxes that fit on the last row of the main segment.
-// The main segment bar(s) for that row are rendered by the parent — this
-// component only renders the ending boxes themselves.
+// ── InlineEndingsRow ─────────────────────────────────────────────────────────
+
 export function InlineEndingsRow(props: EndingsCommonProps) {
   const { section, sectionIndex, endingFits } = props;
+  const endingCount = section.Endings!.length;
 
   return (
     <>
       {section.Endings!.map((ending, endingIndex) => {
         if (!endingFits[endingIndex])
           return null;
-        const isLastEnding = endingIndex === section.Endings!.length - 1;
-        const barCount = isEmptyChords(ending.Chords) ? 1 : countBars(ending.Chords);
-
         return (
-          <View
-            key={`section-${sectionIndex}-ending-${endingIndex}`}
-            style={{ flex: barCount }}
-          >
-            <View
-              className={`mb-1 border-t border-l border-black dark:border-white${!isLastEnding ? 'border-r' : ''}`}
-            >
-              <Text className="text-xs font-bold text-black dark:text-white">
-                {endingIndex + 1}
-                .
-              </Text>
-            </View>
-            {renderEndingContent(ending, endingIndex, isLastEnding, props)}
-          </View>
+          <Ending
+            key={`section-${sectionIndex}-ending-${endingIndex}-of-${endingCount}`}
+            ending={ending}
+            endingIndex={endingIndex}
+            endingCount={endingCount}
+            sectionIndex={sectionIndex}
+            props={props}
+            showOpeningLine={true}
+          />
         );
       })}
     </>
   );
 }
 
-// Renders endings that didn't fit inline, each on their own row below.
+// ── OverflowEndings ──────────────────────────────────────────────────────────
+
 export function OverflowEndings(props: EndingsCommonProps) {
   const { section, sectionIndex, endingFits } = props;
+  const endingCount = section.Endings!.length;
 
   return (
     <View>
       {section.Endings!.map((ending, endingIndex) => {
         if (endingFits[endingIndex])
           return null;
-        const isLastEnding = endingIndex === section.Endings!.length - 1;
-
         return (
-          <View
-            key={`section-${sectionIndex}-ending-${endingIndex}`}
-          >
-            <View
-              className={`mb-1 flex-row items-stretch border-t border-black dark:border-white${!isLastEnding ? 'border-r' : ''}`}
-            >
-              <View className="justify-center border-l border-black px-2 pt-1 dark:border-white">
-                <Text className="text-xs font-bold text-black dark:text-white">
-                  {endingIndex + 1}
-                  .
-                </Text>
-              </View>
-            </View>
-            {renderEndingContent(ending, endingIndex, isLastEnding, props)}
-          </View>
+          <Ending
+            key={`section-${sectionIndex}-ending-${endingIndex}-of-${endingCount}`}
+            ending={ending}
+            endingIndex={endingIndex}
+            endingCount={endingCount}
+            sectionIndex={sectionIndex}
+            props={props}
+            showOpeningLine={true}
+          />
         );
       })}
     </View>

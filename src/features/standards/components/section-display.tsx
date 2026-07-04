@@ -1,8 +1,8 @@
 import type { Section, SegmentRef } from '../standards';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { Text } from '@/components/ui';
-import { beatsPerBar } from '@/features/standards/helpers/bar-beats';
 import { ChordDisplay } from './chord-display';
+import { EmptyMainSegment } from './empty-segments';
 import { InlineEndingsRow, OverflowEndings } from './endings';
 import { countBars, isEmptyChords, MAX_BARS_PER_ROW, parseBars } from './section-display-utils';
 
@@ -33,7 +33,6 @@ export function SectionDisplay({
   const rawMainChords = section.MainSegment?.Chords ?? '';
   const hasMainChords = !isEmptyChords(rawMainChords);
   const editMode = onBeatPress !== undefined;
-  const n = beatsPerBar(timeSignature);
 
   const mainSegmentRef: SegmentRef = { segment: 'main' };
   const isMainActive = activeSegment?.segment === 'main';
@@ -41,7 +40,7 @@ export function SectionDisplay({
   const repeatValue = !hasEndings ? (section.Repeat ?? 0) : 0;
   const showRepeat = repeatValue >= 1;
 
-  // ── Bar layout (only needed when endings may share the last row) ─────────
+  // ── Bar layout ─────────────────────────────────────────────────────────────
   const mainBarCount = hasMainChords ? countBars(rawMainChords) : 1;
   const lastRowBarCount
     = mainBarCount % MAX_BARS_PER_ROW === 0 && mainBarCount > 0
@@ -70,7 +69,7 @@ export function SectionDisplay({
 
   const anyEndingInline = endingFits.some(Boolean);
 
-  // ── Chord string splitting (only needed for inline endings) ──────────────
+  // ── Chord splitting (only needed when endings share the last row) ──────────
   const allMainBars = hasMainChords ? parseBars(rawMainChords) : [];
   const lastRowStartIndex = allMainBars.length - lastRowBarCount;
   const leadingChords = anyEndingInline
@@ -80,57 +79,28 @@ export function SectionDisplay({
     ? allMainBars.slice(lastRowStartIndex).join('|')
     : '';
 
-  // ── Empty main bar (edit or normal mode, no chords) ──────────────────────
-  function renderEmptyMainBar() {
-    if (!editMode && onBarPress) {
-      return (
-        <Pressable style={{ flex: 1 }} onPress={() => onBarPress(mainSegmentRef, 0)}>
-          <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-            <Text className="text-base text-gray-400 dark:text-gray-600">+ chord</Text>
-          </View>
-        </Pressable>
-      );
-    }
+  // ── Shared props for ChordDisplay calls on the main segment ───────────────
+  const mainChordDisplayProps = {
+    timeSignature,
+    editMode,
+    activeBarLocalIndex: isMainActive ? activeBarLocalIndex : undefined,
+    activeBeatIndex,
+    onBeatPress: onBeatPress
+      ? (localBar: number, bi: number) => onBeatPress(mainSegmentRef, localBar, bi)
+      : undefined,
+    onBarPress: onBarPress
+      ? (localIndex: number) => onBarPress(mainSegmentRef, localIndex)
+      : undefined,
+  };
 
-    if (editMode && onBeatPress) {
-      return (
-        <View style={{ flex: 1 }} className="flex-row">
-          {Array.from({ length: n }).map((_, bi) => {
-            const isActiveBeat
-              = isMainActive && activeBarLocalIndex === 0 && activeBeatIndex === bi;
-            return (
-              <Pressable
-                key={bi}
-                style={{ flex: 1 }}
-                onPress={() => onBeatPress(mainSegmentRef, 0, bi)}
-              >
-                <View
-                  className={[
-                    'min-h-10 flex-1 items-center justify-center',
-                    bi < n - 1 ? 'border-r border-neutral-200 dark:border-neutral-800' : '',
-                    isActiveBeat ? 'bg-primary-100 dark:bg-primary-900' : '',
-                  ].filter(Boolean).join(' ')}
-                >
-                  <Text className="text-sm text-neutral-300 dark:text-neutral-700">—</Text>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
-      );
-    }
-
-    return <View style={{ flex: 1 }} />;
-  }
-
-  // ── Last row (handles inline endings when present) ────────────────────────
+  // ── Last row ───────────────────────────────────────────────────────────────
   function renderLastRow() {
-    // Case 1: inline endings — split the last row between main and endings
+    // Case 1: some endings fit inline — split the row between main and endings
     if (anyEndingInline) {
       return (
-        <View className="flex-row">
+        <View className="flex-row items-end">
           <View style={{ flex: lastRowBarCount }}>
-            {/* Spacer matching the ending number label row */}
+            {/* Spacer matching the ending number label height */}
             <View className="mb-1">
               <Text className="text-xs font-bold text-transparent"> </Text>
             </View>
@@ -139,33 +109,23 @@ export function SectionDisplay({
                   <ChordDisplay
                     chordString={lastRowChords}
                     showTimeSignature={index === 0 && leadingChords.length === 0}
-                    timeSignature={timeSignature}
-                    editMode={editMode}
                     startIndex={lastRowStartIndex}
-                    activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
-                    activeBeatIndex={activeBeatIndex}
-                    onBeatPress={
-                      onBeatPress
-                        ? (localBar, bi) => onBeatPress(mainSegmentRef, localBar, bi)
-                        : undefined
-                    }
-                    onBarPress={
-                      onBarPress
-                        ? localIndex => onBarPress(mainSegmentRef, localIndex)
-                        : undefined
-                    }
+                    showClosingLine={false}
+                    {...mainChordDisplayProps}
                   />
                 )
               : (
-            // Empty bar — the first ending's border acts as the closing barline
-                  <View className="relative mb-2 flex-row">
-                    <View className="absolute top-0 bottom-0 left-0 w-px bg-black dark:bg-white" />
-                    <View className="w-px" />
-                    {renderEmptyMainBar()}
-                  </View>
+                  <EmptyMainSegment
+                    timeSignature={timeSignature}
+                    editMode={editMode}
+                    isMainActive={isMainActive}
+                    activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
+                    activeBeatIndex={activeBeatIndex}
+                    onBarPress={onBarPress}
+                    onBeatPress={onBeatPress}
+                  />
                 )}
           </View>
-
           <InlineEndingsRow
             section={section}
             sectionIndex={index}
@@ -182,59 +142,36 @@ export function SectionDisplay({
       );
     }
 
-    // Case 2: chords, no inline endings — ChordDisplay owns everything
+    // Case 2: chords, no inline endings — ChordDisplay owns the whole row
     if (hasMainChords) {
       return (
         <ChordDisplay
           chordString={rawMainChords}
           showTimeSignature={index === 0}
-          timeSignature={timeSignature}
           repeat={showRepeat ? repeatValue : undefined}
-          editMode={editMode}
-          activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
-          activeBeatIndex={activeBeatIndex}
-          onBeatPress={
-            onBeatPress
-              ? (localBar, bi) => onBeatPress(mainSegmentRef, localBar, bi)
-              : undefined
-          }
-          onBarPress={
-            onBarPress
-              ? localIndex => onBarPress(mainSegmentRef, localIndex)
-              : undefined
-          }
+          {...mainChordDisplayProps}
         />
       );
     }
 
     // Case 3: no chords, no inline endings — single empty bar
     return (
-      <View className="relative mb-2 flex-row">
-        <View className="absolute top-0 bottom-0 left-0 w-px bg-black dark:bg-white" />
-        {index === 0 && timeSignature
-          ? (
-              <View className="items-center justify-center px-1">
-                <Text className="border-b border-black text-center text-base leading-none font-bold text-black dark:border-white dark:text-white">
-                  {timeSignature.split('/')[0]}
-                </Text>
-                <Text className="text-center text-base leading-none font-bold text-black dark:text-white">
-                  {timeSignature.split('/')[1]}
-                </Text>
-              </View>
-            )
-          : (
-              <View className="w-px" />
-            )}
-        {renderEmptyMainBar()}
-        {/* Closing bar line */}
-        <View className="absolute top-0 right-0 bottom-0 w-px bg-black dark:bg-white" />
-      </View>
+      <EmptyMainSegment
+        timeSignature={timeSignature}
+        editMode={editMode}
+        isMainActive={isMainActive}
+        activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
+        activeBeatIndex={activeBeatIndex}
+        onBarPress={onBarPress}
+        onBeatPress={onBeatPress}
+      />
     );
   }
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <View className="mb-6">
+      {/* Section label */}
       <View className="mb-2 flex-row items-center gap-2">
         <View className="size-7 items-center justify-center border-2 border-gray-900 dark:border-gray-100">
           <Text className="text-sm font-black text-gray-900 dark:text-white">{label}</Text>
@@ -242,30 +179,23 @@ export function SectionDisplay({
         <View className="h-px flex-1 bg-gray-300 dark:bg-gray-700" />
       </View>
 
-      {/* Leading rows — only rendered when inline endings force a split */}
-      {anyEndingInline && hasMainChords && leadingChords.length > 0 && (
-        <ChordDisplay
-          chordString={leadingChords}
-          showTimeSignature={index === 0}
-          timeSignature={timeSignature}
-          editMode={editMode}
-          activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
-          activeBeatIndex={activeBeatIndex}
-          onBeatPress={
-            onBeatPress
-              ? (localBar, bi) => onBeatPress(mainSegmentRef, localBar, bi)
-              : undefined
-          }
-          onBarPress={
-            onBarPress
-              ? localIndex => onBarPress(mainSegmentRef, localIndex)
-              : undefined
-          }
-        />
-      )}
+      {/* Leading rows — only when inline endings force a last-row split */}
+      <View key={`leading-${anyEndingInline && leadingChords.length > 0 ? leadingChords : 'none'}`}>
+        {anyEndingInline && hasMainChords && leadingChords.length > 0 && (
+          <ChordDisplay
+            chordString={leadingChords}
+            showTimeSignature={index === 0}
+            {...mainChordDisplayProps}
+          />
+        )}
+      </View>
 
-      {renderLastRow()}
+      {/* Last row (may include inline endings) */}
+      <View key={`last-row-${anyEndingInline ? 'inline' : 'plain'}-${endingFits.length}`}>
+        {renderLastRow()}
+      </View>
 
+      {/* Overflow endings — those that didn't fit on the last row */}
       {hasEndingItems && endingFits.some(f => !f) && (
         <OverflowEndings
           section={section}

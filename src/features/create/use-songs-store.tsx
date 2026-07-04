@@ -127,3 +127,7 @@ export function deleteSong(id: string) {
 export function hydrateSongs() {
   return _useSongsStore.getState().hydrate();
 }
+
+export function getSongs() {
+  return _useSongsStore.getState().getSongs();
+}

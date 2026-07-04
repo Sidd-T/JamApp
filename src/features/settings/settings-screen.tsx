@@ -9,7 +9,7 @@ import {
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
-import { translate } from '@/lib/i18n';
+import { openBrowser, translate } from '@/lib/i18n';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
@@ -44,7 +44,7 @@ export function SettingsScreen() {
             />
           </SettingsContainer>
 
-          <SettingsContainer title="settings.support_us">
+          <SettingsContainer title="settings.support">
             <SettingsItem
               text="settings.share"
               icon={<Share color={iconColor} />}
@@ -68,12 +68,12 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.github"
               icon={<Github color={iconColor} />}
-              onPress={() => {}}
+              onPress={() => { 'https://github.com/Sidd-T/JamApp'; }}
             />
             <SettingsItem
               text="settings.website"
               icon={<Website color={iconColor} />}
-              onPress={() => {}}
+              onPress={() => { openBrowser('https://spades.top'); }}
             />
           </SettingsContainer>
 

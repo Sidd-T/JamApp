@@ -1,3 +1,4 @@
+import type { ExternalPathString } from 'expo-router';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -37,12 +38,18 @@ export function JamsHomeScreen() {
     };
   }, []);
 
+  const navigateToRoom = (room: { id: string; name: string }) => {
+    router.push({
+      pathname: `/jams/${encodeURIComponent(room.id)}` as ExternalPathString,
+      params: { name: room.name },
+    });
+  };
+
   const handleCreateRoom = async () => {
     try {
       setError('');
       setIsCreating(true);
-      const room = await createRoom(roomName, hostName);
-      router.push(`/jams/${encodeURIComponent(room.id)}`);
+      navigateToRoom(await createRoom(roomName, hostName));
     }
     catch (cause) {
       setError('Please enter a valid room name and host name.');
@@ -55,8 +62,7 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsJoining(true);
-      const room = await joinRoom(joinCode, displayName);
-      router.push(`/jams/${encodeURIComponent(room.id)}`);
+      navigateToRoom(await joinRoom(joinCode, displayName));
     }
     catch (cause) {
       setError('Could not join the room. Make sure the host is available on the local network and that the code is correct.');
@@ -68,12 +74,13 @@ export function JamsHomeScreen() {
   const handleJoinDiscoveredRoom = async (roomCode: string) => {
     try {
       setError('');
-      const room = await joinRoom(roomCode, displayName);
-      router.push(`/jams/${encodeURIComponent(room.id)}`);
+      setIsJoining(true);
+      navigateToRoom(await joinRoom(roomCode, displayName));
     }
     catch (cause) {
       setError('Could not join the discovered room.');
       console.error('Join discovered room failed:', cause);
+      setIsJoining(false);
     }
   };
 
@@ -156,7 +163,15 @@ export function JamsHomeScreen() {
                   Code:
                   {currentRoom.roomCode}
                 </Text>
-                <Button label="Enter room" variant="secondary" className="mt-4" onPress={() => router.push(`/jams/${encodeURIComponent(currentRoom.id)}`)} />
+                <Button
+                  label="Enter room"
+                  variant="secondary"
+                  className="mt-4"
+                  onPress={() => router.push({
+                    pathname: `/jams/${encodeURIComponent(currentRoom.id)}` as ExternalPathString,
+                    params: { name: currentRoom.name },
+                  })}
+                />
               </View>
             )}
 
