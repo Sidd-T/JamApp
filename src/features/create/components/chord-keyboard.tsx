@@ -1,5 +1,5 @@
+import type { RefObject } from 'react';
 import type { TextInput } from 'react-native';
-import * as React from 'react';
 import { View } from 'react-native';
 
 import { Button } from '@/components/ui';
@@ -10,16 +10,18 @@ import {
   NOTE_LETTERS,
   NUMBERS,
   QUALITIES,
-  TOKEN_BUTTONS,
 } from './chord-constants';
 
 type Props = {
   insertAtCursor: (value: string) => void;
   backspace: () => void;
-  inputRef: React.RefObject<TextInput | null>;
+  inputRef: RefObject<TextInput | null>;
   onPrevBeat: () => void;
   onNextBeat: () => void;
+  onDeleteBar: () => void;
+  onAddBar: () => void;
   beatIndex: number;
+  totalBars: number;
 };
 
 export function ChordKeyboard({
@@ -28,10 +30,14 @@ export function ChordKeyboard({
   inputRef,
   onPrevBeat,
   onNextBeat,
+  onDeleteBar,
+  onAddBar,
   beatIndex,
+  totalBars,
 }: Props) {
   return (
-    <View className="mt-4 gap-0.5">
+
+    <View className="mt-2 gap-0.5">
 
       {/* Numbers + backspace */}
       <View className="flex-row items-center justify-between">
@@ -97,13 +103,13 @@ export function ChordKeyboard({
             size="sm"
             fullWidth={false}
             className={KEY_CLASS}
-            textClassName={KEY_TEXT_CLASS}
+            textClassName={`-translate-y-[12%] scale-120 ${KEY_TEXT_CLASS}`}
           />
         ))}
       </View>
 
       {/* Qualities + symbols */}
-      <View className="flex-row flex-wrap justify-center gap-0.5">
+      <View className="scale-95 flex-row items-center justify-center gap-0.5">
         {QUALITIES.map(q => (
           <Button
             key={q}
@@ -119,26 +125,38 @@ export function ChordKeyboard({
             textClassName={KEY_TEXT_CLASS}
           />
         ))}
-
-        {TOKEN_BUTTONS.map(t => (
-          <Button
-            key={t.key}
-            label={t.label}
-            onPress={() => {
-              insertAtCursor(t.value);
-              inputRef.current?.focus();
-            }}
-            variant="outline"
-            size="sm"
-            fullWidth={false}
-            className={KEY_CLASS}
-            textClassName={KEY_TEXT_CLASS}
-          />
-        ))}
       </View>
 
-      {/* Bottom row: Prev / Next beat */}
-      <View className="flex-row items-center justify-center gap-0.5">
+      {/* Bottom row: Bar ops | divider | Beat nav */}
+      <View className="flex-row items-center justify-center gap-1">
+        {/* Bar operations */}
+        <Button
+          label="− Bar"
+          onPress={onDeleteBar}
+          disabled={totalBars <= 1}
+          variant="outline"
+          size="sm"
+          fullWidth={false}
+          className={
+            totalBars <= 1
+              ? 'bg-neutral-300 opacity-50'
+              : `${KEY_CLASS}`
+          }
+          textClassName={KEY_TEXT_CLASS}
+        />
+        <Button
+          label="+ Bar"
+          onPress={onAddBar}
+          variant="secondary"
+          size="sm"
+          fullWidth={false}
+          textClassName="text-lg"
+        />
+
+        {/* Faint vertical divider */}
+        <View className="mx-1 h-7 w-px bg-neutral-400 opacity-30" />
+
+        {/* Beat navigation */}
         <Button
           label="< Prev"
           onPress={onPrevBeat}
@@ -148,19 +166,19 @@ export function ChordKeyboard({
           fullWidth={false}
           className={
             beatIndex <= 0
-              ? 'min-w-[48%] rounded-xl bg-neutral-300 opacity-50'
-              : `min-w-[48%] ${KEY_CLASS}`
+              ? 'min-w-[22%] bg-neutral-300 opacity-50'
+              : `min-w-[22%] ${KEY_CLASS}`
           }
           textClassName={KEY_TEXT_CLASS}
         />
         <Button
           label="Next >"
           onPress={onNextBeat}
-          variant="outline"
+          variant="secondary"
           size="sm"
           fullWidth={false}
-          className={`min-w-[48%] ${KEY_CLASS}`}
-          textClassName={KEY_TEXT_CLASS}
+          className="min-w-[22%]"
+          textClassName="text-lg"
         />
       </View>
     </View>

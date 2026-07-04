@@ -1,4 +1,5 @@
 import jazzStandards from '../../../data/jazz-standards.json';
+import { getSongs } from '../create/use-songs-store';
 
 export type MainSegment = {
   Chords: string;
@@ -30,7 +31,6 @@ export type SongWithSource = Song & {
 };
 
 function getAllJazzStandards(): Song[] {
-  // Add title as ID for jazz-standards (backward compatible)
   return (jazzStandards as Omit<Song, 'id'>[]).map(song => ({
     ...song,
     id: song.Title, // Use title as ID for built-in standards
@@ -38,7 +38,7 @@ function getAllJazzStandards(): Song[] {
 }
 
 export function getAllStandards(userSongs: Song[] = []): Song[] {
-  return [...getAllJazzStandards(), ...userSongs];
+  return [...getAllJazzStandards(), ...getSongs(), ...userSongs];
 }
 
 export function findStandardByTitle(title: string, userSongs: Song[] = []): Song | undefined {

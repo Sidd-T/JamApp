@@ -26,8 +26,6 @@ function splitBars(chordString: string | undefined): string[] {
 
 /**
  * Flattens a section's MainSegment + all Endings into one ordered bar
- * sequence, so Prev/Next Bar can walk across segment boundaries as a
- * single continuous list.
  */
 export function flattenSectionBars(section: Section): FlatBar[] {
   const result: FlatBar[] = [];

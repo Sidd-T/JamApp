@@ -11,9 +11,12 @@ type SectionChordKeyboardProps = {
   beats: string[];
   beatIndex: number;
   barLabel: string;
+  totalBars: number; // ← add
   onBeatChange: (beatIndex: number, text: string) => void;
   onPrevBeat: () => void;
   onNextBeat: () => void;
+  onDeleteBar: () => void; // ← add
+  onAddBar: () => void; // ← add
   onClose: () => void;
 };
 
@@ -21,9 +24,12 @@ export function SectionChordKeyboard({
   beats,
   beatIndex,
   barLabel,
+  totalBars,
   onBeatChange,
   onPrevBeat,
   onNextBeat,
+  onDeleteBar,
+  onAddBar,
   onClose,
 }: SectionChordKeyboardProps) {
   const currentBeat = beats[beatIndex] ?? '';
@@ -76,7 +82,10 @@ export function SectionChordKeyboard({
         inputRef={inputRef}
         onPrevBeat={onPrevBeat}
         onNextBeat={onNextBeat}
+        onAddBar={onAddBar}
+        onDeleteBar={onDeleteBar}
         beatIndex={beatIndex}
+        totalBars={totalBars}
       />
     </View>
   );

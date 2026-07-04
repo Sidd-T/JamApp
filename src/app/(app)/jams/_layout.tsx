@@ -26,7 +26,7 @@ export default function JamsLayout() {
       <Stack.Screen
         name="[id]"
         options={({ route }: any) => ({
-          title: route.params?.id ? decodeURIComponent(route.params.id) : 'Standard',
+          title: route.params?.name ? decodeURIComponent(route.params.name) : 'Standard',
           headerBackTitle: 'Back',
         })}
       />

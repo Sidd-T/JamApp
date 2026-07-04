@@ -121,7 +121,7 @@ export function SongFormScreen({
         }
         const additions = Array.from(
           { length: count - current.length },
-          () => ({ Chords: '- ' }), // placeholder bar
+          () => ({ Chords: '' }), // placeholder bar
         );
         return { ...s, Endings: [...current, ...additions] };
       }),

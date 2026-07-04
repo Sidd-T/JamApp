@@ -1,7 +1,10 @@
 import type { ActiveTarget, Section, SegmentRef } from '@/features/standards/standards';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { CaretDown } from '@/components/ui/icons';
+import { colors } from '@/components/ui';
+import { CaretDown, Trash } from '@/components/ui/icons';
+
+import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { SectionDisplay } from '@/features/standards/components';
 
 type SongFormSectionsPreviewProps = {
@@ -41,6 +44,7 @@ function SectionRow({
   onEndingCountChange,
   onDeleteSection,
 }: SectionRowProps) {
+  const theme = useThemeConfig();
   const [modeMenuOpen, setModeMenuOpen] = useState(false);
 
   const isEndingsMode = section.Endings !== undefined;
@@ -51,16 +55,14 @@ function SectionRow({
   const isEditingThisSection = activeTarget?.sectionIndex === index;
 
   return (
-    <View className="mb-3">
+    <View>
       <View className="mb-1 flex-row items-center justify-between">
         <Pressable
           onPress={() => onDeleteSection(index)}
           disabled={sectionsCount <= 1}
-          className={`rounded-sm border border-red-300 px-2 py-1 dark:border-red-800 ${sectionsCount <= 1 ? 'opacity-40' : ''}`}
+          className={`${sectionsCount <= 1 ? 'opacity-0' : ''}`}
         >
-          <Text className="text-xs font-semibold text-red-600 dark:text-red-400">
-            Delete
-          </Text>
+          <Trash color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
         </Pressable>
 
         <View className="flex-row items-center gap-2">
@@ -164,13 +166,13 @@ export function SongFormSectionsPreview({
   return (
     <View className="border-t border-gray-200 py-3 dark:border-gray-800">
       <Text className="mb-2 text-lg text-gray-300">
-        Sections (tap a chord to edit)
+        Sections (tap a bar to edit)
       </Text>
 
-      <View className="rounded-sm bg-gray-50 p-2 dark:bg-gray-900">
+      <View className="shrink-0 flex-col rounded-sm bg-gray-50 p-2 dark:bg-gray-900">
         {sections.map((section, i) => (
           <SectionRow
-            key={`section-preview-${i}`}
+            key={`section-preview-${i}-out-of-${(sections?.length)}-${section.Label}-${section.MainSegment?.Chords}`}
             section={section}
             index={i}
             sectionsCount={sections.length}

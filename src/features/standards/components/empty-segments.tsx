@@ -2,6 +2,43 @@ import type { SegmentRef } from '../standards';
 import { Pressable, View } from 'react-native';
 import { Text } from '@/components/ui';
 import { beatsPerBar } from '@/features/standards/helpers/bar-beats';
+import { PressableBar } from './pressable-bar';
+
+// ── Shared beat grid ─────────────────────────────────────────────────────────
+
+type BeatGridProps = {
+  n: number;
+  isActive: boolean;
+  activeBeatIndex?: number;
+  onBeatPress: (bi: number) => void;
+};
+
+function BeatGrid({ n, isActive, activeBeatIndex, onBeatPress }: BeatGridProps) {
+  return (
+    <View style={{ flex: 1 }} className="flex-row">
+      {Array.from({ length: n }).map((_, bi) => {
+        const isActiveBeat = isActive && activeBeatIndex === bi;
+        return (
+          <Pressable key={bi} style={{ flex: 1 }} onPress={() => onBeatPress(bi)}>
+            <View
+              className={[
+                'min-h-10 flex-1 items-center justify-center',
+                bi < n - 1 ? 'border-r border-neutral-200 dark:border-neutral-800' : '',
+                isActiveBeat ? 'bg-primary-100 dark:bg-primary-900' : '',
+              ].filter(Boolean).join(' ')}
+            >
+              <Text className="text-sm text-neutral-300 dark:text-neutral-700">—</Text>
+            </View>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+// ── EmptyMainSegment ─────────────────────────────────────────────────────────
+// Pure content — no bar lines. Pass as emptyContent to ChordDisplay, which
+// wraps it with the opening and closing bar lines.
 
 type EmptyMainSegmentProps = {
   timeSignature?: string;
@@ -25,61 +62,31 @@ export function EmptyMainSegment({
   onBeatPress,
 }: EmptyMainSegmentProps) {
   const n = beatsPerBar(timeSignature);
-
-  if (!editMode && onBarPress) {
-    return (
-      <View className="mb-1 flex-row items-stretch">
-        <View className="mb-2 w-px bg-black dark:bg-white" />
-        <Pressable style={{ flex: 1 }} onPress={() => onBarPress(mainSegmentRef, 0)}>
-          <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-            <Text className="text-base text-gray-400 dark:text-gray-600">
-              + chord
-            </Text>
-          </View>
-        </Pressable>
-        <View className="w-px bg-black dark:bg-white" />
-      </View>
-    );
-  }
+  const isActive = isMainActive && activeBarLocalIndex === 0;
 
   if (editMode && onBeatPress) {
     return (
-      <View className="mb-1 flex-row items-stretch">
-        <View className="mb-2 w-px bg-black dark:bg-white" />
-        <View style={{ flex: 1 }} className="mb-2 flex-row">
-          {Array.from({ length: n }).map((_, bi) => {
-            const isActiveBeat
-              = isMainActive
-                && activeBarLocalIndex === 0
-                && activeBeatIndex === bi;
-            return (
-              <Pressable
-                key={bi}
-                style={{ flex: 1 }}
-                onPress={() => onBeatPress(mainSegmentRef, 0, bi)}
-              >
-                <View
-                  className={[
-                    'min-h-10 flex-1 items-center justify-center',
-                    bi < n - 1 ? 'border-r border-neutral-200 dark:border-neutral-800' : '',
-                    isActiveBeat ? 'bg-primary-100 dark:bg-primary-900' : '',
-                  ].filter(Boolean).join(' ')}
-                >
-                  <Text className="text-sm text-neutral-300 dark:text-neutral-700">
-                    —
-                  </Text>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
-        <View className="w-px bg-black dark:bg-white" />
-      </View>
+      <BeatGrid
+        n={n}
+        isActive={isActive}
+        activeBeatIndex={activeBeatIndex}
+        onBeatPress={bi => onBeatPress(mainSegmentRef, 0, bi)}
+      />
     );
   }
 
-  return null;
+  return (
+    <PressableBar onPress={onBarPress ? () => onBarPress(mainSegmentRef, 0) : undefined}>
+      <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
+        <Text className="text-base text-gray-400 dark:text-gray-600">+ chord</Text>
+      </View>
+    </PressableBar>
+  );
 }
+
+// ── EmptyEndingSegment ───────────────────────────────────────────────────────
+// Pure content — no bar lines. The volta bracket's left drop is the left edge;
+// ChordDisplay (via emptyContent) provides the closing bar line.
 
 type EmptyEndingSegmentProps = {
   endingRef: SegmentRef;
@@ -104,52 +111,20 @@ export function EmptyEndingSegment({
 
   if (editMode && onBeatPress) {
     return (
-      <View className="mb-1 flex-row items-stretch">
-        <View className="mb-2 w-px bg-black dark:bg-white" />
-        <View style={{ flex: 1 }} className="mb-2 flex-row">
-          {Array.from({ length: n }).map((_, bi) => {
-            const isActiveBeat = isThisEndingActive && activeBeatIndex === bi;
-            return (
-              <Pressable
-                key={bi}
-                style={{ flex: 1 }}
-                onPress={() => onBeatPress(endingRef, 0, bi)}
-              >
-                <View
-                  className={[
-                    'min-h-10 flex-1 items-center justify-center',
-                    bi < n - 1 ? 'border-r border-neutral-200 dark:border-neutral-800' : '',
-                    isActiveBeat ? 'bg-primary-100 dark:bg-primary-900' : '',
-                  ].filter(Boolean).join(' ')}
-                >
-                  <Text className="text-sm text-neutral-300 dark:text-neutral-700">
-                    —
-                  </Text>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
-        <View className="w-px bg-black dark:bg-white" />
-      </View>
+      <BeatGrid
+        n={n}
+        isActive={isThisEndingActive}
+        activeBeatIndex={activeBeatIndex}
+        onBeatPress={bi => onBeatPress(endingRef, 0, bi)}
+      />
     );
   }
 
-  if (onBarPress) {
-    return (
-      <View className="mb-1 flex-row items-stretch">
-        <View className="mb-2 w-px bg-black dark:bg-white" />
-        <Pressable style={{ flex: 1 }} onPress={() => onBarPress(endingRef, 0)}>
-          <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-            <Text className="text-base text-gray-400 dark:text-gray-600">
-              + chord
-            </Text>
-          </View>
-        </Pressable>
-        <View className="w-px bg-black dark:bg-white" />
+  return (
+    <PressableBar onPress={onBarPress ? () => onBarPress(endingRef, 0) : undefined}>
+      <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
+        <Text className="text-base text-gray-400 dark:text-gray-600">+ chord</Text>
       </View>
-    );
-  }
-
-  return null;
+    </PressableBar>
+  );
 }
