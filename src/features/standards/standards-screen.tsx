@@ -13,10 +13,13 @@ export function StandardsScreen() {
 
   const filter = useStandardsStore(state => state.filter);
   const filteredStandards = useStandardsStore(state => state.filteredStandards);
+  const favouriteSongIds = useStandardsStore(state => state.favouriteSongIds);
   const setSearchTerm = useStandardsStore(state => state.setSearchTerm);
   const setRhythms = useStandardsStore(state => state.setRhythms);
   const setTimeSignatures = useStandardsStore(state => state.setTimeSignatures);
   const setSources = useStandardsStore(state => state.setSources);
+  const setShowFavouritesOnly = useStandardsStore(state => state.setShowFavouritesOnly);
+  const toggleFavourite = useStandardsStore(state => state.toggleFavourite);
   const uniqueRhythms = useStandardsStore(state => state.uniqueRhythms);
   const uniqueTimeSignatures = useStandardsStore(state => state.uniqueTimeSignatures);
 
@@ -68,6 +71,8 @@ export function StandardsScreen() {
         timeSignatureOptions={uniqueTimeSignatures}
         sources={filter.sources}
         onSourcesChange={setSources}
+        showFavouritesOnly={filter.showFavouritesOnly}
+        onShowFavouritesOnlyChange={setShowFavouritesOnly}
       />
 
       {filteredStandards.length > 0
@@ -81,6 +86,8 @@ export function StandardsScreen() {
                     onPress={() => handleCardPress(item.Title)}
                     onAdd={pickMode ? () => handleAddToSetlist(item) : undefined}
                     added={addedSongs.has(item.Title)}
+                    isFavourite={favouriteSongIds.includes(item.id)}
+                    onToggleFavourite={() => toggleFavourite(item.id)}
                   />
                 </View>
               )}

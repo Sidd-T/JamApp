@@ -1,6 +1,7 @@
 import type { Song } from '../standards';
 import { Pressable, View } from 'react-native';
 import { Button, Text } from '@/components/ui';
+import colors from '@/components/ui/colors';
 import { Support } from '@/components/ui/icons';
 
 type StandardCardProps = {
@@ -8,9 +9,20 @@ type StandardCardProps = {
   onPress: () => void;
   onAdd?: () => void;
   added?: boolean;
+  isFavourite?: boolean;
+  onToggleFavourite?: () => void;
 };
 
-export function StandardCard({ standard, onPress, onAdd, added = false }: StandardCardProps) {
+export function StandardCard({
+  standard,
+  onPress,
+  onAdd,
+  added = false,
+  isFavourite = false,
+  onToggleFavourite,
+}: StandardCardProps) {
+  const favouriteColor = isFavourite ? colors.primary[600] : colors.neutral[500];
+  const favouriteFill = isFavourite ? colors.primary[600] : 'none';
   return (
     <Pressable onPress={onPress} className="flex-1">
       <View className={`mb-3 rounded-xl border bg-neutral-100 p-4 shadow-md dark:bg-gray-900 ${
@@ -53,10 +65,10 @@ export function StandardCard({ standard, onPress, onAdd, added = false }: Standa
             <Pressable
               onPress={(e) => {
                 e.stopPropagation();
-                // favourite handler goes here
+                onToggleFavourite?.();
               }}
             >
-              <Support />
+              <Support color={favouriteColor} fill={favouriteFill} />
             </Pressable>
 
             {onAdd && (

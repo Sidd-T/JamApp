@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import * as React from 'react';
 
 import { cleanup, screen, setup } from '@/lib/test-utils';
@@ -24,6 +23,8 @@ describe('checkbox, Radio & Switch components ', () => {
     expect(screen.queryByTestId('checkbox-label')).not.toBeOnTheScreen();
     expect(screen.getByTestId('checkbox')).toBeEnabled();
 
+    expect(screen.getByTestId('checkbox-icon')).toBeOnTheScreen();
+    expect(screen.queryByTestId('checkbox-checkmark')).not.toBeOnTheScreen();
     expect(screen.getByTestId('checkbox')).not.toBeChecked();
     expect(screen.getByTestId('checkbox').props.accessibilityRole).toBe(
       'checkbox',
@@ -35,6 +36,7 @@ describe('checkbox, Radio & Switch components ', () => {
     await user.press(screen.getByTestId('checkbox'));
     expect(mockOnChange).toHaveBeenCalledTimes(1);
     expect(mockOnChange).toHaveBeenCalledWith(true);
+    expect(screen.getByTestId('checkbox-checkmark')).toBeOnTheScreen();
   });
 
   it('<CheckBox/> shouldn\'t change value while disabled', async () => {

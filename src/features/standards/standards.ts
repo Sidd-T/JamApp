@@ -112,6 +112,7 @@ export type FilterState = {
   rhythms: string[];
   timeSignatures: string[];
   sources: SongSource[];
+  showFavouritesOnly: boolean;
 };
 
 export function getUniqueSources(userSongs: Song[] = []): SongSource[] {
@@ -123,7 +124,11 @@ export function getUniqueSources(userSongs: Song[] = []): SongSource[] {
   return Array.from(sources);
 }
 
-export function getFilteredStandards(filter: FilterState, userSongs: Song[] = []): Song[] {
+export function getFilteredStandards(
+  filter: FilterState,
+  userSongs: Song[] = [],
+  favoriteSongIds: string[] = [],
+): Song[] {
   let results = getAllStandards(userSongs);
 
   // Filter by search term (title or composer)
@@ -154,6 +159,10 @@ export function getFilteredStandards(filter: FilterState, userSongs: Song[] = []
       const songSource: SongSource = song.id === song.Title ? 'jazz-standards' : 'user-created';
       return filter.sources.includes(songSource);
     });
+  }
+
+  if (filter.showFavouritesOnly) {
+    results = results.filter(song => favoriteSongIds.includes(song.id));
   }
 
   return results;

@@ -1,7 +1,7 @@
 import type { SongSource } from '../standards';
 import { useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import { Button, Text } from '@/components/ui';
+import { Button, Checkbox, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
 import { Filter } from '@/components/ui/icons';
 import { MultiSelect } from '@/components/ui/multi-select';
@@ -21,6 +21,9 @@ type StandardsFilterProps = {
 
   sources: SongSource[];
   onSourcesChange: (sources: SongSource[]) => void;
+
+  showFavouritesOnly: boolean;
+  onShowFavouritesOnlyChange: (show: boolean) => void;
 };
 
 export function StandardsFilter({
@@ -34,6 +37,8 @@ export function StandardsFilter({
   timeSignatureOptions,
   sources,
   onSourcesChange,
+  showFavouritesOnly,
+  onShowFavouritesOnlyChange,
 }: StandardsFilterProps) {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const theme = useThemeConfig();
@@ -45,12 +50,13 @@ export function StandardsFilter({
   ];
 
   // Count active filters
-  const activeFilterCount = rhythms.length + timeSignatures.length + sources.length;
+  const activeFilterCount = rhythms.length + timeSignatures.length + sources.length + (showFavouritesOnly ? 1 : 0);
 
   const resetFilters = () => {
     onRhythmsChange([]);
     onTimeSignaturesChange([]);
     onSourcesChange([]);
+    onShowFavouritesOnlyChange(false);
   };
 
   return (
@@ -106,6 +112,13 @@ export function StandardsFilter({
 
             {/* Modal Body */}
             <View className="gap-2 px-4 py-2">
+              <Checkbox
+                checked={showFavouritesOnly}
+                onChange={onShowFavouritesOnlyChange}
+                accessibilityLabel="Show favourites only"
+                label="Show favourites only"
+              />
+
               {/* Rhythm Multi-select */}
               <MultiSelect
                 label="Rhythm"
