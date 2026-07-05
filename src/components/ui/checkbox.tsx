@@ -30,6 +30,7 @@ export type RootProps = {
 
 export type IconProps = {
   checked: boolean;
+  testID?: string;
 };
 
 export function Root({
@@ -73,39 +74,33 @@ function Label({ text, testID, className = '' }: LabelProps) {
   );
 }
 
-export function CheckboxIcon({ checked = false }: IconProps) {
-  const color = checked ? colors.primary[300] : colors.charcoal[400];
+export function CheckboxIcon({ checked = false, testID }: IconProps) {
+  const color = checked ? colors.primary[500] : colors.charcoal[400];
   return (
-    <MotiView
+    <View
+      testID={testID}
       style={{
         height: SIZE,
         width: SIZE,
         borderColor: color,
-      }}
-      className="items-center justify-center rounded-[5px] border-2"
-      from={{ backgroundColor: 'transparent', borderColor: '#CCCFD6' }}
-      animate={{
         backgroundColor: checked ? color : 'transparent',
-        borderColor: color,
       }}
-      transition={{
-        backgroundColor: { type: 'timing', duration: 100 },
-        borderColor: { type: 'timing', duration: 100 },
-      }}
+      className="items-center justify-center overflow-hidden rounded-[5px] border-2"
     >
-      <MotiView
-        from={{ opacity: 0 }}
-        animate={{ opacity: checked ? 1 : 0 }}
-        transition={{ opacity: { type: 'timing', duration: 100 } }}
-      >
-        <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <Path
-            d="m16.726 7-.64.633c-2.207 2.212-3.878 4.047-5.955 6.158l-2.28-1.928-.69-.584L6 12.66l.683.577 2.928 2.477.633.535.591-.584c2.421-2.426 4.148-4.367 6.532-6.756l.633-.64L16.726 7Z"
-            fill="#fff"
-          />
-        </Svg>
-      </MotiView>
-    </MotiView>
+      {checked
+        ? (
+            <Svg testID="checkbox-checkmark" width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <Path
+                d="M6 12.5L10 16.5L18 8.5"
+                stroke="#fff"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+          )
+        : null}
+    </View>
   );
 }
 
@@ -126,7 +121,7 @@ function CheckboxBase({
 }: RootProps & { label?: string }) {
   return (
     <CheckboxRoot checked={checked} testID={testID} {...props}>
-      <CheckboxIcon checked={checked} />
+      <CheckboxIcon checked={checked} testID="checkbox-icon" />
       {label
         ? (
             <Label
@@ -163,7 +158,7 @@ export function RadioIcon({ checked = false }: IconProps) {
       transition={{ borderColor: { duration: 100, type: 'timing' } }}
     >
       <MotiView
-        className={`size-[10px] rounded-[10px] ${checked && 'bg-primary-300'}`}
+        className={`size-2.5 rounded-[10px] ${checked && 'bg-primary-300'}`}
         from={{ opacity: 0 }}
         animate={{ opacity: checked ? 1 : 0 }}
         transition={{ opacity: { duration: 50, type: 'timing' } }}
@@ -212,7 +207,7 @@ export function SwitchIcon({ checked = false }: IconProps) {
   const backgroundColor = checked ? colors.primary[300] : colors.charcoal[400];
 
   return (
-    <View className="w-[50px] justify-center">
+    <View className="w-12.5 justify-center">
       <View className="overflow-hidden rounded-full">
         <View
           style={{

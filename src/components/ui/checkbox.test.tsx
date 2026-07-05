@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import * as React from 'react';
 
 import { cleanup, screen, setup } from '@/lib/test-utils';
@@ -11,19 +10,33 @@ afterEach(cleanup);
 
 describe('checkbox, Radio & Switch components ', () => {
   it('<Checkbox /> renders correctly and call on change on Press', async () => {
-    const mockOnChange = jest.fn(checked => checked);
-    const { user } = setup(
-      <Checkbox
-        testID="checkbox"
-        onChange={mockOnChange}
-        accessibilityLabel="agree"
-        accessibilityHint="toggle Agree"
-      />,
-    );
+    const mockOnChange = jest.fn((checked: boolean) => checked);
+
+    const ControlledCheckbox = () => {
+      const [checked, setChecked] = React.useState(false);
+
+      return (
+        <Checkbox
+          testID="checkbox"
+          checked={checked}
+          onChange={(nextChecked) => {
+            mockOnChange(nextChecked);
+            setChecked(nextChecked);
+          }}
+          accessibilityLabel="agree"
+          accessibilityHint="toggle Agree"
+        />
+      );
+    };
+
+    const { user } = setup(<ControlledCheckbox />);
+
     expect(screen.getByTestId('checkbox')).toBeOnTheScreen();
     expect(screen.queryByTestId('checkbox-label')).not.toBeOnTheScreen();
     expect(screen.getByTestId('checkbox')).toBeEnabled();
 
+    expect(screen.getByTestId('checkbox-icon')).toBeOnTheScreen();
+    expect(screen.queryByTestId('checkbox-checkmark')).not.toBeOnTheScreen();
     expect(screen.getByTestId('checkbox')).not.toBeChecked();
     expect(screen.getByTestId('checkbox').props.accessibilityRole).toBe(
       'checkbox',
@@ -35,6 +48,7 @@ describe('checkbox, Radio & Switch components ', () => {
     await user.press(screen.getByTestId('checkbox'));
     expect(mockOnChange).toHaveBeenCalledTimes(1);
     expect(mockOnChange).toHaveBeenCalledWith(true);
+    expect(screen.getByTestId('checkbox-checkmark')).toBeOnTheScreen();
   });
 
   it('<CheckBox/> shouldn\'t change value while disabled', async () => {
