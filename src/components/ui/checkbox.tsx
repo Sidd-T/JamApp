@@ -158,7 +158,7 @@ export function RadioIcon({ checked = false }: IconProps) {
       transition={{ borderColor: { duration: 100, type: 'timing' } }}
     >
       <MotiView
-        className={`size-[10px] rounded-[10px] ${checked && 'bg-primary-300'}`}
+        className={`size-2.5 rounded-[10px] ${checked && 'bg-primary-300'}`}
         from={{ opacity: 0 }}
         animate={{ opacity: checked ? 1 : 0 }}
         transition={{ opacity: { duration: 50, type: 'timing' } }}
@@ -207,7 +207,7 @@ export function SwitchIcon({ checked = false }: IconProps) {
   const backgroundColor = checked ? colors.primary[300] : colors.charcoal[400];
 
   return (
-    <View className="w-[50px] justify-center">
+    <View className="w-12.5 justify-center">
       <View className="overflow-hidden rounded-full">
         <View
           style={{

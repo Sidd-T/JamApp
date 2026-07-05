@@ -10,15 +10,27 @@ afterEach(cleanup);
 
 describe('checkbox, Radio & Switch components ', () => {
   it('<Checkbox /> renders correctly and call on change on Press', async () => {
-    const mockOnChange = jest.fn(checked => checked);
-    const { user } = setup(
-      <Checkbox
-        testID="checkbox"
-        onChange={mockOnChange}
-        accessibilityLabel="agree"
-        accessibilityHint="toggle Agree"
-      />,
-    );
+    const mockOnChange = jest.fn((checked: boolean) => checked);
+
+    const ControlledCheckbox = () => {
+      const [checked, setChecked] = React.useState(false);
+
+      return (
+        <Checkbox
+          testID="checkbox"
+          checked={checked}
+          onChange={(nextChecked) => {
+            mockOnChange(nextChecked);
+            setChecked(nextChecked);
+          }}
+          accessibilityLabel="agree"
+          accessibilityHint="toggle Agree"
+        />
+      );
+    };
+
+    const { user } = setup(<ControlledCheckbox />);
+
     expect(screen.getByTestId('checkbox')).toBeOnTheScreen();
     expect(screen.queryByTestId('checkbox-label')).not.toBeOnTheScreen();
     expect(screen.getByTestId('checkbox')).toBeEnabled();
