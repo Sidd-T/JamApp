@@ -1,3 +1,4 @@
+import type { ExternalPathString } from 'expo-router';
 import type { Song } from './standards';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
@@ -109,7 +110,10 @@ export function StandardsScreen() {
           <Button
             label="Return to Jam Room"
             variant="secondary"
-            onPress={() => router.push(`/jams/${currentRoom?.id}`)}
+            onPress={() => router.push({
+              pathname: `/jams/${encodeURIComponent((currentRoom?.id) ? currentRoom.id : '')}` as ExternalPathString,
+              params: { name: currentRoom?.name },
+            })}
             size="lg"
             className="rounded-full border-2 border-primary-900 shadow-xl dark:border-primary-200"
           />

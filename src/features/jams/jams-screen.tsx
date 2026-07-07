@@ -49,10 +49,10 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsCreating(true);
-      navigateToRoom(await createRoom(roomName, profileName || 'Host'));
+      navigateToRoom(await createRoom(roomName || 'My Jam Room', profileName || 'Host'));
     }
     catch (cause) {
-      setError('Please enter a valid room name and host name.');
+      setError('Could not create the room. Make sure your device is connected to the local network.');
       console.error('Create room failed:', cause);
       setIsCreating(false);
     }

@@ -1182,7 +1182,7 @@
       {
         "Label": "C",
         "MainSegment": {
-          "Chords": "Cm7|G7|Cm7|Ebm/maj7,Ab7|Bbmaj7|Am7,D7|Gm7,Gm7/F|E07|Bb6/F|G7|Cm7|F7|Bb6|Bb6|Fm7|Bb7"
+          "Chords": "Cm7|G7|Cm7|Ebm6|Bbmaj7|Am7,D7|Gm7,Gm7/F|E07|Bb6/F|G7|Cm7|F7|Bb6|Bb6|Fm7|Bb7"
         }
       }
     ]

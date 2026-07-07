@@ -80,8 +80,8 @@ function parseChordSymbol(raw: string): {
     }
   }
 
-  // Half-dim: m7b5 must be checked before the generic "m" quality rule
-  const halfDimMatch = rest.match(/^m7b5(.*)$/i);
+  // Half-dim: m7b5 and 0/07 must be checked before the generic "m" quality rule
+  const halfDimMatch = rest.match(/^m7b5(.*)$/i) || rest.match(/^0(.*)$/);
   if (halfDimMatch) {
     const ext = halfDimMatch[1].replace(/#/g, '♯').replace(/b(?=\d)/g, '♭');
     return { root, accidental, quality: 'ø', extensions: ext };

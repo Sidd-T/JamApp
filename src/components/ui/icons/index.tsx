@@ -16,4 +16,5 @@ export * from './share';
 export * from './style';
 export * from './support';
 export * from './trash';
+export * from './user';
 export * from './website';

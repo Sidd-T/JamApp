@@ -75,8 +75,6 @@ export function CreateScreen() {
                         {song.Key && (
                           <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
                             <Text className="text-xs text-black dark:text-primary-200">
-                              Key:
-                              {' '}
                               {song.Key}
                             </Text>
                           </View>

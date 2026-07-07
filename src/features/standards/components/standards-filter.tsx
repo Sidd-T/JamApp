@@ -101,9 +101,9 @@ export function StandardsFilter({
             pointerEvents="auto"
           >
             {/* Modal Header */}
-            <View className="border-b border-neutral-200 p-4 dark:border-neutral-700">
+            <View className="border-b border-neutral-200 p-3 dark:border-neutral-700">
               <View className="flex-row items-center justify-between">
-                <Text className="text-lg font-bold dark:text-neutral-100">Filters</Text>
+                <Text className="text-base font-semibold dark:text-neutral-100">Filters</Text>
                 <Pressable onPress={() => setIsFilterModalVisible(false)}>
                   <Text className="text-2xl text-neutral-600 dark:text-neutral-300">×</Text>
                 </Pressable>
@@ -111,7 +111,7 @@ export function StandardsFilter({
             </View>
 
             {/* Modal Body */}
-            <View className="gap-2 px-4 py-2">
+            <View className="gap-3 px-4 py-3">
               <Checkbox
                 checked={showFavouritesOnly}
                 onChange={onShowFavouritesOnlyChange}
@@ -156,7 +156,7 @@ export function StandardsFilter({
             </View>
 
             {/* Modal Footer */}
-            <View className="flex-row gap-2 px-4 pb-4">
+            <View className="flex-row gap-2 border-t border-neutral-200 px-4 py-3 dark:border-neutral-700">
               <Button
                 label="Reset"
                 onPress={() => resetFilters()}
