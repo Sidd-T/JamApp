@@ -72,7 +72,7 @@ export function SectionChordKeyboard({
           size="sm"
           fullWidth={false}
           className="border-transparent bg-transparent"
-          textClassName="text-base text-primary-600 dark:text-primary-500 font-semibold"
+          textClassName="text-base text-primary-600 font-semibold"
         />
       </View>
 

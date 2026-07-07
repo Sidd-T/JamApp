@@ -45,7 +45,7 @@ export function SettingsScreen() {
                   placeholder="Enter your name"
                   value={profileName}
                   onChangeText={setProfileName}
-                  style={{ textAlign: 'right' }}
+                  style={{ textAlign: 'right', borderWidth: 1 }}
                 />
               </View>
 

@@ -75,7 +75,7 @@ function Label({ text, testID, className = '' }: LabelProps) {
 }
 
 export function CheckboxIcon({ checked = false, testID }: IconProps) {
-  const color = checked ? colors.primary[500] : colors.charcoal[400];
+  const color = checked ? colors.primary[600] : colors.charcoal[400];
   return (
     <View
       testID={testID}
