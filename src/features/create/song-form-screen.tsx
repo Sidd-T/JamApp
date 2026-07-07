@@ -1,6 +1,7 @@
 import type { ActiveTarget, Section, Song } from '@/features/standards/standards';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { useProfileStore } from '@/lib/profile';
 import {
   SongFormActions,
   SongFormChordKeyboardOverlay,
@@ -38,9 +39,18 @@ export function SongFormScreen({
   onCancel,
   isLoading = false,
 }: SongFormProps) {
-  const [formData, setFormData] = useState<Omit<Song, 'id'>>(
-    () => song || DEFAULT_NEW_SONG,
-  );
+  const profileName = useProfileStore.use.name();
+  const [formData, setFormData] = useState<Omit<Song, 'id'>>(() => {
+    if (song) {
+      return song;
+    }
+
+    return {
+      ...DEFAULT_NEW_SONG,
+      Composer: profileName || DEFAULT_NEW_SONG.Composer,
+    };
+  });
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [activeTarget, setActiveTarget] = useState<ActiveTarget>(null);
 

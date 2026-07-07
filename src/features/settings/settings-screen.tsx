@@ -1,15 +1,18 @@
 import Env from 'env';
+import * as React from 'react';
 import { useUniwind } from 'uniwind';
 
 import {
   colors,
   FocusAwareStatusBar,
+  Input,
   ScrollView,
   Text,
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
 import { openBrowser, translate } from '@/lib/i18n';
+import { useProfileStore } from '@/lib/profile';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
@@ -17,8 +20,11 @@ import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
   const { theme } = useUniwind();
+  const profileName = useProfileStore.use.name();
+  const setProfileName = useProfileStore.use.setName();
   const iconColor
     = theme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -28,7 +34,22 @@ export function SettingsScreen() {
           <Text className="text-xl font-bold">
             {translate('settings.title')}
           </Text>
+
           <SettingsContainer title="settings.generale">
+            <View className="flex-row items-center justify-between gap-8 px-4 py-2">
+              <Text className="pb-2 text-black dark:text-white">
+                Your Name:
+              </Text>
+              <View className="w-1/2">
+                <Input
+                  placeholder="Enter your name"
+                  value={profileName}
+                  onChangeText={setProfileName}
+                  style={{ textAlign: 'right' }}
+                />
+              </View>
+
+            </View>
             <LanguageItem />
             <ThemeItem />
           </SettingsContainer>
@@ -63,8 +84,6 @@ export function SettingsScreen() {
           </SettingsContainer>
 
           <SettingsContainer title="settings.links">
-            <SettingsItem text="settings.privacy" onPress={() => {}} />
-            <SettingsItem text="settings.terms" onPress={() => {}} />
             <SettingsItem
               text="settings.github"
               icon={<Github color={iconColor} />}

@@ -13,6 +13,7 @@ import { hydrateSongs } from '@/features/create/use-songs-store';
 
 import { APIProvider } from '@/lib/api';
 import { loadSelectedTheme } from '@/lib/hooks/use-selected-theme';
+import { hydrateProfile } from '@/lib/profile';
 // Import  global CSS file
 import '../global.css';
 
@@ -24,6 +25,7 @@ export const unstable_settings = {
 };
 
 hydrateSongs();
+hydrateProfile();
 loadSelectedTheme();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
