@@ -6,6 +6,7 @@ import { ScrollView, View } from 'react-native';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
+import { useProfileStore } from '@/lib/profile';
 import { createRoom, hydrateJams, joinRoom, startDiscovery, stopDiscovery, useJamsStore } from './use-jams-store';
 
 export function JamsHomeScreen() {
@@ -13,11 +14,10 @@ export function JamsHomeScreen() {
   const currentRoom = useJamsStore.use.currentRoom();
   const discoveredRooms = useJamsStore.use.discoveredRooms();
 
+  const profileName = useProfileStore.use.name();
   const [ready, setReady] = useState(false);
-  const [roomName, setRoomName] = useState('My Jam Room');
-  const [hostName, setHostName] = useState('Host');
+  const [roomName] = useState('');
   const [joinCode, setJoinCode] = useState('');
-  const [displayName, setDisplayName] = useState('Player');
   const [error, setError] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
@@ -49,7 +49,7 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsCreating(true);
-      navigateToRoom(await createRoom(roomName, hostName));
+      navigateToRoom(await createRoom(roomName, profileName || 'Host'));
     }
     catch (cause) {
       setError('Please enter a valid room name and host name.');
@@ -62,7 +62,7 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsJoining(true);
-      navigateToRoom(await joinRoom(joinCode, displayName));
+      navigateToRoom(await joinRoom(joinCode, profileName || 'Player'));
     }
     catch (cause) {
       setError('Could not join the room. Make sure the host is available on the local network and that the code is correct.');
@@ -75,7 +75,7 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsJoining(true);
-      navigateToRoom(await joinRoom(roomCode, displayName));
+      navigateToRoom(await joinRoom(roomCode, profileName || 'Player'));
     }
     catch (cause) {
       setError('Could not join the discovered room.');
@@ -106,13 +106,9 @@ export function JamsHomeScreen() {
                 <Text className="py-4 text-xl font-bold text-black dark:text-white">Create a Room</Text>
                 <Input
                   label="Room name"
-                  onChangeText={setRoomName}
+                  value={roomName}
                   placeholder="My Jam Room"
-                />
-                <Input
-                  label="Your name"
-                  onChangeText={setHostName}
-                  placeholder="Host"
+                  editable={false}
                 />
                 <Button label="Create room" onPress={handleCreateRoom} variant="secondary" disabled={isCreating} />
 
@@ -123,11 +119,6 @@ export function JamsHomeScreen() {
                   onChangeText={setJoinCode}
                   placeholder="ABCD"
                   autoCapitalize="characters"
-                />
-                <Input
-                  label="Display name"
-                  onChangeText={setDisplayName}
-                  placeholder="Player"
                 />
                 <Button label="Join room" variant="secondary" onPress={handleJoinRoom} disabled={isJoining} />
 
