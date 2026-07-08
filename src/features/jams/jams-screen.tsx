@@ -16,7 +16,7 @@ export function JamsHomeScreen() {
 
   const profileName = useProfileStore.use.name();
   const [ready, setReady] = useState(false);
-  const [roomName] = useState('');
+  const [roomName, setRoomName] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [error, setError] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -108,7 +108,8 @@ export function JamsHomeScreen() {
                   label="Room name"
                   value={roomName}
                   placeholder="My Jam Room"
-                  editable={false}
+                  onChangeText={setRoomName}
+                  editable={true}
                 />
                 <Button label="Create room" onPress={handleCreateRoom} variant="secondary" disabled={isCreating} />
 

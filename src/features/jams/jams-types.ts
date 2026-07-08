@@ -22,12 +22,8 @@ export type JamSetlistEntry = {
   addedAt: string;
 };
 
-export type NewJamSongPayload = {
-  title: string;
-  composer: string;
-  key?: string;
-  rhythm?: string;
-  timeSignature?: string;
+export type NewJamSongPayload = Omit<Song, 'id'> & {
+  id?: string;
 };
 
 export type JamMode = 'idle' | 'hosting' | 'joined';

@@ -1,10 +1,13 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as React from 'react';
+import { Pressable } from 'react-native';
 
+import { ArrowRight } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 
 export default function StandardsLayout() {
   const theme = useThemeConfig();
+  const router = useRouter();
 
   return (
     <Stack
@@ -26,11 +29,31 @@ export default function StandardsLayout() {
       />
       <Stack.Screen
         name="[id]"
-        options={({ route }: any) => ({
-          title: route.params?.id ? decodeURIComponent(route.params.id) : 'Standard',
-          headerBackTitle: 'Back',
-          headerTitleAlign: 'center',
-        })}
+        options={({ route }: any) => {
+          const routeParams = route.params ?? {};
+          const navigateBackToRoom = routeParams.returnTo === 'room' && routeParams.roomId;
+
+          return {
+            title: routeParams.title ?? (routeParams.id ? decodeURIComponent(routeParams.id) : 'Standard'),
+            headerBackTitle: 'Back',
+            headerTitleAlign: 'center',
+            headerBackVisible: !navigateBackToRoom,
+            headerLeft: navigateBackToRoom
+              ? () => (
+                  <Pressable
+                    onPress={() => {
+                      router.replace(
+                        `/jams/${encodeURIComponent(routeParams.roomId)}?name=${encodeURIComponent(routeParams.roomName ?? '')}`,
+                      );
+                    }}
+                    style={{ transform: [{ scaleX: -1 }] }}
+                  >
+                    <ArrowRight width={20} height={20} color={theme.colors.text} />
+                  </Pressable>
+                )
+              : undefined,
+          };
+        }}
       />
     </Stack>
   );

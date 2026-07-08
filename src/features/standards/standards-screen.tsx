@@ -38,8 +38,10 @@ export function StandardsScreen() {
     };
   }, [setPickMode]);
 
-  const handleCardPress = (title: string) => {
-    router.push(`/standards/${encodeURIComponent(title)}`);
+  const handleCardPress = (standard: Song) => {
+    router.push(
+      `/standards/${encodeURIComponent(standard.id)}?title=${encodeURIComponent(standard.Title)}`,
+    );
   };
 
   const handleAddToSetlist = async (standard: Song) => {
@@ -49,13 +51,7 @@ export function StandardsScreen() {
       await removeSetlistSong(existingEntryId);
     }
     else {
-      await addSetlistSong({
-        title: standard.Title,
-        composer: standard.Composer,
-        key: standard.Key ?? undefined,
-        rhythm: standard.Rhythm ?? undefined,
-        timeSignature: standard.TimeSignature ?? undefined,
-      });
+      await addSetlistSong(standard);
     }
   };
 
@@ -84,7 +80,7 @@ export function StandardsScreen() {
                 <View className="px-4">
                   <StandardCard
                     standard={item}
-                    onPress={() => handleCardPress(item.Title)}
+                    onPress={() => handleCardPress(item)}
                     onAdd={pickMode ? () => handleAddToSetlist(item) : undefined}
                     added={addedSongs.has(item.Title)}
                     isFavourite={favouriteSongIds.includes(item.id)}

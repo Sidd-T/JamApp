@@ -27,12 +27,20 @@ const joinRoomSchema = z.object({
   displayName: z.string().trim().min(1),
 });
 
+const sectionSchema = z.object({
+  Label: z.string().optional(),
+  Repeat: z.number().optional(),
+  MainSegment: z.object({ Chords: z.string() }).optional(),
+  Endings: z.array(z.object({ Chords: z.string() })).optional(),
+});
+
 const newJamSongSchema = z.object({
-  title: z.string().trim().min(1),
-  composer: z.string().trim().min(1),
-  key: z.string().trim().optional(),
-  rhythm: z.string().trim().optional(),
-  timeSignature: z.string().trim().optional(),
+  Title: z.string().trim().min(1),
+  Composer: z.string().trim().min(1),
+  Key: z.string().trim().optional(),
+  Rhythm: z.string().trim().optional(),
+  TimeSignature: z.string().trim().optional(),
+  Sections: z.array(sectionSchema).optional(),
 });
 
 type JamPersistedState = {
@@ -71,16 +79,16 @@ function generateRoomCode() {
 }
 
 function buildSongPayload(songData: NewJamSongPayload): Song {
-  const { title, composer, key, rhythm, timeSignature } = newJamSongSchema.parse(songData);
+  const validated = newJamSongSchema.parse(songData);
 
   return {
-    id: generateId('song'),
-    Title: title,
-    Composer: composer,
-    Key: key,
-    Rhythm: rhythm,
-    TimeSignature: timeSignature,
-    Sections: [],
+    id: songData.id ?? generateId('song'),
+    Title: validated.Title,
+    Composer: validated.Composer,
+    Key: validated.Key,
+    Rhythm: validated.Rhythm,
+    TimeSignature: validated.TimeSignature,
+    Sections: validated.Sections ?? [],
   };
 }
 
