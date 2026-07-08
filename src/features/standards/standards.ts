@@ -45,6 +45,10 @@ export function findStandardByTitle(title: string, userSongs: Song[] = []): Song
   return getAllStandards(userSongs).find(song => song.Title === title);
 }
 
+export function findStandardById(id: string, userSongs: Song[] = []): Song | undefined {
+  return getAllStandards(userSongs).find(song => song.id === id);
+}
+
 export function getUniqueRhythms(userSongs: Song[] = []): string[] {
   const rhythms = new Set<string>();
   getAllStandards(userSongs).forEach((song) => {

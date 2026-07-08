@@ -51,8 +51,10 @@ export function JamRoomScreen() {
     router.replace('/jams');
   };
 
-  const handleSetlistEntryPress = (title: string) => {
-    router.push(`/standards/${encodeURIComponent(title)}`);
+  const handleSetlistEntryPress = (songId: string, title: string) => {
+    router.push(
+      `/standards/${encodeURIComponent(songId)}?title=${encodeURIComponent(title)}&returnTo=room&roomId=${encodeURIComponent(currentRoom?.id ?? '')}&roomName=${encodeURIComponent(currentRoom?.name ?? '')}`,
+    );
   };
 
   const handleRemovePress = (entryId: string) => {
@@ -140,7 +142,7 @@ export function JamRoomScreen() {
         {setlist.map(entry => (
           <Pressable
             key={entry.entryId}
-            onPress={() => handleSetlistEntryPress(entry.song.Title)}
+            onPress={() => handleSetlistEntryPress(entry.song.id, entry.song.Title)}
             className="mt-2.5 rounded-2xl border border-neutral-200 bg-white p-4 active:opacity-70 dark:border-neutral-700 dark:bg-neutral-800"
           >
             <View className="flex-row items-center justify-between">

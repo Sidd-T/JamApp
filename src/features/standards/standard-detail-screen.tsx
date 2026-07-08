@@ -1,13 +1,15 @@
 import { useLocalSearchParams } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { Text } from '@/components/ui';
+import { useJamsStore } from '@/features/jams/use-jams-store';
 import { SectionDisplay } from './components';
-import { findStandardByTitle } from './standards';
+import { findStandardById } from './standards';
 
 export function StandardDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const decodedTitle = id ? decodeURIComponent(id) : '';
-  const standard = findStandardByTitle(decodedTitle);
+  const decodedId = id ? decodeURIComponent(id) : '';
+  const jamSong = useJamsStore.use.setlist().find(entry => entry.song.id === decodedId)?.song;
+  const standard = jamSong ?? findStandardById(decodedId);
 
   if (!standard) {
     return (
