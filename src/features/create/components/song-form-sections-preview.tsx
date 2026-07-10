@@ -1,8 +1,8 @@
 import type { ActiveTarget, Section, SegmentRef } from '@/features/standards/standards';
 import { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { colors } from '@/components/ui';
-import { CaretDown, Trash } from '@/components/ui/icons';
+import { ArrowRight, CaretDown, Trash } from '@/components/ui/icons';
 
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { SectionDisplay } from '@/features/standards/components';
@@ -16,6 +16,8 @@ type SongFormSectionsPreviewProps = {
   onModeChange: (sectionIndex: number, mode: 'repeat' | 'endings') => void;
   onEndingCountChange: (sectionIndex: number, count: number) => void;
   onDeleteSection: (sectionIndex: number) => void;
+  onMoveSection: (sectionIndex: number, direction: 'up' | 'down') => void;
+  onRenameSection: (sectionIndex: number, label: string) => void;
   onAddSection: () => void;
 };
 
@@ -30,6 +32,8 @@ type SectionRowProps = {
   onModeChange: (sectionIndex: number, mode: 'repeat' | 'endings') => void;
   onEndingCountChange: (sectionIndex: number, count: number) => void;
   onDeleteSection: (sectionIndex: number) => void;
+  onMoveSection: (sectionIndex: number, direction: 'up' | 'down') => void;
+  onRenameSection: (sectionIndex: number, label: string) => void;
 };
 
 function SectionRow({
@@ -43,6 +47,8 @@ function SectionRow({
   onModeChange,
   onEndingCountChange,
   onDeleteSection,
+  onMoveSection,
+  onRenameSection,
 }: SectionRowProps) {
   const theme = useThemeConfig();
   const [modeMenuOpen, setModeMenuOpen] = useState(false);
@@ -56,16 +62,47 @@ function SectionRow({
 
   return (
     <View>
-      <View className="mb-1 flex-row items-center justify-between">
-        <Pressable
-          onPress={() => onDeleteSection(index)}
-          disabled={sectionsCount <= 1}
-          className={`${sectionsCount <= 1 ? 'opacity-0' : ''}`}
-        >
-          <Trash color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
-        </Pressable>
+      <View className="mb-1 flex-row items-center justify-between gap-2">
+        <View className="flex-1 flex-row items-center gap-2">
+          <Pressable
+            onPress={() => onDeleteSection(index)}
+            disabled={sectionsCount <= 1}
+            className={`${sectionsCount <= 1 ? 'opacity-0' : ''}`}
+          >
+            <Trash color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+          </Pressable>
 
-        <View className="flex-row items-center gap-2">
+          <View className="flex-1">
+            <TextInput
+              value={section.Label ?? ''}
+              onChangeText={value => onRenameSection(index, value)}
+              placeholder="Section"
+              placeholderTextColor={theme.dark ? colors.neutral[500] : colors.neutral[400]}
+              className="min-h-8 rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm text-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white"
+            />
+          </View>
+
+          <View className="mr-3 flex-col gap-1 px-3">
+            <Pressable
+              onPress={() => onMoveSection(index, 'up')}
+              disabled={index === 0}
+              className={`-rotate-90 items-center justify-center rounded-sm border border-gray-300 dark:border-gray-700 ${index === 0 ? 'opacity-40' : ''}`}
+            >
+              <ArrowRight color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+            </Pressable>
+
+            <Pressable
+              onPress={() => onMoveSection(index, 'down')}
+              disabled={index >= sectionsCount - 1}
+              className={`rotate-90 items-center justify-center rounded-sm border border-gray-300 dark:border-gray-700 ${index >= sectionsCount - 1 ? 'opacity-40' : ''}`}
+            >
+              <ArrowRight color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+            </Pressable>
+          </View>
+
+        </View>
+
+        <View className="flex-row items-center">
           <View className="relative">
             <Pressable
               onPress={() => setModeMenuOpen(prev => !prev)}
@@ -102,7 +139,7 @@ function SectionRow({
             )}
           </View>
 
-          <View className="ml-2 flex-row items-center gap-2">
+          <View className="ml-2 flex-row items-center">
             <Pressable
               onPress={() => {
                 const next = Math.max(0, stepperValue - 1);
@@ -161,6 +198,8 @@ export function SongFormSectionsPreview({
   onModeChange,
   onEndingCountChange,
   onDeleteSection,
+  onMoveSection,
+  onRenameSection,
   onAddSection,
 }: SongFormSectionsPreviewProps) {
   return (
@@ -183,6 +222,8 @@ export function SongFormSectionsPreview({
             onModeChange={onModeChange}
             onEndingCountChange={onEndingCountChange}
             onDeleteSection={onDeleteSection}
+            onMoveSection={onMoveSection}
+            onRenameSection={onRenameSection}
           />
         ))}
       </View>

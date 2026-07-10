@@ -173,8 +173,10 @@ export function SectionDisplay({
     <View className="mb-6">
       {/* Section label */}
       <View className="mb-2 flex-row items-center gap-2">
-        <View className="size-7 items-center justify-center border-2 border-gray-900 dark:border-gray-100">
-          <Text className="text-sm font-black text-gray-900 dark:text-white">{label}</Text>
+        <View className="min-w-7 items-center justify-center border-2 border-gray-900 p-0.5 dark:border-gray-100">
+          <Text className="text-sm font-black text-gray-900 dark:text-white">
+            {label}
+          </Text>
         </View>
         <View className="h-px flex-1 bg-gray-300 dark:bg-gray-700" />
       </View>

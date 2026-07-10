@@ -169,6 +169,43 @@ export function SongFormScreen({
     });
   };
 
+  const handleMoveSection = (sectionIndex: number, direction: 'up' | 'down') => {
+    setFormData((prev) => {
+      const nextSections = [...prev.Sections];
+      const targetIndex = sectionIndex + (direction === 'up' ? -1 : 1);
+
+      if (targetIndex < 0 || targetIndex >= nextSections.length)
+        return prev;
+
+      const [movedSection] = nextSections.splice(sectionIndex, 1);
+      nextSections.splice(targetIndex, 0, movedSection);
+
+      return {
+        ...prev,
+        Sections: nextSections,
+      };
+    });
+
+    setActiveTarget((prev) => {
+      if (!prev || prev.sectionIndex !== sectionIndex)
+        return prev;
+
+      return {
+        ...prev,
+        sectionIndex: prev.sectionIndex + (direction === 'up' ? -1 : 1),
+      };
+    });
+  };
+
+  const handleRenameSection = (sectionIndex: number, label: string) => {
+    setFormData(prev => ({
+      ...prev,
+      Sections: prev.Sections.map((section, index) => (
+        index === sectionIndex ? { ...section, Label: label } : section
+      )),
+    }));
+  };
+
   const handleAddSection = () => {
     const newSection: Section = {
       Label: nextSectionLabel(formData.Sections),
@@ -212,6 +249,8 @@ export function SongFormScreen({
           onModeChange={handleModeChange}
           onEndingCountChange={handleEndingCountChange}
           onDeleteSection={handleDeleteSection}
+          onMoveSection={handleMoveSection}
+          onRenameSection={handleRenameSection}
           onAddSection={handleAddSection}
         />
       </ScrollView>
