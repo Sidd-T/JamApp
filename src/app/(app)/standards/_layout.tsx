@@ -46,7 +46,7 @@ export default function StandardsLayout() {
                         `/jams/${encodeURIComponent(routeParams.roomId)}?name=${encodeURIComponent(routeParams.roomName ?? '')}`,
                       );
                     }}
-                    style={{ transform: [{ scaleX: -1 }] }}
+                    className="-scale-x-100"
                   >
                     <ArrowRight width={20} height={20} color={theme.colors.text} />
                   </Pressable>
