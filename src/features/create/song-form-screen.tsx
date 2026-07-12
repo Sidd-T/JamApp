@@ -255,7 +255,7 @@ export function SongFormScreen({
         />
       </ScrollView>
 
-      <View className="border-t border-gray-200 bg-white px-4 py-2 dark:border-gray-800 dark:bg-black">
+      <View className="border-t border-neutral-200 bg-white px-4 py-2 dark:border-neutral-800 dark:bg-black">
         <SongFormActions
           isLoading={isLoading}
           isEditing={isEditing}

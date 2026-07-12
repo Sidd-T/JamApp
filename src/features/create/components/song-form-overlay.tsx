@@ -223,7 +223,7 @@ export function SongFormChordKeyboardOverlay({
   };
 
   return (
-    <View className="absolute inset-x-0 bottom-0 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-black">
+    <View className="absolute inset-x-0 bottom-0 border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
       <SectionChordKeyboard
         beats={beats}
         beatIndex={flatIndex}

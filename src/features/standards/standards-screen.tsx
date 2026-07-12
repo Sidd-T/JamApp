@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from '@/components/ui';
+import { translate } from '@/lib/i18n';
 import { addSetlistSong, removeSetlistSong, useJamsStore } from '../jams/use-jams-store';
 import { StandardCard, StandardsFilter } from './components';
 import { useStandardsStore } from './use-standards-store';
@@ -95,8 +96,8 @@ export function StandardsScreen() {
           )
         : (
             <View className="flex-1 items-center justify-center px-4">
-              <Text className="text-center text-base text-gray-600 dark:text-gray-400">
-                No standards found for the selected filters.
+              <Text className="text-center text-base text-neutral-600 dark:text-neutral-400">
+                {translate('standards.filter.noResults')}
               </Text>
             </View>
           )}
@@ -104,7 +105,7 @@ export function StandardsScreen() {
       {pickMode && (
         <View className="absolute inset-x-6 bottom-4">
           <Button
-            label="Return to Jam Room"
+            label={translate('standards.filter.returnToJam')}
             variant="secondary"
             onPress={() => router.push({
               pathname: `/jams/${encodeURIComponent((currentRoom?.id) ? currentRoom.id : '')}` as ExternalPathString,

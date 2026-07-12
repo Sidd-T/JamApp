@@ -1,0 +1,141 @@
+{
+  "create": {
+    "addNewSong": "+ Ajouter un morceau",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "createTitle": "Créer un morceau",
+    "delete": "Supprimer",
+    "editTitle": "Modifier le morceau",
+    "emptyState": "Aucun morceau pour le moment.\nCréez votre premier morceau pour commencer !",
+    "form": {
+      "keyLabel": "Tonalité",
+      "keyPlaceholder": "C, F, Bm",
+      "modeEndings": "Fins",
+      "modeRepeats": "Reprises",
+      "requiredError": "{{field}} est requis",
+      "rhythmLabel": "Rythme",
+      "rhythmPlaceholder": "Bossa, Swing",
+      "sectionPlaceholder": "Section",
+      "sectionsTitle": "Sections (touchez une mesure pour la modifier)",
+      "timeSignatureLabel": "Signature rythmique",
+      "timeSignaturePlaceholder": "4/4",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Titre du morceau"
+    },
+    "headerSubtitle": "Créez et gérez vos morceaux de jazz",
+    "save": "Créer",
+    "saving": "Enregistrement...",
+    "title": "Créer",
+    "update": "Mettre à jour"
+  },
+  "jams": {
+    "back": "Retour",
+    "home": {
+      "activeRoomDescription": "Vous êtes déjà dans une room active. Entrez-y ci-dessous.",
+      "activeRoomTitle": "Room active",
+      "addressLabel": "Adresse :",
+      "codeLabel": "Code :",
+      "createRoomButton": "Créer la room",
+      "createRoomError": "Impossible de créer la room. Vérifiez que votre appareil est connecté au réseau local.",
+      "createRoomTitle": "Créer une room",
+      "description": "Créez une room locale ou rejoignez-en d'autres sur le même réseau",
+      "enterRoomButton": "Entrer dans la room",
+      "joinButton": "Rejoindre",
+      "joinDiscoveredRoomError": "Impossible de rejoindre la room détectée.",
+      "joinRoomButton": "Rejoindre la room",
+      "joinRoomError": "Impossible de rejoindre la room. Vérifiez que l'hôte est disponible sur le réseau local et que le code est correct.",
+      "joinRoomTitle": "Rejoindre une room",
+      "nearbyRoomsTitle": "Rooms à proximité",
+      "roomCodeLabel": "Code de la room",
+      "roomCodePlaceholder": "ABCD",
+      "roomNameLabel": "Nom de la room",
+      "roomNamePlaceholder": "Ma Jam Room"
+    },
+    "room": {
+      "addSong": "Ajouter un morceau à la setlist",
+      "backToJams": "Retour aux Jams",
+      "destroyHint": "Maintenez \"Détruire la room\" pour supprimer la room",
+      "destroyRoom": "Détruire la room",
+      "emptyParticipants": "Pas encore de participants.",
+      "emptySetlist": "Pas encore de morceaux ajoutés.",
+      "hostLabel": "Hôte",
+      "joinedLabel": "Connecté",
+      "keepHolding": "Continuez d'appuyer…",
+      "leaveHint": "Vous pouvez quitter la room à tout moment",
+      "leaveRoom": "Quitter la room",
+      "loading": "Chargement de la room…",
+      "notFoundDescription": "Créez ou rejoignez une room depuis l'écran d'accueil Jams.",
+      "notFoundTitle": "Room introuvable",
+      "participantsTitle": "Participants",
+      "roomCode": "Code de la room",
+      "setlistTitle": "Setlist"
+    },
+    "title": "Jams"
+  },
+  "onboarding": {
+    "cta": "Allons-y !",
+    "message": "JamTime",
+    "namePlaceholder": "Nom",
+    "namePrompt": "Entrez votre nom avant de continuer :",
+    "subtitle": "Application open source, multiplateforme, de Real Book et de jam sessions",
+    "title": "JamTime"
+  },
+  "settings": {
+    "about": "À propos",
+    "app_name": "Nom de l'app",
+    "arabic": "Arabe",
+    "english": "Anglais",
+    "french": "Français",
+    "generale": "Général",
+    "github": "Github",
+    "language": "Langue",
+    "links": "Liens",
+    "logout": "Déconnexion",
+    "more": "Plus",
+    "namePlaceholder": "Entrez votre nom",
+    "privacy": "Politique de confidentialité",
+    "rate": "Noter",
+    "share": "Partager",
+    "support": "Support",
+    "support_us": "Nous soutenir",
+    "terms": "Conditions d'utilisation",
+    "theme": {
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système",
+      "title": "Thème"
+    },
+    "title": "Paramètres",
+    "version": "Version",
+    "website": "Site web",
+    "yourName": "Votre nom:"
+  },
+  "standards": {
+    "card": {
+      "addToJam": "Ajouter à la jam"
+    },
+    "detail": {
+      "back": "Retour",
+      "title": "Standard"
+    },
+    "filter": {
+      "done": "Terminé",
+      "noResults": "Aucun standard trouvé pour les filtres sélectionnés.",
+      "reset": "Effacer",
+      "returnToJam": "Retour à la Jam Room",
+      "rhythmLabel": "Rythme",
+      "rhythmPlaceholder": "Sélectionner des rythmes...",
+      "searchPlaceholder": "Rechercher par titre ou compositeur...",
+      "showFavouritesOnly": "Afficher les favoris seulement",
+      "sourceJazz": "Standards de jazz",
+      "sourceLabel": "Source",
+      "sourcePlaceholder": "Sélectionner des sources...",
+      "sourceUser": "Vos créations",
+      "timeSignatureLabel": "Signature rythmique",
+      "timeSignaturePlaceholder": "Sélectionner des signatures rythmiques...",
+      "title": "Filtres"
+    },
+    "title": "Standards"
+  },
+  "welcome": "Bienvenue sur JamTime"
+}

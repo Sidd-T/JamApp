@@ -78,7 +78,7 @@ export function EmptyMainSegment({
   return (
     <PressableBar onPress={onBarPress ? () => onBarPress(mainSegmentRef, 0) : undefined}>
       <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-        <Text className="text-base text-gray-400 dark:text-gray-600">+ chord</Text>
+        <Text className="text-base text-neutral-400 dark:text-neutral-600">+ chord</Text>
       </View>
     </PressableBar>
   );
@@ -123,7 +123,7 @@ export function EmptyEndingSegment({
   return (
     <PressableBar onPress={onBarPress ? () => onBarPress(endingRef, 0) : undefined}>
       <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-        <Text className="text-base text-gray-400 dark:text-gray-600">+ chord</Text>
+        <Text className="text-base text-neutral-400 dark:text-neutral-600">+ chord</Text>
       </View>
     </PressableBar>
   );

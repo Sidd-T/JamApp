@@ -38,11 +38,11 @@ export function SettingsScreen() {
           <SettingsContainer title="settings.generale">
             <View className="flex-row items-center justify-between gap-8 px-4 py-2">
               <Text className="pb-2 text-black dark:text-white">
-                Your Name:
+                {translate('settings.yourName')}
               </Text>
               <View className="w-1/2">
                 <Input
-                  placeholder="Enter your name"
+                  placeholder={translate('settings.namePlaceholder')}
                   value={profileName}
                   onChangeText={setProfileName}
                   style={{ textAlign: 'right', borderWidth: 1 }}

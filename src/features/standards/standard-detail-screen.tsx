@@ -13,8 +13,8 @@ export function StandardDetailScreen() {
 
   if (!standard) {
     return (
-      <View className="flex-1 items-center justify-center bg-white dark:bg-gray-950">
-        <Text className="text-gray-600 dark:text-gray-400">Standard not found</Text>
+      <View className="flex-1 items-center justify-center bg-white dark:bg-neutral-950">
+        <Text className="text-neutral-600 dark:text-neutral-400">Standard not found</Text>
       </View>
     );
   }
@@ -29,11 +29,11 @@ export function StandardDetailScreen() {
         {/* Rhythm + Key row */}
         <View className="mb-4 flex-row items-center justify-between gap-4">
           {standard.Rhythm && (
-            <Text className="text-sm font-semibold text-gray-700 italic dark:text-gray-300">
+            <Text className="text-sm font-semibold text-neutral-700 italic dark:text-neutral-300">
               {standard.Rhythm}
             </Text>
           )}
-          <Text className="text-base text-gray-700 dark:text-gray-300">
+          <Text className="text-base text-neutral-700 dark:text-neutral-300">
             {standard.Composer}
           </Text>
         </View>

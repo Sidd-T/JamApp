@@ -9,6 +9,7 @@ import {
   Settings as SettingsIcon,
 } from '@/components/ui/icons';
 import { useIsFirstTime } from '@/lib/hooks/use-is-first-time';
+import { translate } from '@/lib/i18n';
 
 export default function TabLayout() {
   const [isFirstTime] = useIsFirstTime();
@@ -30,7 +31,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="standards"
         options={{
-          title: 'Standards',
+          title: translate('standards.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <MusicIcon color={color} />,
           tabBarButtonTestID: 'standards-tab',
@@ -40,7 +41,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="create"
         options={{
-          title: 'Create',
+          title: translate('create.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <AddIcon color={color} />,
           tabBarButtonTestID: 'create-tab',
@@ -50,7 +51,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jams"
         options={{
-          title: 'Jams',
+          title: translate('jams.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <PeopleIcon color={color} />,
           tabBarButtonTestID: 'jams-tab',
@@ -60,7 +61,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: translate('settings.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
           tabBarButtonTestID: 'settings-tab',

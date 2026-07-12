@@ -6,6 +6,7 @@ import colors from '@/components/ui/colors';
 import { Filter } from '@/components/ui/icons';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { translate } from '@/lib/i18n';
 
 type StandardsFilterProps = {
   searchTerm: string;
@@ -45,8 +46,8 @@ export function StandardsFilter({
   const filterIconColor = theme.dark ? colors.neutral[300] : colors.neutral[800];
 
   const sourceOptions = [
-    { label: 'Jazz Standards', value: 'jazz-standards' },
-    { label: 'User Created', value: 'user-created' },
+    { label: translate('standards.filter.sourceJazz'), value: 'jazz-standards' },
+    { label: translate('standards.filter.sourceUser'), value: 'user-created' },
   ];
 
   // Count active filters
@@ -64,7 +65,7 @@ export function StandardsFilter({
       {/* Search Bar with Filter Icon */}
       <View className="flex-row items-center gap-2 rounded-3xl border-[0.5px] border-neutral-100 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
         <TextInput
-          placeholder="Search by title or composer..."
+          placeholder={translate('standards.filter.searchPlaceholder')}
           value={searchTerm}
           onChangeText={onSearchChange}
           className="flex-1 px-4 py-3 text-base font-medium dark:text-white"
@@ -103,7 +104,7 @@ export function StandardsFilter({
             {/* Modal Header */}
             <View className="border-b border-neutral-200 p-3 dark:border-neutral-700">
               <View className="flex-row items-center justify-between">
-                <Text className="text-base font-semibold dark:text-neutral-100">Filters</Text>
+                <Text className="text-base font-semibold dark:text-neutral-100">{translate('standards.filter.title')}</Text>
                 <Pressable onPress={() => setIsFilterModalVisible(false)}>
                   <Text className="text-2xl text-neutral-600 dark:text-neutral-300">×</Text>
                 </Pressable>
@@ -116,41 +117,41 @@ export function StandardsFilter({
                 checked={showFavouritesOnly}
                 onChange={onShowFavouritesOnlyChange}
                 accessibilityLabel="Show favourites only"
-                label="Show favourites only"
+                label={translate('standards.filter.showFavouritesOnly')}
               />
 
               {/* Rhythm Multi-select */}
               <MultiSelect
-                label="Rhythm"
+                label={translate('standards.filter.rhythmLabel')}
                 values={rhythms}
                 onSelect={onRhythmsChange}
                 options={rhythmOptions.map(r => ({ label: r, value: r }))}
-                placeholder="Select rhythms..."
+                placeholder={translate('standards.filter.rhythmPlaceholder')}
                 testID="rhythm-select"
               />
 
               {/* Time Signature Multi-select */}
               <MultiSelect
-                label="Time Signature"
+                label={translate('standards.filter.timeSignatureLabel')}
                 values={timeSignatures}
                 onSelect={onTimeSignaturesChange}
                 options={timeSignatureOptions.map(sig => ({
                   label: sig,
                   value: sig,
                 }))}
-                placeholder="Select time signatures..."
+                placeholder={translate('standards.filter.timeSignaturePlaceholder')}
                 testID="time-signature-select"
               />
 
               {/* Source Multi-select */}
               <MultiSelect
-                label="Source"
+                label={translate('standards.filter.sourceLabel')}
                 values={sources as (string | number)[]}
                 onSelect={(vals) => {
                   onSourcesChange(vals as SongSource[]);
                 }}
                 options={sourceOptions}
-                placeholder="Select sources..."
+                placeholder={translate('standards.filter.sourcePlaceholder')}
                 testID="source-select"
               />
             </View>
@@ -158,13 +159,13 @@ export function StandardsFilter({
             {/* Modal Footer */}
             <View className="flex-row gap-2 border-t border-neutral-200 px-4 py-3 dark:border-neutral-700">
               <Button
-                label="Reset"
+                label={translate('standards.filter.reset')}
                 onPress={() => resetFilters()}
                 variant="outline"
                 className="flex-1"
               />
               <Button
-                label="Done"
+                label={translate('standards.filter.done')}
                 onPress={() => setIsFilterModalVisible(false)}
                 className="flex-1"
                 variant="secondary"

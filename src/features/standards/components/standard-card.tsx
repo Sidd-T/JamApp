@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 import { Button, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
 import { Support } from '@/components/ui/icons';
+import { translate } from '@/lib/i18n';
 
 type StandardCardProps = {
   standard: Song;
@@ -25,20 +26,20 @@ export function StandardCard({
   const favouriteFill = isFavourite ? colors.primary[600] : 'none';
   return (
     <Pressable onPress={onPress} className="flex-1">
-      <View className={`mb-3 rounded-xl border bg-neutral-100 p-4 shadow-md dark:bg-gray-900 ${
+      <View className={`mb-3 rounded-xl border bg-neutral-100 p-4 shadow-md dark:bg-neutral-900 ${
         added
           ? 'border-primary-500 dark:border-primary-400'
-          : 'border-gray-200 dark:border-gray-800'
+          : 'border-neutral-200 dark:border-neutral-800'
       }`}
       >
         <View className="flex-row gap-4">
 
           {/* Left: all text content */}
           <View className="flex-1">
-            <Text className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+            <Text className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">
               {standard.Title}
             </Text>
-            <Text className="mb-3 text-sm text-gray-600 dark:text-gray-400">
+            <Text className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
               {standard.Composer}
             </Text>
             <View className="flex-row flex-wrap gap-2">
@@ -73,7 +74,7 @@ export function StandardCard({
 
             {onAdd && (
               <Button
-                label={added ? '✓' : 'Add to Jam'}
+                label={added ? '✓' : translate('standards.card.addToJam')}
                 variant={added ? 'secondary' : 'outline'}
                 size="sm"
                 className="-m-0.5 rounded-full"

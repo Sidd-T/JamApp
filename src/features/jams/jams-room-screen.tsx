@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Trash, User } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { translate } from '@/lib/i18n';
 import { hydrateJams, leaveRoom, removeSetlistSong, useJamsStore } from './use-jams-store';
 
 export function JamRoomScreen() {
@@ -64,7 +65,7 @@ export function JamRoomScreen() {
   if (!ready) {
     return (
       <View className="flex-1 items-center justify-center bg-white dark:bg-black">
-        <Text className="text-base text-neutral-600 dark:text-neutral-300">Loading room…</Text>
+        <Text className="text-base text-neutral-600 dark:text-neutral-300">{translate('jams.room.loading')}</Text>
       </View>
     );
   }
@@ -72,11 +73,11 @@ export function JamRoomScreen() {
   if (!currentRoom || currentRoom.id !== roomId) {
     return (
       <View className="flex-1 items-center justify-center bg-white px-4 dark:bg-black">
-        <Text className="text-center text-lg font-semibold text-black dark:text-white">Room not found</Text>
+        <Text className="text-center text-lg font-semibold text-black dark:text-white">{translate('jams.room.notFoundTitle')}</Text>
         <Text className="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">
-          Create or join a room from the Jams home screen.
+          {translate('jams.room.notFoundDescription')}
         </Text>
-        <Button className="mt-6" label="Back to Jams" onPress={() => router.replace('/jams')} />
+        <Button className="mt-6" label={translate('jams.room.backToJams')} onPress={() => router.replace('/jams')} />
       </View>
     );
   }
@@ -86,7 +87,7 @@ export function JamRoomScreen() {
       {/* Header: code + host + leave */}
       <View className="items-center">
         <Text className="text-xs font-medium tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
-          Room Code
+          {translate('jams.room.roomCode')}
         </Text>
         <Text className="mt-0.5 text-4xl font-extrabold tracking-wide text-black dark:text-white">
           {currentRoom.roomCode}
@@ -100,14 +101,14 @@ export function JamRoomScreen() {
             <Text className="ml-2 text-sm text-neutral-500 dark:text-neutral-400">
               ·
               {' '}
-              {mode === 'hosting' ? 'Host' : 'Joined'}
+              {mode === 'hosting' ? translate('jams.room.hostLabel') : translate('jams.room.joinedLabel')}
             </Text>
           </View>
 
           {mode === 'hosting'
             ? (
                 <Button
-                  label={holdingLeave ? 'Keep holding…' : 'Destroy room'}
+                  label={holdingLeave ? translate('jams.room.keepHolding') : translate('jams.room.destroyRoom')}
                   variant="destructive"
                   className={`h-9 justify-center rounded-full px-4 ${holdingLeave ? 'opacity-60' : ''}`}
                   textClassName="text-sm font-semibold"
@@ -119,7 +120,7 @@ export function JamRoomScreen() {
               )
             : (
                 <Button
-                  label="Leave room"
+                  label={translate('jams.room.leaveRoom')}
                   variant="secondary"
                   className="h-9 justify-center rounded-full px-4"
                   textClassName="text-sm font-semibold"
@@ -130,14 +131,14 @@ export function JamRoomScreen() {
 
         <Text className="mt-1.5 text-[11px] text-neutral-400 dark:text-neutral-500">
           {mode === 'hosting'
-            ? 'Hold "Destroy room" to destroy the room'
-            : 'You can leave the room at any time'}
+            ? translate('jams.room.destroyHint')
+            : translate('jams.room.leaveHint')}
         </Text>
       </View>
 
       {/* Setlist */}
       <View className="mt-5 rounded-3xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-900">
-        <Text className="text-lg font-semibold text-black dark:text-white">Setlist</Text>
+        <Text className="text-lg font-semibold text-black dark:text-white">{translate('jams.room.setlistTitle')}</Text>
 
         {setlist.map(entry => (
           <Pressable
@@ -168,7 +169,7 @@ export function JamRoomScreen() {
 
         {setlist.length === 0 && (
           <Text className="mt-2.5 text-sm text-neutral-500 dark:text-neutral-400">
-            No songs added yet.
+            {translate('jams.room.emptySetlist')}
           </Text>
         )}
 
@@ -182,7 +183,7 @@ export function JamRoomScreen() {
               <Text className="text-base leading-none font-bold text-white">+</Text>
             </View>
             <Text className="font-medium text-black underline dark:text-white">
-              Add song to setlist
+              {translate('jams.room.addSong')}
             </Text>
           </Pressable>
         )}
@@ -190,11 +191,11 @@ export function JamRoomScreen() {
 
       {/* Participants */}
       <View className="mt-4 rounded-3xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-900">
-        <Text className="text-lg font-semibold text-black dark:text-white">Participants</Text>
+        <Text className="text-lg font-semibold text-black dark:text-white">{translate('jams.room.participantsTitle')}</Text>
 
         {participants.length === 0
           ? (
-              <Text className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">No participants yet.</Text>
+              <Text className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{translate('jams.room.emptyParticipants')}</Text>
             )
           : (
               <View className="mt-2.5 flex-row flex-wrap justify-start">

@@ -4,6 +4,7 @@ import { Pressable } from 'react-native';
 
 import { ArrowRight } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { translate } from '@/lib/i18n';
 
 export default function StandardsLayout() {
   const theme = useThemeConfig();
@@ -22,7 +23,7 @@ export default function StandardsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Jazz Standards',
+          title: translate('standards.title'),
           headerLargeTitle: true,
           headerShown: false,
         }}
@@ -34,8 +35,8 @@ export default function StandardsLayout() {
           const navigateBackToRoom = routeParams.returnTo === 'room' && routeParams.roomId;
 
           return {
-            title: routeParams.title ?? (routeParams.id ? decodeURIComponent(routeParams.id) : 'Standard'),
-            headerBackTitle: 'Back',
+            title: routeParams.title ?? (routeParams.id ? decodeURIComponent(routeParams.id) : translate('standards.detail.title')),
+            headerBackTitle: translate('standards.detail.back'),
             headerTitleAlign: 'center',
             headerBackVisible: !navigateBackToRoom,
             headerLeft: navigateBackToRoom
