@@ -87,7 +87,7 @@ function SectionRow({
             <Pressable
               onPress={() => onMoveSection(index, 'up')}
               disabled={index === 0}
-              className={`-rotate-90 items-center justify-center rounded-sm border border-neutral-300 dark:border-neutral-700 ${index === 0 ? 'opacity-40' : ''}`}
+              className={`-rotate-90 items-center justify-center rounded-sm ${index === 0 ? 'opacity-40' : ''}`}
             >
               <ArrowRight color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
             </Pressable>
@@ -95,7 +95,7 @@ function SectionRow({
             <Pressable
               onPress={() => onMoveSection(index, 'down')}
               disabled={index >= sectionsCount - 1}
-              className={`rotate-90 items-center justify-center rounded-sm border border-neutral-300 dark:border-neutral-700 ${index >= sectionsCount - 1 ? 'opacity-40' : ''}`}
+              className={`rotate-90 items-center justify-center rounded-sm ${index >= sectionsCount - 1 ? 'opacity-40' : ''}`}
             >
               <ArrowRight color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
             </Pressable>
@@ -205,7 +205,7 @@ export function SongFormSectionsPreview({
 }: SongFormSectionsPreviewProps) {
   return (
     <View className="border-t border-neutral-200 py-3 dark:border-neutral-800">
-      <Text className="mb-2 text-lg text-neutral-300">
+      <Text className="mb-2 text-lg text-neutral-500 dark:text-neutral-300">
         {translate('create.form.sectionsTitle')}
       </Text>
 

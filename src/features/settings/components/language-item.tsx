@@ -23,6 +23,10 @@ export function LanguageItem() {
       { label: translate('settings.english'), value: 'en' },
       { label: translate('settings.arabic'), value: 'ar' },
       { label: translate('settings.french'), value: 'fr' },
+      { label: translate('settings.korean'), value: 'kr' },
+      { label: translate('settings.japanese'), value: 'jp' },
+      { label: translate('settings.chinese_simplified'), value: 'zhCN' },
+      { label: translate('settings.chinese_traditional'), value: 'zhTW' },
     ],
     [],
   );
