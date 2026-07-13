@@ -6,6 +6,7 @@ import { ScrollView, View } from 'react-native';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
+import { translate } from '@/lib/i18n';
 import { useProfileStore } from '@/lib/profile';
 import { createRoom, hydrateJams, joinRoom, startDiscovery, stopDiscovery, useJamsStore } from './use-jams-store';
 
@@ -49,10 +50,10 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsCreating(true);
-      navigateToRoom(await createRoom(roomName || 'My Jam Room', profileName || 'Host'));
+      navigateToRoom(await createRoom(roomName || translate('jams.home.roomNamePlaceholder'), profileName || translate('jams.room.hostLabel')));
     }
     catch (cause) {
-      setError('Could not create the room. Make sure your device is connected to the local network.');
+      setError(translate('jams.home.createRoomError'));
       console.error('Create room failed:', cause);
       setIsCreating(false);
     }
@@ -62,10 +63,10 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsJoining(true);
-      navigateToRoom(await joinRoom(joinCode, profileName || 'Player'));
+      navigateToRoom(await joinRoom(joinCode, profileName || translate('jams.room.joinedLabel')));
     }
     catch (cause) {
-      setError('Could not join the room. Make sure the host is available on the local network and that the code is correct.');
+      setError(translate('jams.home.joinRoomError'));
       console.error('Join room failed:', cause);
       setIsJoining(false);
     }
@@ -75,10 +76,10 @@ export function JamsHomeScreen() {
     try {
       setError('');
       setIsJoining(true);
-      navigateToRoom(await joinRoom(roomCode, profileName || 'Player'));
+      navigateToRoom(await joinRoom(roomCode, profileName || translate('jams.room.joinedLabel')));
     }
     catch (cause) {
-      setError('Could not join the discovered room.');
+      setError(translate('jams.home.joinDiscoveredRoomError'));
       console.error('Join discovered room failed:', cause);
       setIsJoining(false);
     }
@@ -97,48 +98,48 @@ export function JamsHomeScreen() {
     return (
       <ScrollView className="flex-1 bg-white px-4 py-6 dark:bg-neutral-900">
         <View className="-mt-6">
-          <Text className="text-sm text-neutral-500 dark:text-neutral-400">Create a local room or join others on the same network</Text>
+          <Text className="text-sm text-neutral-500 dark:text-neutral-400">{translate('jams.home.description')}</Text>
         </View>
 
         {!currentRoom || isCreating || isJoining
           ? (
               <View>
-                <Text className="py-4 text-xl font-bold text-black dark:text-white">Create a Room</Text>
+                <Text className="py-4 text-xl font-bold text-black dark:text-white">{translate('jams.home.createRoomTitle')}</Text>
                 <Input
-                  label="Room name"
+                  label={translate('jams.home.roomNameLabel')}
                   value={roomName}
-                  placeholder="My Jam Room"
+                  placeholder={translate('jams.home.roomNamePlaceholder')}
                   onChangeText={setRoomName}
                   editable={true}
                 />
-                <Button label="Create room" onPress={handleCreateRoom} variant="secondary" disabled={isCreating} />
+                <Button label={translate('jams.home.createRoomButton')} onPress={handleCreateRoom} variant="secondary" disabled={isCreating} />
 
-                <Text className="py-4 text-xl font-bold text-black dark:text-white">Join a Room</Text>
+                <Text className="py-4 text-xl font-bold text-black dark:text-white">{translate('jams.home.joinRoomTitle')}</Text>
                 <Input
-                  label="Room code"
+                  label={translate('jams.home.roomCodeLabel')}
                   value={joinCode}
                   onChangeText={setJoinCode}
-                  placeholder="ABCD"
+                  placeholder={translate('jams.home.roomCodePlaceholder')}
                   autoCapitalize="characters"
                 />
-                <Button label="Join room" variant="secondary" onPress={handleJoinRoom} disabled={isJoining} />
+                <Button label={translate('jams.home.joinRoomButton')} variant="secondary" onPress={handleJoinRoom} disabled={isJoining} />
 
                 {discoveredRooms.length > 0 && (
                   <View className="mt-8">
-                    <Text className="text-lg font-semibold text-black dark:text-white">Nearby rooms</Text>
+                    <Text className="text-lg font-semibold text-black dark:text-white">{translate('jams.home.nearbyRoomsTitle')}</Text>
                     <View className="mt-3 space-y-3">
                       {discoveredRooms.map(room => (
                         <View key={`${room.roomCode}-${room.address}`} className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
                           <Text className="text-base font-semibold text-black dark:text-white">{room.hostName}</Text>
                           <Text className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                            Code:
+                            {translate('jams.home.codeLabel')}
                             {room.roomCode}
                           </Text>
                           <Text className="text-sm text-neutral-500 dark:text-neutral-400">
-                            Address:
+                            {translate('jams.home.addressLabel')}
                             {room.address}
                           </Text>
-                          <Button label="Join" variant="secondary" className="mt-4" onPress={() => handleJoinDiscoveredRoom(room.roomCode)} />
+                          <Button label={translate('jams.home.joinButton')} variant="secondary" className="mt-4" onPress={() => handleJoinDiscoveredRoom(room.roomCode)} />
                         </View>
                       ))}
                     </View>
@@ -148,15 +149,15 @@ export function JamsHomeScreen() {
             )
           : (
               <View className="mt-6 rounded-3xl border border-primary-200 bg-primary-50 p-4 dark:border-primary-700 dark:bg-primary-900">
-                <Text className="text-lg font-semibold text-black dark:text-white">Active room</Text>
-                <Text className="mt-2 text-sm text-neutral-600 dark:text-neutral-300">You are already in an active room. Enter it below.</Text>
+                <Text className="text-lg font-semibold text-black dark:text-white">{translate('jams.home.activeRoomTitle')}</Text>
+                <Text className="mt-2 text-sm text-neutral-600 dark:text-neutral-300">{translate('jams.home.activeRoomDescription')}</Text>
                 <Text className="mt-4 text-sm text-neutral-600 dark:text-neutral-300">{currentRoom.name}</Text>
                 <Text className="text-sm text-neutral-600 dark:text-neutral-300">
-                  Code:
+                  {translate('jams.home.codeLabel')}
                   {currentRoom.roomCode}
                 </Text>
                 <Button
-                  label="Enter room"
+                  label={translate('jams.home.enterRoomButton')}
                   variant="secondary"
                   className="mt-4"
                   onPress={() => router.push({

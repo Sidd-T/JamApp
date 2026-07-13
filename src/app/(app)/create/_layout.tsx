@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 import * as React from 'react';
 
 import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { translate } from '@/lib/i18n';
 
 export default function CreateLayout() {
   const theme = useThemeConfig();
@@ -19,7 +20,7 @@ export default function CreateLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'My Songs',
+          title: translate('create.title'),
           headerLargeTitle: true,
         }}
       />
@@ -28,9 +29,9 @@ export default function CreateLayout() {
         options={({ route }: any) => ({
           title:
             route.params?.option && decodeURIComponent(route.params.option) === 'edit'
-              ? 'Edit Song'
-              : 'Create Song',
-          headerBackTitle: 'Back',
+              ? translate('create.editTitle')
+              : translate('create.createTitle'),
+          headerBackTitle: translate('create.back'),
         })}
       />
     </Stack>

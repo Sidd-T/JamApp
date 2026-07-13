@@ -6,6 +6,7 @@ import { ArrowRight, CaretDown, Trash } from '@/components/ui/icons';
 
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { SectionDisplay } from '@/features/standards/components';
+import { translate } from '@/lib/i18n';
 
 type SongFormSectionsPreviewProps = {
   sections: Section[];
@@ -76,9 +77,9 @@ function SectionRow({
             <TextInput
               value={section.Label ?? ''}
               onChangeText={value => onRenameSection(index, value)}
-              placeholder="Section"
+              placeholder={translate('create.form.sectionPlaceholder')}
               placeholderTextColor={theme.dark ? colors.neutral[500] : colors.neutral[400]}
-              className="min-h-8 rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm text-black dark:border-gray-700 dark:bg-neutral-800 dark:text-white"
+              className="min-h-8 rounded-lg border border-neutral-300 bg-white px-2 py-1 text-sm text-black dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
             />
           </View>
 
@@ -86,7 +87,7 @@ function SectionRow({
             <Pressable
               onPress={() => onMoveSection(index, 'up')}
               disabled={index === 0}
-              className={`-rotate-90 items-center justify-center rounded-sm border border-gray-300 dark:border-gray-700 ${index === 0 ? 'opacity-40' : ''}`}
+              className={`-rotate-90 items-center justify-center rounded-sm ${index === 0 ? 'opacity-40' : ''}`}
             >
               <ArrowRight color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
             </Pressable>
@@ -94,7 +95,7 @@ function SectionRow({
             <Pressable
               onPress={() => onMoveSection(index, 'down')}
               disabled={index >= sectionsCount - 1}
-              className={`rotate-90 items-center justify-center rounded-sm border border-gray-300 dark:border-gray-700 ${index >= sectionsCount - 1 ? 'opacity-40' : ''}`}
+              className={`rotate-90 items-center justify-center rounded-sm ${index >= sectionsCount - 1 ? 'opacity-40' : ''}`}
             >
               <ArrowRight color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
             </Pressable>
@@ -106,24 +107,24 @@ function SectionRow({
           <View className="relative">
             <Pressable
               onPress={() => setModeMenuOpen(prev => !prev)}
-              className="min-w-8 flex-row items-center justify-between rounded-xl border border-gray-300 px-3 py-2 dark:border-gray-700"
+              className="min-w-8 flex-row items-center justify-between rounded-xl border border-neutral-300 px-3 py-2 dark:border-neutral-700"
             >
               <Text className="text-sm text-black dark:text-white">
-                {isEndingsMode ? 'Endings' : 'Repeats'}
+                {isEndingsMode ? translate('create.form.modeEndings') : translate('create.form.modeRepeats')}
               </Text>
               <CaretDown />
             </Pressable>
 
             {modeMenuOpen && (
-              <View className="absolute bottom-full left-0 mb-2 overflow-hidden rounded-xl border border-gray-300 bg-white shadow-md dark:border-gray-700 dark:bg-neutral-800">
+              <View className="absolute bottom-full left-0 mb-2 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-800">
                 <Pressable
                   onPress={() => {
                     onModeChange(index, 'repeat');
                     setModeMenuOpen(false);
                   }}
-                  className={`px-4 py-3 ${!isEndingsMode ? 'bg-gray-100 dark:bg-neutral-700' : ''}`}
+                  className={`px-4 py-3 ${!isEndingsMode ? 'bg-neutral-100 dark:bg-neutral-700' : ''}`}
                 >
-                  <Text className="text-black dark:text-white">Repeats</Text>
+                  <Text className="text-black dark:text-white">{translate('create.form.modeRepeats')}</Text>
                 </Pressable>
 
                 <Pressable
@@ -131,9 +132,9 @@ function SectionRow({
                     onModeChange(index, 'endings');
                     setModeMenuOpen(false);
                   }}
-                  className={`border-t border-gray-200 px-4 py-3 dark:border-gray-700 ${isEndingsMode ? 'bg-gray-100 dark:bg-neutral-700' : ''}`}
+                  className={`border-t border-neutral-200 px-4 py-3 dark:border-neutral-700 ${isEndingsMode ? 'bg-neutral-100 dark:bg-neutral-700' : ''}`}
                 >
-                  <Text className="text-black dark:text-white">Endings</Text>
+                  <Text className="text-black dark:text-white">{translate('create.form.modeEndings')}</Text>
                 </Pressable>
               </View>
             )}
@@ -148,7 +149,7 @@ function SectionRow({
                 else onRepeatChange(index, next);
               }}
               disabled={stepperValue <= 0}
-              className={`size-6 items-center justify-center rounded-sm border border-gray-300 dark:border-gray-700 ${stepperValue <= 0 ? 'opacity-40' : ''}`}
+              className={`size-6 items-center justify-center rounded-sm border border-neutral-300 dark:border-neutral-700 ${stepperValue <= 0 ? 'opacity-40' : ''}`}
             >
               <Text className="text-sm font-semibold text-black dark:text-white">−</Text>
             </Pressable>
@@ -162,7 +163,7 @@ function SectionRow({
                   onEndingCountChange(index, next);
                 else onRepeatChange(index, next);
               }}
-              className="size-6 items-center justify-center rounded-sm border border-gray-300 dark:border-gray-700"
+              className="size-6 items-center justify-center rounded-sm border border-neutral-300 dark:border-neutral-700"
             >
               <Text className="text-sm font-semibold text-black dark:text-white">+</Text>
             </Pressable>
@@ -203,12 +204,12 @@ export function SongFormSectionsPreview({
   onAddSection,
 }: SongFormSectionsPreviewProps) {
   return (
-    <View className="border-t border-gray-200 py-3 dark:border-gray-800">
-      <Text className="mb-2 text-lg text-gray-300">
-        Sections (tap a bar to edit)
+    <View className="border-t border-neutral-200 py-3 dark:border-neutral-800">
+      <Text className="mb-2 text-lg text-neutral-500 dark:text-neutral-300">
+        {translate('create.form.sectionsTitle')}
       </Text>
 
-      <View className="shrink-0 flex-col rounded-sm bg-gray-50 p-2 dark:bg-gray-900">
+      <View className="shrink-0 flex-col rounded-sm bg-neutral-50 p-2 dark:bg-neutral-900">
         {sections.map((section, i) => (
           <SectionRow
             key={`section-preview-${i}-out-of-${(sections?.length)}-${section.Label}-${section.MainSegment?.Chords}`}
@@ -230,9 +231,9 @@ export function SongFormSectionsPreview({
 
       <Pressable
         onPress={onAddSection}
-        className="mt-3 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-4 dark:border-gray-700"
+        className="mt-3 items-center justify-center rounded-lg border-2 border-dashed border-neutral-600 py-4 dark:border-neutral-400"
       >
-        <Text className="text-2xl text-gray-400 dark:text-gray-600">+</Text>
+        <Text className="text-2xl text-neutral-600 dark:text-neutral-400">+</Text>
       </Pressable>
     </View>
   );

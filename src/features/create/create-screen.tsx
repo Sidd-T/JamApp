@@ -5,6 +5,7 @@ import { Button, colors, FocusAwareStatusBar, SafeAreaView, ScrollView, Text } f
 import { Edit, Trash } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { useSongsStore } from '@/features/create/use-songs-store';
+import { translate } from '@/lib/i18n';
 import { deleteSong } from './use-songs-store';
 
 export function CreateScreen() {
@@ -38,20 +39,18 @@ export function CreateScreen() {
         <SafeAreaView className="flex-1">
           {/* Header */}
           <View className="-mt-6 mb-6">
-            <Text className="text-sm text-neutral-600 dark:text-neutral-300">Create and manage your jazz standards</Text>
+            <Text className="text-sm text-neutral-600 dark:text-neutral-300">{translate('create.headerSubtitle')}</Text>
           </View>
 
           {/* Add New Song Button */}
-          <Button label="+ Add New Song" onPress={handleAddPress} className="mb-6" variant="secondary" />
+          <Button label={translate('create.addNewSong')} onPress={handleAddPress} className="mb-6" variant="secondary" />
 
           {/* Songs List or Empty State */}
           {songs.length === 0
             ? (
-                <View className="flex-1 items-center justify-center rounded-lg border border-dashed border-gray-300 py-12">
-                  <Text className="text-center text-gray-500">
-                    No songs yet.
-                    {'\n'}
-                    Create your first song to get started!
+                <View className="flex-1 items-center justify-center rounded-lg border border-dashed border-neutral-300 py-12">
+                  <Text className="text-center text-neutral-500">
+                    {translate('create.emptyState')}
                   </Text>
                 </View>
               )
@@ -60,13 +59,13 @@ export function CreateScreen() {
                   {songs.map(song => (
                     <View
                       key={song.id}
-                      className="rounded-xl border border-gray-200 bg-neutral-100 p-4 shadow-md dark:border-gray-800 dark:bg-neutral-800"
+                      className="rounded-xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-800"
                     >
                       {/* Song Header */}
                       <View className="mb-3 flex-row items-start justify-between">
                         <View className="flex-1">
-                          <Text className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">{song.Title}</Text>
-                          <Text className="text-sm text-gray-600 dark:text-gray-400">{song.Composer}</Text>
+                          <Text className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">{song.Title}</Text>
+                          <Text className="text-sm text-neutral-600 dark:text-neutral-400">{song.Composer}</Text>
                         </View>
                       </View>
 
@@ -115,13 +114,13 @@ export function CreateScreen() {
                       {deleteConfirmId === song.id && (
                         <View className="mt-2 flex-row gap-2">
                           <Button
-                            label="Cancel"
+                            label={translate('create.cancel')}
                             onPress={() => setDeleteConfirmId(null)}
                             variant="outline"
                             className="flex-1"
                           />
                           <Button
-                            label="Delete"
+                            label={translate('create.delete')}
                             onPress={() => handleDeletePress(song.id)}
                             variant="destructive"
                             className="flex-1"

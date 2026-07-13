@@ -1,18 +1,102 @@
 {
+  "create": {
+    "addNewSong": "+ Add New Song",
+    "back": "Back",
+    "cancel": "Cancel",
+    "createTitle": "Create Song",
+    "delete": "Delete",
+    "editTitle": "Edit Song",
+    "emptyState": "No songs yet.\nCreate your first song to get started!",
+    "form": {
+      "keyLabel": "Key",
+      "keyPlaceholder": "C, F, Bm",
+      "modeEndings": "Endings",
+      "modeRepeats": "Repeats",
+      "requiredError": "{{field}} is required",
+      "rhythmLabel": "Rhythm",
+      "rhythmPlaceholder": "Bossa, Swing",
+      "sectionPlaceholder": "Section",
+      "sectionsTitle": "Sections (tap a bar to edit)",
+      "timeSignatureLabel": "Time Signature",
+      "timeSignaturePlaceholder": "4/4",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Song title"
+    },
+    "headerSubtitle": "Create and manage your jazz standards",
+    "save": "Create",
+    "saving": "Saving...",
+    "title": "Create",
+    "update": "Update"
+  },
+  "jams": {
+    "back": "Back",
+    "home": {
+      "activeRoomDescription": "You are already in an active room. Enter it below.",
+      "activeRoomTitle": "Active room",
+      "addressLabel": "Address:",
+      "codeLabel": "Code:",
+      "createRoomButton": "Create room",
+      "createRoomError": "Could not create the room. Make sure your device is connected to the local network.",
+      "createRoomTitle": "Create a Room",
+      "description": "Create a local room or join others on the same network",
+      "enterRoomButton": "Enter room",
+      "joinButton": "Join",
+      "joinDiscoveredRoomError": "Could not join the discovered room.",
+      "joinRoomButton": "Join room",
+      "joinRoomError": "Could not join the room. Make sure the host is available on the local network and that the code is correct.",
+      "joinRoomTitle": "Join a Room",
+      "nearbyRoomsTitle": "Nearby rooms",
+      "roomCodeLabel": "Room code",
+      "roomCodePlaceholder": "ABCD",
+      "roomNameLabel": "Room name",
+      "roomNamePlaceholder": "My Jam Room"
+    },
+    "room": {
+      "addSong": "Add song to setlist",
+      "backToJams": "Back to Jams",
+      "destroyHint": "Hold \"Destroy room\" to destroy the room",
+      "destroyRoom": "Destroy room",
+      "emptyParticipants": "No participants yet.",
+      "emptySetlist": "No songs added yet.",
+      "hostLabel": "Host",
+      "joinedLabel": "Joined",
+      "keepHolding": "Keep holding…",
+      "leaveHint": "You can leave the room at any time",
+      "leaveRoom": "Leave room",
+      "loading": "Loading room…",
+      "notFoundDescription": "Create or join a room from the Jams home screen.",
+      "notFoundTitle": "Room not found",
+      "participantsTitle": "Participants",
+      "roomCode": "Room Code",
+      "setlistTitle": "Setlist"
+    },
+    "title": "Jams"
+  },
   "onboarding": {
-    "message": "Welcome to obytes app site"
+    "cta": "Let's Get Started",
+    "message": "JamTime",
+    "namePlaceholder": "Name",
+    "namePrompt": "Enter Name Before Continuing:",
+    "subtitle": "Open source, cross-platform, Real Book and jam session app",
+    "title": "JamTime"
   },
   "settings": {
     "about": "About",
     "app_name": "App Name",
     "arabic": "Arabic",
+    "chinese_simplified": "Chinese (Simplified)",
+    "chinese_traditional": "Chinese (Traditional)",
     "english": "English",
+    "french": "French",
     "generale": "General",
     "github": "Github",
+    "japanese": "Japanese",
+    "korean": "Korean",
     "language": "Language",
     "links": "Links",
     "logout": "Logout",
     "more": "More",
+    "namePlaceholder": "Enter your name",
     "privacy": "Privacy Policy",
     "rate": "Rate",
     "share": "Share",
@@ -27,7 +111,35 @@
     },
     "title": "Settings",
     "version": "Version",
-    "website": "Website"
+    "website": "Website",
+    "yourName": "Your Name:"
   },
-  "welcome": "Welcome to obytes app site"
+  "standards": {
+    "card": {
+      "addToJam": "Add to Jam"
+    },
+    "detail": {
+      "back": "Back",
+      "title": "Standard"
+    },
+    "filter": {
+      "done": "Done",
+      "noResults": "No standards found for the selected filters.",
+      "reset": "Reset",
+      "returnToJam": "Return to Jam Room",
+      "rhythmLabel": "Rhythm",
+      "rhythmPlaceholder": "Select rhythms...",
+      "searchPlaceholder": "Search by title or composer...",
+      "showFavouritesOnly": "Show favourites only",
+      "sourceJazz": "Jazz Standards",
+      "sourceLabel": "Source",
+      "sourcePlaceholder": "Select sources...",
+      "sourceUser": "User Created",
+      "timeSignatureLabel": "Time Signature",
+      "timeSignaturePlaceholder": "Select time signatures...",
+      "title": "Filters"
+    },
+    "title": "Standards"
+  },
+  "welcome": "Welcome to JamTime"
 }
