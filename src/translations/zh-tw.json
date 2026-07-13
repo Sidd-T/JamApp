@@ -8,7 +8,7 @@
     "editTitle": "編輯曲目",
     "emptyState": "還沒有曲目。\n建立你的第一首曲目開始吧！",
     "form": {
-      "keyLabel": "調性",
+      "keyLabel": "調號",
       "keyPlaceholder": "C, F, Bm",
       "modeEndings": "結尾",
       "modeRepeats": "反覆",
@@ -22,7 +22,7 @@
       "titleLabel": "標題",
       "titlePlaceholder": "曲目標題"
     },
-    "headerSubtitle": "建立與管理你的爵士標準曲",
+    "headerSubtitle": "建立與管理你的爵士經典曲",
     "save": "建立",
     "saving": "儲存中...",
     "title": "建立",
@@ -31,14 +31,14 @@
   "jams": {
     "back": "返回",
     "home": {
-      "activeRoomDescription": "你已經在一個活躍的房間中。請在下方進入。",
-      "activeRoomTitle": "活躍房間",
+      "activeRoomDescription": "你已經在一個活動中的房間。請在下方進入房間。",
+      "activeRoomTitle": "活動中房間",
       "addressLabel": "地址：",
       "codeLabel": "代碼：",
       "createRoomButton": "建立房間",
-      "createRoomError": "無法建立房間。請確認你的裝置已連接到本地網路。",
+      "createRoomError": "無法建立房間。請確認你的裝置已連接到本區域網路。",
       "createRoomTitle": "建立房間",
-      "description": "建立本地房間，或加入同一網路中的其他房間",
+      "description": "請在本區域網路中加入其他房間，或是建立自己的房間",
       "enterRoomButton": "進入房間",
       "joinButton": "加入",
       "joinDiscoveredRoomError": "無法加入偵測到的房間。",
@@ -120,18 +120,18 @@
     },
     "detail": {
       "back": "返回",
-      "title": "標準曲"
+      "title": "經典曲"
     },
     "filter": {
       "done": "完成",
-      "noResults": "找不到符合所選篩選條件的標準曲。",
+      "noResults": "找不到符合所選篩選條件的經典曲。",
       "reset": "重設",
       "returnToJam": "返回即興演奏房間",
       "rhythmLabel": "節奏",
       "rhythmPlaceholder": "選擇節奏...",
       "searchPlaceholder": "依標題或作曲家搜尋...",
       "showFavouritesOnly": "僅顯示收藏",
-      "sourceJazz": "爵士標準曲",
+      "sourceJazz": "爵士經典曲",
       "sourceLabel": "來源",
       "sourcePlaceholder": "選擇來源...",
       "sourceUser": "使用者建立",
@@ -139,7 +139,7 @@
       "timeSignaturePlaceholder": "選擇拍號...",
       "title": "篩選"
     },
-    "title": "標準曲"
+    "title": "經典曲"
   },
   "welcome": "歡迎使用 JamTime"
 }
