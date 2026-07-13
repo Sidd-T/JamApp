@@ -1,18 +1,102 @@
 {
+  "create": {
+    "addNewSong": "+ إضافة أغنية جديدة",
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "createTitle": "إنشاء أغنية",
+    "delete": "حذف",
+    "editTitle": "تعديل الأغنية",
+    "emptyState": "لا توجد أغاني بعد.\nأنشئ أغنيتك الأولى للبدء!",
+    "form": {
+      "keyLabel": "المفتاح",
+      "keyPlaceholder": "C، F، Bm",
+      "modeEndings": "النهايات",
+      "modeRepeats": "التكرارات",
+      "requiredError": "{{field}} مطلوب",
+      "rhythmLabel": "الإيقاع",
+      "rhythmPlaceholder": "بوسا، سوينغ",
+      "sectionPlaceholder": "قسم",
+      "sectionsTitle": "الأقسام (اضغط على الشريط للتعديل)",
+      "timeSignatureLabel": "التوقيت الزمني",
+      "timeSignaturePlaceholder": "4/4",
+      "titleLabel": "العنوان",
+      "titlePlaceholder": "عنوان الأغنية"
+    },
+    "headerSubtitle": "أنشئ وأدر معايير الجاز الخاصة بك",
+    "save": "إنشاء",
+    "saving": "جارٍ الحفظ...",
+    "title": "إنشاء",
+    "update": "تحديث"
+  },
+  "jams": {
+    "back": "رجوع",
+    "home": {
+      "activeRoomDescription": "أنت بالفعل في غرفة نشطة. ادخلها أدناه.",
+      "activeRoomTitle": "الغرفة النشطة",
+      "addressLabel": "العنوان:",
+      "codeLabel": "الرمز:",
+      "createRoomButton": "إنشاء غرفة",
+      "createRoomError": "تعذر إنشاء الغرفة. تأكد من أن جهازك متصل بالشبكة المحلية.",
+      "createRoomTitle": "إنشاء غرفة",
+      "description": "أنشئ غرفة محلية أو انضم إلى آخرين على نفس الشبكة",
+      "enterRoomButton": "دخول الغرفة",
+      "joinButton": "انضمام",
+      "joinDiscoveredRoomError": "تعذر الانضمام إلى الغرفة المكتشفة.",
+      "joinRoomButton": "الانضمام إلى غرفة",
+      "joinRoomError": "تعذر الانضمام إلى الغرفة. تأكد من أن المضيف متاح على الشبكة المحلية وأن الرمز صحيح.",
+      "joinRoomTitle": "الانضمام إلى غرفة",
+      "nearbyRoomsTitle": "الغرف القريبة",
+      "roomCodeLabel": "رمز الغرفة",
+      "roomCodePlaceholder": "ABCD",
+      "roomNameLabel": "اسم الغرفة",
+      "roomNamePlaceholder": "غرفة الجلسة الخاصة بي"
+    },
+    "room": {
+      "addSong": "إضافة أغنية إلى قائمة التشغيل",
+      "backToJams": "العودة إلى الجلسات",
+      "destroyHint": "اضغط مطولًا على \"حذف الغرفة\" لحذف الغرفة",
+      "destroyRoom": "حذف الغرفة",
+      "emptyParticipants": "لا يوجد مشاركون بعد.",
+      "emptySetlist": "لم تتم إضافة أي أغاني بعد.",
+      "hostLabel": "المضيف",
+      "joinedLabel": "تاريخ الانضمام",
+      "keepHolding": "استمر بالضغط…",
+      "leaveHint": "يمكنك مغادرة الغرفة في أي وقت",
+      "leaveRoom": "مغادرة الغرفة",
+      "loading": "جارٍ تحميل الغرفة…",
+      "notFoundDescription": "أنشئ أو انضم إلى غرفة من الشاشة الرئيسية للجلسات.",
+      "notFoundTitle": "الغرفة غير موجودة",
+      "participantsTitle": "المشاركون",
+      "roomCode": "رمز الغرفة",
+      "setlistTitle": "قائمة التشغيل"
+    },
+    "title": "الجلسات"
+  },
   "onboarding": {
-    "message": "مرحبا بكم في موقع تطبيق obytes"
+    "cta": "لنبدأ",
+    "message": "مرحبا بكم في موقع تطبيق obytes",
+    "namePlaceholder": "الاسم",
+    "namePrompt": "أدخل الاسم قبل المتابعة:",
+    "subtitle": "تطبيق مفتوح المصدر ومتعدد المنصات لكتاب الأغاني الحقيقي وجلسات الجاز",
+    "title": "JamTime"
   },
   "settings": {
     "about": "حول التطبيق ",
     "app_name": "اسم التطبيق",
     "arabic": "عربي",
+    "chinese_simplified": "الصينية المبسطة",
+    "chinese_traditional": "الصينية التقليدية",
     "english": "إنجليزي",
+    "french": "فرنسي",
     "generale": "عام",
     "github": "جيثب",
+    "japanese": "ياباني",
+    "korean": "كوري",
     "language": "لغة",
     "links": "الروابط",
     "logout": "تسجيل خروج",
     "more": "أكثر",
+    "namePlaceholder": "أدخل اسمك",
     "privacy": "سياسة الخصوصية",
     "rate": "تقييم",
     "share": "شارك",
@@ -27,7 +111,35 @@
     },
     "title": "إعدادات",
     "version": "إصدار",
-    "website": "موقع الكتروني"
+    "website": "موقع الكتروني",
+    "yourName": "اسمك:"
   },
-  "welcome": "test arabic"
+  "standards": {
+    "card": {
+      "addToJam": "إضافة إلى الجلسة"
+    },
+    "detail": {
+      "back": "رجوع",
+      "title": "المعيار"
+    },
+    "filter": {
+      "done": "تم",
+      "noResults": "لم يتم العثور على معايير للفلاتر المحددة.",
+      "reset": "إعادة تعيين",
+      "returnToJam": "العودة إلى غرفة الجلسة",
+      "rhythmLabel": "الإيقاع",
+      "rhythmPlaceholder": "اختر الإيقاعات...",
+      "searchPlaceholder": "البحث حسب العنوان أو الملحن...",
+      "showFavouritesOnly": "إظهار المفضلة فقط",
+      "sourceJazz": "معايير الجاز",
+      "sourceLabel": "المصدر",
+      "sourcePlaceholder": "اختر المصادر...",
+      "sourceUser": "من إنشاء المستخدم",
+      "timeSignatureLabel": "التوقيت الزمني",
+      "timeSignaturePlaceholder": "اختر التوقيتات الزمنية...",
+      "title": "الفلاتر"
+    },
+    "title": "المعايير"
+  },
+  "welcome": "مرحبًا بك في JamTime"
 }
