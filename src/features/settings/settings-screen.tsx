@@ -1,5 +1,7 @@
 import Env from 'env';
+import * as StoreReview from 'expo-store-review';
 import * as React from 'react';
+import { Platform, Share as RNShare } from 'react-native';
 import { useUniwind } from 'uniwind';
 
 import {
@@ -11,8 +13,8 @@ import {
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { useProfileStore } from '@/lib/hooks/use-profile';
 import { openBrowser, translate } from '@/lib/i18n';
-import { useProfileStore } from '@/lib/profile';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
@@ -24,6 +26,31 @@ export function SettingsScreen() {
   const setProfileName = useProfileStore.use.setName();
   const iconColor
     = theme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+
+  const handleShare = async () => {
+    try {
+      await RNShare.share({
+        url: 'https://spades.top',
+      });
+    }
+    catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRate = async () => {
+    if (await StoreReview.hasAction()) {
+      await StoreReview.requestReview();
+    }
+    else {
+      // fallback to store page directly
+      openBrowser(
+        Platform.OS === 'ios'
+          ? 'https://apps.apple.com/app/idYOUR_APP_ID?action=write-review'
+          : 'https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME',
+      );
+    }
+  };
 
   return (
     <>
@@ -69,17 +96,17 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.share"
               icon={<Share color={iconColor} />}
-              onPress={() => {}}
+              onPress={handleShare}
             />
             <SettingsItem
               text="settings.rate"
               icon={<Rate color={iconColor} />}
-              onPress={() => {}}
+              onPress={handleRate}
             />
             <SettingsItem
               text="settings.support"
               icon={<Support color={iconColor} />}
-              onPress={() => {}}
+              onPress={() => { openBrowser('https://spades.top'); }}
             />
           </SettingsContainer>
 
@@ -87,7 +114,7 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.github"
               icon={<Github color={iconColor} />}
-              onPress={() => { 'https://github.com/Sidd-T/JamApp'; }}
+              onPress={() => { openBrowser('https://github.com/Sidd-T/JamApp'); }}
             />
             <SettingsItem
               text="settings.website"

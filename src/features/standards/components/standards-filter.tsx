@@ -43,7 +43,7 @@ export function StandardsFilter({
 }: StandardsFilterProps) {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const theme = useThemeConfig();
-  const filterIconColor = theme.dark ? colors.neutral[300] : colors.neutral[800];
+  const filterIconColor = theme.dark ? colors.neutral[400] : colors.neutral[800];
 
   const sourceOptions = [
     { label: translate('standards.filter.sourceJazz'), value: 'jazz-standards' },

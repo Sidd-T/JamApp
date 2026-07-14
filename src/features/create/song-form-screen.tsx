@@ -1,7 +1,7 @@
 import type { ActiveTarget, Section, Song } from '@/features/standards/standards';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { useProfileStore } from '@/lib/profile';
+import { useProfileStore } from '@/lib/hooks/use-profile';
 import {
   SongFormActions,
   SongFormChordKeyboardOverlay,

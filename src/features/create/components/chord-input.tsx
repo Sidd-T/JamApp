@@ -48,7 +48,7 @@ export function ChordInput({ ref, value, selection, onChangeText, onSelectionCha
         autoCorrect={false}
         autoCapitalize="none"
         multiline={false}
-        className="font-mono text-lg text-black dark:text-white"
+        className="-my-2 font-mono text-lg text-black dark:text-white"
       />
     </View>
   );

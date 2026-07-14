@@ -5,6 +5,8 @@ import { View } from 'react-native';
 import { Button } from '@/components/ui';
 import {
   ACCIDENTALS,
+  DESTRUCTIVE_KEY_CLASS,
+  DESTRUCTIVE_KEY_TEXT_CLASS,
   KEY_CLASS,
   KEY_TEXT_CLASS,
   NOTE_LETTERS,
@@ -37,7 +39,7 @@ export function ChordKeyboard({
 }: Props) {
   return (
 
-    <View className="mt-2 gap-0.5">
+    <View className="mt-0.5 gap-0.5">
 
       {/* Numbers + backspace */}
       <View className="flex-row items-center justify-between">
@@ -134,15 +136,15 @@ export function ChordKeyboard({
           label="− Bar"
           onPress={onDeleteBar}
           disabled={totalBars <= 1}
-          variant="outline"
+          variant="destructive"
           size="sm"
           fullWidth={false}
           className={
             totalBars <= 1
               ? 'bg-neutral-300 opacity-50'
-              : `${KEY_CLASS}`
+              : `${DESTRUCTIVE_KEY_CLASS}`
           }
-          textClassName={KEY_TEXT_CLASS}
+          textClassName={DESTRUCTIVE_KEY_TEXT_CLASS}
         />
         <Button
           label="+ Bar"

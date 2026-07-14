@@ -4,11 +4,14 @@ import { Pressable } from 'react-native';
 
 import { ArrowRight } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { useSetlistNavigation } from '@/lib/hooks/use-setlist-navigation';
 import { translate } from '@/lib/i18n';
 
 export default function StandardsLayout() {
   const theme = useThemeConfig();
   const router = useRouter();
+  const cameFromSetlist = useSetlistNavigation(s => s.cameFromSetlist);
+  const clearSetlistFlag = useSetlistNavigation(s => s.clear);
 
   return (
     <Stack
@@ -32,10 +35,17 @@ export default function StandardsLayout() {
         name="[id]"
         options={({ route }: any) => {
           const routeParams = route.params ?? {};
-          const navigateBackToRoom = routeParams.returnTo === 'room' && routeParams.roomId;
+          const navigateBackToRoom
+            = routeParams.returnTo === 'room'
+              && routeParams.roomId
+              && cameFromSetlist;
 
           return {
-            title: routeParams.title ?? (routeParams.id ? decodeURIComponent(routeParams.id) : translate('standards.detail.title')),
+            title:
+              routeParams.title
+              ?? (routeParams.id
+                ? decodeURIComponent(routeParams.id)
+                : translate('standards.detail.title')),
             headerBackTitle: translate('standards.detail.back'),
             headerTitleAlign: 'center',
             headerBackVisible: !navigateBackToRoom,
@@ -43,6 +53,7 @@ export default function StandardsLayout() {
               ? () => (
                   <Pressable
                     onPress={() => {
+                      clearSetlistFlag();
                       router.replace(
                         `/jams/${encodeURIComponent(routeParams.roomId)}?name=${encodeURIComponent(routeParams.roomName ?? '')}`,
                       );

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Trash, User } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { useSetlistNavigation } from '@/lib/hooks/use-setlist-navigation';
 import { translate } from '@/lib/i18n';
 import { hydrateJams, leaveRoom, removeSetlistSong, useJamsStore } from './use-jams-store';
 
@@ -23,6 +24,8 @@ export function JamRoomScreen() {
 
   const [ready, setReady] = useState(false);
   const [holdingLeave, setHoldingLeave] = useState(false);
+
+  const markFromSetlist = useSetlistNavigation(s => s.markFromSetlist);
 
   useEffect(() => {
     const load = async () => {
@@ -53,6 +56,7 @@ export function JamRoomScreen() {
   };
 
   const handleSetlistEntryPress = (songId: string, title: string) => {
+    markFromSetlist(); // set global flag for return nav
     router.push(
       `/standards/${encodeURIComponent(songId)}?title=${encodeURIComponent(title)}&returnTo=room&roomId=${encodeURIComponent(currentRoom?.id ?? '')}&roomName=${encodeURIComponent(currentRoom?.name ?? '')}`,
     );

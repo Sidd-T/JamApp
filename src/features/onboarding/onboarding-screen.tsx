@@ -10,8 +10,8 @@ import {
   View,
 } from '@/components/ui';
 import { useIsFirstTime } from '@/lib/hooks';
+import { useProfileStore } from '@/lib/hooks/use-profile';
 import { translate } from '@/lib/i18n';
-import { useProfileStore } from '@/lib/profile';
 import { Cover } from './components/cover';
 
 export function OnboardingScreen() {

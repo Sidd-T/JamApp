@@ -11,12 +11,12 @@ type SectionChordKeyboardProps = {
   beats: string[];
   beatIndex: number;
   barLabel: string;
-  totalBars: number; // ← add
+  totalBars: number;
   onBeatChange: (beatIndex: number, text: string) => void;
   onPrevBeat: () => void;
   onNextBeat: () => void;
-  onDeleteBar: () => void; // ← add
-  onAddBar: () => void; // ← add
+  onDeleteBar: () => void;
+  onAddBar: () => void;
   onClose: () => void;
 };
 
