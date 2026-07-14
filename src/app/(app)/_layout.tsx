@@ -1,6 +1,7 @@
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import * as React from 'react';
 import { useCallback, useEffect } from 'react';
+import { Platform } from 'react-native';
 
 import {
   Add as AddIcon,
@@ -55,6 +56,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => <PeopleIcon color={color} />,
           tabBarButtonTestID: 'jams-tab',
+          href: Platform.OS === 'web' ? null : undefined,
         }}
       />
 

@@ -61,7 +61,7 @@ export function StandardsFilter({
   };
 
   return (
-    <View className="relative border-b border-neutral-300 bg-neutral-200 px-4 pt-12 pb-4 dark:border-neutral-700 dark:bg-neutral-900">
+    <View className="relative z-20 border-b border-neutral-300 bg-neutral-200 px-4 pt-12 pb-4 dark:border-neutral-700 dark:bg-neutral-900">
       {/* Search Bar with Filter Icon */}
       <View className="flex-row items-center gap-2 rounded-3xl border-[0.5px] border-neutral-100 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
         <TextInput
@@ -98,7 +98,7 @@ export function StandardsFilter({
 
           {/* Modal Content - Top right, below filter icon */}
           <View
-            className="absolute top-[90%] right-4 w-3/5 rounded-lg bg-white shadow-2xl dark:bg-neutral-800"
+            className="absolute top-[90%] right-4 z-99 w-3/5 rounded-lg bg-white shadow-2xl dark:bg-neutral-800"
             pointerEvents="auto"
           >
             {/* Modal Header */}

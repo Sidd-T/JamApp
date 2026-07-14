@@ -118,43 +118,52 @@ function parseChordSymbol(raw: string): {
 /**
  * Renders a chord symbol with:
  *   - large root letter
- *   - superscript accidental (♯ / ♭)
+ *   - superscript accidental (♯ / ♭), sized larger than the quality
  *   - subscript quality  (° + − ø △)  +  extensions (7 9 ♯11 …)
+ *
+ * The accidental/quality stack sits in natural block flow (no
+ * justify-between against a box matched to the root's line-height — that
+ * box includes ascender/descender padding that isn't part of the visible
+ * glyph, which is what pushed the quality text too low). Instead the stack
+ * is top-aligned with the root and then nudged up by a small, coarse,
+ * platform-agnostic offset (-mt-1). This is a deliberately imprecise nudge
+ * rather than a pixel-perfect calibration against font metrics — a couple
+ * pixels' difference between native and web here is invisible, whereas the
+ * original bug came from trying to land two different text engines'
+ * baselines exactly on top of one another.
+ *
+ * All sizes use Tailwind's canonical scale so NativeWind resolves the same
+ * value on native and web without "can be written as ..." warnings.
  */
 export function ChordSymbol({ raw }: { raw: string }) {
   const { root, accidental, quality, extensions } = parseChordSymbol(raw);
+  const hasSuper = !!(accidental || quality || extensions);
 
   return (
-    <View className="flex-row items-center">
+    <View className="flex-row items-start">
       <Text
-        className="text-2xl leading-none font-bold text-black dark:text-white"
-        adjustsFontSizeToFit
+        className="text-2xl/7 font-bold text-black dark:text-white"
         numberOfLines={1}
-        minimumFontScale={0.7}
       >
-        {root || `${raw}`}
-        {' '}
-        {/* fallback to raw if parsing fails or no chord */}
+        {root || raw}
       </Text>
 
-      {(accidental || quality || extensions)
-        ? (
-            <View className="-mt-1 -ml-1.5 h-6 justify-center">
-              <Text
-                className={`text-lg leading-none font-bold text-black dark:text-white ${
-                  accidental ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                {accidental}
-              </Text>
+      {hasSuper && (
+        <View className="-mt-1.5 ml-0.5">
+          <Text
+            className={`h-5 text-lg/5 font-bold text-black dark:text-white ${
+              accidental ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {accidental || ' '}
+          </Text>
 
-              <Text className="text-sm leading-none font-bold text-black dark:text-white">
-                {quality}
-                {extensions}
-              </Text>
-            </View>
-          )
-        : null}
+          <Text className="text-sm/4 font-bold text-black dark:text-white">
+            {quality}
+            {extensions}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -165,34 +174,33 @@ export function ChordSymbol({ raw }: { raw: string }) {
  */
 export function OptionalChordSymbol({ raw }: { raw: string }) {
   const { root, accidental, quality, extensions } = parseChordSymbol(raw);
+  const hasSuper = !!(accidental || quality || extensions);
 
   return (
-    <View className="flex-row items-center">
-      <Text className="text-xs leading-none font-bold text-black dark:text-white">
+    <View className="flex-row items-start">
+      <Text className="text-xs/3.5 font-bold text-black dark:text-white">
         (
         {root}
       </Text>
 
-      {(accidental || quality || extensions)
-        ? (
-            <View className="-mt-1 ml-px h-6 justify-center">
-              <Text
-                className={`text-xs leading-none font-bold text-black dark:text-white ${
-                  accidental ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                {accidental}
-              </Text>
+      {hasSuper && (
+        <View className="-mt-1.5 ml-px">
+          <Text
+            className={`h-3 text-xs/3 font-bold text-black dark:text-white ${
+              accidental ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {accidental || ' '}
+          </Text>
 
-              <Text className="mt-0.5 text-[9px] leading-none font-bold text-black dark:text-white">
-                {quality}
-                {extensions}
-              </Text>
-            </View>
-          )
-        : null}
+          <Text className="text-[11px]/3 font-bold text-black dark:text-white">
+            {quality}
+            {extensions}
+          </Text>
+        </View>
+      )}
 
-      <Text className="text-xs leading-none font-bold text-black dark:text-white">
+      <Text className="text-xs/3.5 font-bold text-black dark:text-white">
         )
       </Text>
     </View>
