@@ -63,12 +63,12 @@ function SectionRow({
 
   return (
     <View>
-      <View className="mb-1 flex-row items-center justify-between gap-2">
+      <View className="mb-2 flex-row items-center justify-between gap-2">
         <View className="flex-1 flex-row items-center gap-2">
           <Pressable
             onPress={() => onDeleteSection(index)}
             disabled={sectionsCount <= 1}
-            className={`${sectionsCount <= 1 ? 'opacity-0' : ''}`}
+            className={`${sectionsCount <= 1 ? 'opacity-0' : ''} ${(sectionsCount <= 1) ? 'hidden' : ''}`}
           >
             <Trash color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
           </Pressable>

@@ -24,7 +24,7 @@ export function StandardDetailScreen() {
       className="flex-1 bg-white dark:bg-black"
       showsVerticalScrollIndicator={false}
     >
-      <View className="px-4">
+      <View className="px-1">
 
         {/* Rhythm + Key row */}
         <View className="mb-4 flex-row items-center justify-between gap-4">

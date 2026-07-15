@@ -6,8 +6,8 @@ import { ScrollView, View } from 'react-native';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
+import { useProfileStore } from '@/lib/hooks/use-profile';
 import { translate } from '@/lib/i18n';
-import { useProfileStore } from '@/lib/profile';
 import { createRoom, hydrateJams, joinRoom, startDiscovery, stopDiscovery, useJamsStore } from './use-jams-store';
 
 export function JamsHomeScreen() {

@@ -22,6 +22,8 @@ export const QUALITIES = [
 
 export const NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-export const KEY_CLASS = `my-0 rounded-md bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 shadow-sm`;
+export const KEY_CLASS = 'my-0 rounded-md bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 shadow-sm';
+export const DESTRUCTIVE_KEY_CLASS = 'my-0 rounded-md bg-red-600 border border-red-300 shadow-sm';
 
 export const KEY_TEXT_CLASS = 'text-lg text-black dark:text-white font-semibold';
+export const DESTRUCTIVE_KEY_TEXT_CLASS = 'text-lg text-white font-semibold';

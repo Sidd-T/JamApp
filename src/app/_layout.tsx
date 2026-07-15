@@ -12,8 +12,8 @@ import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { hydrateSongs } from '@/features/create/use-songs-store';
 
 import { APIProvider } from '@/lib/api';
+import { hydrateProfile } from '@/lib/hooks/use-profile';
 import { loadSelectedTheme } from '@/lib/hooks/use-selected-theme';
-import { hydrateProfile } from '@/lib/profile';
 // Import  global CSS file
 import '../global.css';
 

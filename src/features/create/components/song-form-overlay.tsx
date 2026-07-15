@@ -1,6 +1,6 @@
 import type { ActiveTarget, Section, Song } from '@/features/standards/standards';
 import * as React from 'react';
-import { View } from 'react-native';
+import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import {
   beatsPerBar,
   collapseBeatsToBar,
@@ -223,7 +223,11 @@ export function SongFormChordKeyboardOverlay({
   };
 
   return (
-    <View className="absolute inset-x-0 bottom-0 border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
+    <Animated.View
+      entering={SlideInDown.duration(250)}
+      exiting={SlideOutDown.duration(250)}
+      className="absolute inset-x-0 bottom-0 border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black"
+    >
       <SectionChordKeyboard
         beats={beats}
         beatIndex={flatIndex}
@@ -243,6 +247,6 @@ export function SongFormChordKeyboardOverlay({
         onAddBar={appendBar}
         onClose={() => setActiveTarget(null)}
       />
-    </View>
+    </Animated.View>
   );
 }

@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { Pressable, View } from 'react-native';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Button, colors, FocusAwareStatusBar, SafeAreaView, ScrollView, Text } from '@/components/ui';
 import { Edit, Trash } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
@@ -57,20 +58,37 @@ export function CreateScreen() {
             : (
                 <View className="gap-3">
                   {songs.map(song => (
-                    <View
+                    <Pressable
                       key={song.id}
-                      className="rounded-xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-800"
+                      className="rounded-xl border border-neutral-200 bg-neutral-100 p-4 shadow-md transition-transform duration-250 dark:border-neutral-800 dark:bg-neutral-800"
+                      onPress={() => handleEditPress(song.id)}
                     >
                       {/* Song Header */}
                       <View className="mb-3 flex-row items-start justify-between">
-                        <View className="flex-1">
+                        <View className="flex-1 pr-2">
                           <Text className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">{song.Title}</Text>
                           <Text className="text-sm text-neutral-600 dark:text-neutral-400">{song.Composer}</Text>
+                        </View>
+
+                        {/* Edit and Delete Buttons */}
+                        <View className="flex-row gap-1">
+                          <Pressable
+                            onPress={() => handleEditPress(song.id)}
+                            className="rounded-lg bg-transparent p-2"
+                          >
+                            <Edit width={20} height={20} color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+                          </Pressable>
+                          <Pressable
+                            onPress={() => setDeleteConfirmId(deleteConfirmId === song.id ? null : song.id)}
+                            className="rounded-lg bg-transparent p-2"
+                          >
+                            <Trash width={20} height={20} color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
+                          </Pressable>
                         </View>
                       </View>
 
                       {/* Song Details - Badge Style */}
-                      <View className="mb-3 flex-row flex-wrap gap-2">
+                      <View className="mb-1 flex-row flex-wrap gap-2">
                         {song.Key && (
                           <View className="rounded-sm bg-primary-100 px-2 py-1 dark:bg-primary-900/30">
                             <Text className="text-xs text-black dark:text-primary-200">
@@ -94,25 +112,12 @@ export function CreateScreen() {
                         )}
                       </View>
 
-                      {/* Edit and Delete Buttons */}
-                      <View className="flex-row gap-2">
-                        <Pressable
-                          onPress={() => handleEditPress(song.id)}
-                          className="rounded-lg bg-transparent p-2"
-                        >
-                          <Edit width={20} height={20} color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
-                        </Pressable>
-                        <Pressable
-                          onPress={() => setDeleteConfirmId(deleteConfirmId === song.id ? null : song.id)}
-                          className="rounded-lg bg-transparent p-2"
-                        >
-                          <Trash width={20} height={20} color={theme.dark ? colors.neutral[300] : colors.neutral[500]} />
-                        </Pressable>
-                      </View>
-
                       {/* Delete Confirmation Buttons */}
                       {deleteConfirmId === song.id && (
-                        <View className="mt-2 flex-row gap-2">
+                        <Animated.View
+                          entering={FadeInUp.duration(250)}
+                          className="mt-2 flex-row gap-2"
+                        >
                           <Button
                             label={translate('create.cancel')}
                             onPress={() => setDeleteConfirmId(null)}
@@ -125,9 +130,9 @@ export function CreateScreen() {
                             variant="destructive"
                             className="flex-1"
                           />
-                        </View>
+                        </Animated.View>
                       )}
-                    </View>
+                    </Pressable>
                   ))}
                 </View>
               )}

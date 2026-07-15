@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { getItem, setItem } from './storage';
-import { createSelectors } from './utils';
+import { getItem, setItem } from '../storage';
+import { createSelectors } from '../utils';
 
 const PROFILE_STORAGE_KEY = 'user_profile_name';
 

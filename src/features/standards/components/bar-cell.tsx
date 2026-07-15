@@ -3,6 +3,7 @@ import { Text } from '@/components/ui';
 import { expandBarToBeats } from '@/features/standards/helpers/bar-beats';
 import { ChordSymbol, OptionalChordSymbol } from './chord-symbol';
 import { PressableBar } from './pressable-bar';
+import { SquishToFit } from './squish-to-fit';
 
 type ParsedSlot = {
   chord: string;
@@ -87,13 +88,15 @@ export function BarCell({
                   isActiveBeat ? 'bg-primary-100 dark:bg-primary-900' : '',
                 ].filter(Boolean).join(' ')}
               >
-                {beatText
-                  ? (
-                      <ChordSymbol raw={beatText} />
-                    )
-                  : (
-                      <Text className="text-sm text-neutral-300 dark:text-neutral-700">—</Text>
-                    )}
+                <SquishToFit align="center">
+                  {beatText
+                    ? (
+                        <ChordSymbol raw={beatText} />
+                      )
+                    : (
+                        <Text className="text-sm text-neutral-500 dark:text-neutral-600">—</Text>
+                      )}
+                </SquishToFit>
               </View>
             </Pressable>
           );
@@ -113,14 +116,16 @@ export function BarCell({
             style={{ flex: slot.beats || 1 }}
             className={`${bar.isRepeat ? 'items-center font-bold' : 'items-start'} justify-center`}
           >
-            <View className="relative">
-              {'optional' in slot && slot.optional && (
-                <View className="absolute bottom-full left-0">
-                  <OptionalChordSymbol raw={slot.optional} />
-                </View>
-              )}
-              <ChordSymbol raw={slot.chord} />
-            </View>
+            <SquishToFit align={(bar.isRepeat) ? 'center' : 'start'}>
+              <View className="relative">
+                {'optional' in slot && slot.optional && (
+                  <View className="absolute bottom-full left-0">
+                    <OptionalChordSymbol raw={slot.optional} />
+                  </View>
+                )}
+                <ChordSymbol raw={slot.chord} />
+              </View>
+            </SquishToFit>
           </View>
         ))}
       </View>
