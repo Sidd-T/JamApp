@@ -11,6 +11,7 @@ export * from './language';
 export * from './music-list';
 export * from './people';
 export * from './rate';
+export * from './refresh';
 export * from './settings';
 export * from './share';
 export * from './style';
