@@ -46,7 +46,7 @@ export function TransposeControl({
       <Pressable
         onPress={() => setOpen(prev => !prev)}
         hitSlop={8}
-        className="justify-centergap-1 flex-row items-start px-2 py-1"
+        className="flex-row items-start justify-center gap-1 px-2 py-1"
         testID={testID ? `${testID}-trigger` : undefined}
       >
         <Text className="text-base font-semibold text-neutral-700 dark:text-neutral-300">

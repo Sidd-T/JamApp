@@ -17,7 +17,7 @@ export function StandardDetailScreen() {
   const jamSong = useJamsStore.use.setlist().find(entry => entry.song.id === decodedId)?.song;
   const standard = jamSong ?? findStandardById(decodedId);
 
-  const [currentKey, setCurrentKey] = React.useState(normalizeKey(standard?.Key ?? 'C'));
+  const [currentKey, setCurrentKey] = React.useState(() => normalizeKey(standard?.Key ?? 'C'));
 
   const isImmersive = useImmersiveMode(s => s.isImmersive);
   const toggleImmersive = useImmersiveMode(s => s.toggle);
