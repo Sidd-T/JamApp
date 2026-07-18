@@ -19,7 +19,7 @@ export default function StandardsLayout() {
         headerShown: true,
         headerShadowVisible: false,
         headerStyle: { backgroundColor: theme.colors.background },
-        headerTitleStyle: { fontSize: 24, color: theme.colors.text },
+        headerTitleStyle: { fontSize: 20, color: theme.colors.text },
         headerTintColor: theme.colors.text,
       }}
     >
@@ -27,7 +27,6 @@ export default function StandardsLayout() {
         name="index"
         options={{
           title: translate('standards.title'),
-          headerLargeTitle: true,
           headerShown: false,
         }}
       />

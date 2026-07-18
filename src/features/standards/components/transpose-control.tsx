@@ -4,7 +4,7 @@ import { useUniwind } from 'uniwind';
 import { Select, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
 import { ArrowRight, Edit, Refresh } from '@/components/ui/icons';
-import { KEY_OPTIONS, transposeKey } from '../helpers/music-keys';
+import { keyOptionsFor, transposeKey } from '../helpers/music-keys';
 
 type TransposeControlProps = {
   currentKey: string;
@@ -42,37 +42,37 @@ export function TransposeControl({
   };
 
   return (
-    <View className="relative z-30 items-center" testID={testID}>
+    <View className="relative z-30" testID={testID}>
       <Pressable
         onPress={() => setOpen(prev => !prev)}
         hitSlop={8}
-        className="flex-row items-center gap-1 px-2 py-1"
+        className="flex-row items-start justify-center gap-1 px-2 py-1"
         testID={testID ? `${testID}-trigger` : undefined}
       >
         <Text className="text-base font-semibold text-neutral-700 dark:text-neutral-300">
           {currentKey}
         </Text>
+        <Edit color={editColor} width={20} height={20} />
         {isTransposed
-          ? (
-              <Pressable
-                onPress={handleReset}
-                hitSlop={8}
-                className="z-99"
-                testID={testID ? `${testID}-reset` : undefined}
-              >
-                <Refresh color={iconColor} width={20} height={20} />
-              </Pressable>
-            )
-          : <Edit color={editColor} width={20} height={20} />}
+          && (
+            <Pressable
+              onPress={handleReset}
+              hitSlop={8}
+              className="z-99 ml-1"
+              testID={testID ? `${testID}-reset` : undefined}
+            >
+              <Refresh color={iconColor} width={20} height={20} />
+            </Pressable>
+          )}
       </Pressable>
 
       {open && (
         <View className="absolute top-full left-1/2 z-50 -translate-x-1/2 flex-row items-start rounded-xl border border-neutral-200 bg-white p-2 shadow-lg dark:border-neutral-700 dark:bg-neutral-900">
           <Select
             value={currentKey}
-            options={KEY_OPTIONS}
+            options={keyOptionsFor(currentKey)}
             onSelect={handleSelect}
-            className="z-70 w-20"
+            className="mb-0 min-w-28"
             testID={testID ? `${testID}-select` : undefined}
           />
 

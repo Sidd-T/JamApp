@@ -22,7 +22,7 @@ export function OnboardingScreen() {
   const canContinue = profileName.trim().length > 0;
 
   return (
-    <View className="flex h-full items-center justify-center">
+    <View className="flex h-full items-center justify-center p-16">
       <FocusAwareStatusBar />
       <View className="w-full flex-1">
         <Cover />

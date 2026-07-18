@@ -170,11 +170,11 @@ export function SectionDisplay({
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <View className="mb-6">
+    <View className="-mb-1">
       {/* Section label */}
-      <View className="mb-2 flex-row items-center gap-2">
-        <View className="min-w-7 items-center justify-center border-2 border-neutral-900 p-0.5 dark:border-neutral-100">
-          <Text className="text-sm font-black text-neutral-900 dark:text-white">
+      <View className="mb-0.5 flex-row items-center gap-2">
+        <View className="min-w-6 items-center justify-center border-2 border-neutral-900 p-0.5 dark:border-neutral-100">
+          <Text className="text-xs font-black text-neutral-900 dark:text-white">
             {label}
           </Text>
         </View>
