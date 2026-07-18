@@ -1,7 +1,10 @@
+import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import * as React from 'react';
 import { useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
+import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 
 import {
   Add as AddIcon,
@@ -10,7 +13,21 @@ import {
   Settings as SettingsIcon,
 } from '@/components/ui/icons';
 import { useIsFirstTime } from '@/lib/hooks/use-is-first-time';
+import { useImmersiveMode } from '@/lib/hooks/use-is-immersive';
 import { translate } from '@/lib/i18n';
+
+function AnimatedTabBar(props: BottomTabBarProps) {
+  const isImmersive = useImmersiveMode(s => s.isImmersive);
+
+  if (isImmersive)
+    return null;
+
+  return (
+    <Animated.View entering={FadeInDown.duration(200)} exiting={FadeOutDown.duration(200)}>
+      <BottomTabBar {...props} />
+    </Animated.View>
+  );
+}
 
 export default function TabLayout() {
   const [isFirstTime] = useIsFirstTime();
@@ -27,8 +44,9 @@ export default function TabLayout() {
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
   }
+
   return (
-    <Tabs>
+    <Tabs tabBar={props => <AnimatedTabBar {...props} />}>
       <Tabs.Screen
         name="standards"
         options={{
