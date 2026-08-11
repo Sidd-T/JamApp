@@ -4,6 +4,7 @@ import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -36,6 +37,10 @@ SplashScreen.setOptions({
 });
 
 export default function RootLayout() {
+  useEffect(() => {
+    void SplashScreen.hideAsync();
+  }, []);
+
   return (
     <Providers>
       <Stack>
