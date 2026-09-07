@@ -8,6 +8,7 @@
     "editTitle": "곡 편집",
     "emptyState": "아직 곡이 없습니다.\n첫 곡을 만들어 시작해보세요!",
     "form": {
+      "emptyChordPlaceholder": "+ 코드",
       "keyLabel": "조성",
       "keyPlaceholder": "C, F, Bm",
       "modeEndings": "엔딩",
@@ -99,6 +100,7 @@
     "namePlaceholder": "이름을 입력하세요",
     "privacy": "개인정보 처리방침",
     "rate": "평가하기",
+    "returnToWelcome": "환영 화면으로 돌아가기",
     "share": "공유",
     "support": "지원",
     "support_us": "후원하기",

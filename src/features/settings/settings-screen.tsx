@@ -1,4 +1,5 @@
 import Env from 'env';
+import { useRouter } from 'expo-router';
 import * as StoreReview from 'expo-store-review';
 import * as React from 'react';
 import { Platform, Share as RNShare } from 'react-native';
@@ -12,7 +13,7 @@ import {
   Text,
   View,
 } from '@/components/ui';
-import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { Github, Home, Rate, Share, Support, Website } from '@/components/ui/icons';
 import { useProfileStore } from '@/lib/hooks/use-profile';
 import { openBrowser, translate } from '@/lib/i18n';
 import { LanguageItem } from './components/language-item';
@@ -21,6 +22,7 @@ import { SettingsItem } from './components/settings-item';
 import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
+  const router = useRouter();
   const { theme } = useUniwind();
   const profileName = useProfileStore.use.name();
   const setProfileName = useProfileStore.use.setName();
@@ -120,6 +122,11 @@ export function SettingsScreen() {
               text="settings.website"
               icon={<Website color={iconColor} />}
               onPress={() => { openBrowser('https://spades.top'); }}
+            />
+            <SettingsItem
+              text="settings.returnToWelcome"
+              icon={<Home color={iconColor} />}
+              onPress={() => { router.replace('/onboarding'); }}
             />
           </SettingsContainer>
 

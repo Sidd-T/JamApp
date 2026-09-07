@@ -42,24 +42,22 @@ export function ChordKeyboard({
     <View className="mt-0.5 gap-0.5">
 
       {/* Numbers + backspace */}
-      <View className="flex-row items-center justify-between">
-        <View className="flex-1 flex-row flex-wrap">
-          {NUMBERS.map(n => (
-            <Button
-              key={n}
-              label={n}
-              onPress={() => {
-                insertAtCursor(n);
-                inputRef.current?.focus();
-              }}
-              variant="outline"
-              size="sm"
-              fullWidth={false}
-              className={KEY_CLASS}
-              textClassName={KEY_TEXT_CLASS}
-            />
-          ))}
-        </View>
+      <View className="flex-row items-center justify-center gap-0.5">
+        {NUMBERS.map(n => (
+          <Button
+            key={n}
+            label={n}
+            onPress={() => {
+              insertAtCursor(n);
+              inputRef.current?.focus();
+            }}
+            variant="outline"
+            size="sm"
+            fullWidth={false}
+            className={KEY_CLASS}
+            textClassName={KEY_TEXT_CLASS}
+          />
+        ))}
 
         <Button
           label="⌫"
@@ -168,8 +166,8 @@ export function ChordKeyboard({
           fullWidth={false}
           className={
             beatIndex <= 0
-              ? 'min-w-[22%] bg-neutral-300 opacity-50'
-              : `min-w-[22%] ${KEY_CLASS}`
+              ? 'bg-neutral-300 opacity-50'
+              : `${KEY_CLASS}`
           }
           textClassName={KEY_TEXT_CLASS}
         />
@@ -179,7 +177,6 @@ export function ChordKeyboard({
           variant="secondary"
           size="sm"
           fullWidth={false}
-          className="min-w-[22%]"
           textClassName="text-lg"
         />
       </View>

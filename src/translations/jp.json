@@ -8,6 +8,7 @@
     "editTitle": "曲を編集",
     "emptyState": "まだ曲がありません。\n最初の曲を作成して始めましょう！",
     "form": {
+      "emptyChordPlaceholder": "+ コード",
       "keyLabel": "キー",
       "keyPlaceholder": "C, F, Bm",
       "modeEndings": "エンディング",
@@ -99,6 +100,7 @@
     "namePlaceholder": "名前を入力してください",
     "privacy": "プライバシーポリシー",
     "rate": "評価する",
+    "returnToWelcome": "ウェルカム画面に戻る",
     "share": "共有",
     "support": "サポート",
     "support_us": "私たちを応援する",

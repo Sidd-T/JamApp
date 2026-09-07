@@ -49,7 +49,7 @@ export function SectionChordKeyboard({
     <View className="border-t border-neutral-300 bg-neutral-200 px-2 dark:border-neutral-800 dark:bg-black">
 
       {/* Header */}
-      <View className="flex-row items-center justify-between">
+      <View className="mx-auto flex-row items-center justify-between">
         <Text className="ml-2 text-base font-semibold text-black dark:text-white">
           {barLabel}
           :

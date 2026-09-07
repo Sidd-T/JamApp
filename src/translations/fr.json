@@ -8,6 +8,7 @@
     "editTitle": "Modifier le morceau",
     "emptyState": "Aucun morceau pour le moment.\nCréez votre premier morceau pour commencer !",
     "form": {
+      "emptyChordPlaceholder": "+ accord",
       "keyLabel": "Tonalité",
       "keyPlaceholder": "C, F, Bm",
       "modeEndings": "Fins",
@@ -99,6 +100,7 @@
     "namePlaceholder": "Entrez votre nom",
     "privacy": "Politique de confidentialité",
     "rate": "Noter",
+    "returnToWelcome": "Retour à l'accueil",
     "share": "Partager",
     "support": "Support",
     "support_us": "Nous soutenir",

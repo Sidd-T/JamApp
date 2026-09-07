@@ -228,7 +228,7 @@ export function SongFormScreen({
     <View className="flex-1 bg-white dark:bg-black">
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        className="flex-1 px-4 pt-4"
+        className="flex-1 px-3 pt-4"
         contentContainerClassName="pb-6"
       >
         <SongFormFields

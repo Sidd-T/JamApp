@@ -8,6 +8,7 @@
     "editTitle": "Edit Song",
     "emptyState": "No songs yet.\nCreate your first song to get started!",
     "form": {
+      "emptyChordPlaceholder": "+ chord",
       "keyLabel": "Key",
       "keyPlaceholder": "C, F, Bm",
       "modeEndings": "Endings",
@@ -99,6 +100,7 @@
     "namePlaceholder": "Enter your name",
     "privacy": "Privacy Policy",
     "rate": "Rate",
+    "returnToWelcome": "Return to Welcome",
     "share": "Share",
     "support": "Support",
     "support_us": "Support Us",

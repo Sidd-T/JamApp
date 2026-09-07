@@ -8,6 +8,7 @@
     "editTitle": "編輯曲目",
     "emptyState": "還沒有曲目。\n建立你的第一首曲目開始吧！",
     "form": {
+      "emptyChordPlaceholder": "+ 和弦",
       "keyLabel": "調號",
       "keyPlaceholder": "C, F, Bm",
       "modeEndings": "結尾",
@@ -99,6 +100,7 @@
     "namePlaceholder": "請輸入你的姓名",
     "privacy": "隱私政策",
     "rate": "評分",
+    "returnToWelcome": "返回歡迎頁",
     "share": "分享",
     "support": "支援",
     "support_us": "支持我們",

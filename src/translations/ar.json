@@ -8,6 +8,7 @@
     "editTitle": "تعديل الأغنية",
     "emptyState": "لا توجد أغاني بعد.\nأنشئ أغنيتك الأولى للبدء!",
     "form": {
+      "emptyChordPlaceholder": "+ وتر",
       "keyLabel": "المفتاح",
       "keyPlaceholder": "C، F، Bm",
       "modeEndings": "النهايات",
@@ -99,6 +100,7 @@
     "namePlaceholder": "أدخل اسمك",
     "privacy": "سياسة الخصوصية",
     "rate": "تقييم",
+    "returnToWelcome": "العودة إلى الواجهة الترحيبية",
     "share": "شارك",
     "support": "الدعم",
     "support_us": "ادعمنا",
