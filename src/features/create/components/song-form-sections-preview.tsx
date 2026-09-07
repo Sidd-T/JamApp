@@ -62,7 +62,7 @@ function SectionRow({
   const isEditingThisSection = activeTarget?.sectionIndex === index;
 
   return (
-    <View>
+    <View className="mb-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-md dark:border-neutral-700 dark:bg-neutral-800 dark:shadow-neutral-950/20">
       <View className="mb-2 flex-row items-center justify-between gap-2">
         <View className="flex-1 flex-row items-center gap-2">
           <Pressable
@@ -204,12 +204,12 @@ export function SongFormSectionsPreview({
   onAddSection,
 }: SongFormSectionsPreviewProps) {
   return (
-    <View className="border-t border-neutral-200 py-3 dark:border-neutral-800">
+    <View className="border-t border-neutral-200 py-2 dark:border-neutral-800">
       <Text className="mb-2 text-lg text-neutral-500 dark:text-neutral-300">
         {translate('create.form.sectionsTitle')}
       </Text>
 
-      <View className="shrink-0 flex-col rounded-sm bg-neutral-50 p-2 dark:bg-neutral-900">
+      <View className="shrink-0 flex-col rounded-xl border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-700 dark:bg-neutral-900">
         {sections.map((section, i) => (
           <SectionRow
             key={`section-preview-${i}-out-of-${(sections?.length)}-${section.Label}-${section.MainSegment?.Chords}`}
@@ -231,9 +231,9 @@ export function SongFormSectionsPreview({
 
       <Pressable
         onPress={onAddSection}
-        className="mt-3 items-center justify-center rounded-lg border-2 border-dashed border-neutral-600 py-4 dark:border-neutral-400"
+        className="mt-3 items-center justify-center rounded-lg border border-dashed border-neutral-300 bg-neutral-100/80 py-4 dark:border-neutral-700 dark:bg-neutral-800/80"
       >
-        <Text className="text-2xl text-neutral-600 dark:text-neutral-400">+</Text>
+        <Text className="text-2xl text-neutral-500 dark:text-neutral-400">+</Text>
       </Pressable>
     </View>
   );

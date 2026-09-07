@@ -2,6 +2,7 @@ import type { SegmentRef } from '../standards';
 import { Pressable, View } from 'react-native';
 import { Text } from '@/components/ui';
 import { beatsPerBar } from '@/features/standards/helpers/bar-beats';
+import { translate } from '@/lib/i18n';
 import { PressableBar } from './pressable-bar';
 
 // ── Shared beat grid ─────────────────────────────────────────────────────────
@@ -78,7 +79,7 @@ export function EmptyMainSegment({
   return (
     <PressableBar onPress={onBarPress ? () => onBarPress(mainSegmentRef, 0) : undefined}>
       <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-        <Text className="text-base text-neutral-400 dark:text-neutral-600">+ chord</Text>
+        <Text className="text-base text-primary-800 dark:text-primary-200">{translate('create.form.emptyChordPlaceholder')}</Text>
       </View>
     </PressableBar>
   );
@@ -123,7 +124,7 @@ export function EmptyEndingSegment({
   return (
     <PressableBar onPress={onBarPress ? () => onBarPress(endingRef, 0) : undefined}>
       <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-        <Text className="text-base text-neutral-400 dark:text-neutral-600">+ chord</Text>
+        <Text className="text-base text-neutral-400 dark:text-neutral-600">{translate('create.form.emptyChordPlaceholder')}</Text>
       </View>
     </PressableBar>
   );

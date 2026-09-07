@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TextInput, useColorScheme, View } from 'react-native';
+import { TextInput, View } from 'react-native';
+import { useThemeConfig } from '@/components/ui/use-theme-config';
 
 type Selection = {
   start: number;
@@ -14,7 +15,8 @@ type Props = {
 };
 
 export function ChordInput({ ref, value, selection, onChangeText, onSelectionChange }: Props & { ref?: React.RefObject<TextInput | null> }) {
-  const isDark = useColorScheme() === 'dark';
+  const theme = useThemeConfig();
+  const isDark = theme.dark;
 
   return (
     <View
@@ -48,7 +50,7 @@ export function ChordInput({ ref, value, selection, onChangeText, onSelectionCha
         autoCorrect={false}
         autoCapitalize="none"
         multiline={false}
-        className="-my-2 font-mono text-lg text-black dark:text-white"
+        className="xs:-my-2 font-mono text-lg text-black dark:text-white"
       />
     </View>
   );
