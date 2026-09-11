@@ -2,10 +2,11 @@ import { Stack, useRouter } from 'expo-router';
 import * as React from 'react';
 import { Pressable } from 'react-native';
 
-import { ArrowRight } from '@/components/ui/icons';
+import { ArrowRight, Link as LinkIcon } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { useSetlistNavigation } from '@/lib/hooks/use-setlist-navigation';
 import { translate } from '@/lib/i18n';
+import { openLinkInBrowser } from '@/lib/utils';
 
 export default function StandardsLayout() {
   const theme = useThemeConfig();
@@ -48,6 +49,19 @@ export default function StandardsLayout() {
             headerBackTitle: translate('standards.detail.back'),
             headerTitleAlign: 'center',
             headerBackVisible: !navigateBackToRoom,
+            headerRight: routeParams.realBookPage
+              ? () => (
+                  <Pressable
+                    accessibilityLabel="Open Real Book page"
+                    hitSlop={8}
+                    onPress={() => openLinkInBrowser(
+                      `https://archive.org/details/The_Real_Book_Sixth_Edition_volume_1/page/n${Number(routeParams.realBookPage) + 1}/mode/1up`,
+                    )}
+                  >
+                    <LinkIcon color={theme.colors.text} />
+                  </Pressable>
+                )
+              : undefined,
             headerLeft: navigateBackToRoom
               ? () => (
                   <Pressable

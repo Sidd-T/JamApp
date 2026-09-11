@@ -28,7 +28,6 @@ export function SectionDisplay({
   onBeatPress,
 }: SectionDisplayProps) {
   const label = section.Label || `${index + 1}`;
-  const hasEndings = section.Endings !== undefined;
   const hasEndingItems = !!section.Endings && section.Endings.length > 0;
   const rawMainChords = section.MainSegment?.Chords ?? '';
   const hasMainChords = !isEmptyChords(rawMainChords);
@@ -37,7 +36,7 @@ export function SectionDisplay({
   const mainSegmentRef: SegmentRef = { segment: 'main' };
   const isMainActive = activeSegment?.segment === 'main';
 
-  const repeatValue = !hasEndings ? (section.Repeat ?? 0) : 0;
+  const repeatValue = section.Repeat ?? section.Repeats ?? 0;
   const showRepeat = repeatValue >= 1;
 
   // ── Bar layout ─────────────────────────────────────────────────────────────
@@ -137,6 +136,7 @@ export function SectionDisplay({
             onBarPress={onBarPress}
             onBeatPress={onBeatPress}
             endingFits={endingFits}
+            repeat={showRepeat ? repeatValue : undefined}
           />
         </View>
       );
@@ -210,6 +210,7 @@ export function SectionDisplay({
           onBarPress={onBarPress}
           onBeatPress={onBeatPress}
           endingFits={endingFits}
+          repeat={showRepeat ? repeatValue : undefined}
         />
       )}
     </View>

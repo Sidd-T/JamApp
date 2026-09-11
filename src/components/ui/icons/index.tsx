@@ -8,6 +8,7 @@ export * from './filter';
 export * from './github';
 export * from './home';
 export * from './language';
+export * from './link';
 export * from './music-list';
 export * from './people';
 export * from './rate';

@@ -20,7 +20,7 @@ export function BarLineEnd({ repeat }: BarLineEndProps) {
           <Text className="text-2xl/5 font-bold text-black dark:text-white">:</Text>
         </View>
       </View>
-      <View className="flex-row gap-0.5">
+      <View className="flex-row gap-0.5 self-stretch">
         <BarLine />
         <BarLine />
       </View>
