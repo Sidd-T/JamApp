@@ -9,6 +9,7 @@ const ChordSegmentSchema = z.object({
 const SectionSchema = z.object({
   Label: z.string().optional(),
   Repeat: z.number().int().positive().optional(),
+  Repeats: z.number().int().positive().optional(),
   MainSegment: ChordSegmentSchema.optional(),
   Endings: z.array(ChordSegmentSchema).optional(),
 });

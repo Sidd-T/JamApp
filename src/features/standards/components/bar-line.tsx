@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 /** A vertical bar line — 1px wide, full height of its container. */
 export function BarLine() {
-  return <View className="w-px bg-black dark:bg-white" />;
+  return <View className="w-px self-stretch bg-black dark:bg-white" />;
 }
 
 /** A horizontal bar line — 1px tall, full width of its container. */

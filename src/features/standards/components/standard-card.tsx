@@ -2,8 +2,10 @@ import type { Song } from '../standards';
 import { Pressable, View } from 'react-native';
 import { Button, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
-import { Support } from '@/components/ui/icons';
+import { Link as LinkIcon, Support } from '@/components/ui/icons';
+import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { translate } from '@/lib/i18n';
+import { openLinkInBrowser } from '@/lib/utils';
 
 type StandardCardProps = {
   standard: Song;
@@ -22,6 +24,8 @@ export function StandardCard({
   isFavourite = false,
   onToggleFavourite,
 }: StandardCardProps) {
+  const theme = useThemeConfig();
+  const realBookPage = standard.RealBookPage;
   const favouriteColor = isFavourite ? colors.primary[600] : colors.neutral[500];
   const favouriteFill = isFavourite ? colors.primary[600] : 'none';
   return (
@@ -36,9 +40,26 @@ export function StandardCard({
 
           {/* Left: all text content */}
           <View className="flex-1">
-            <Text className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">
-              {standard.Title}
-            </Text>
+            <View className="mb-1 flex-row items-center">
+              <Text className="shrink text-lg font-semibold text-neutral-900 dark:text-white">
+                {standard.Title}
+              </Text>
+              {realBookPage && (
+                <Pressable
+                  accessibilityLabel="Open Real Book page"
+                  hitSlop={8}
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    openLinkInBrowser(
+                      `https://archive.org/details/The_Real_Book_Sixth_Edition_volume_1/page/n${realBookPage + 1}/mode/1up`,
+                    );
+                  }}
+                  className="ml-2"
+                >
+                  <LinkIcon color={theme.colors.text} />
+                </Pressable>
+              )}
+            </View>
             <Text className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
               {standard.Composer}
             </Text>

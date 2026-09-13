@@ -8,6 +8,7 @@ import { Text } from '@/components/ui/text';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { useSetlistNavigation } from '@/lib/hooks/use-setlist-navigation';
 import { translate } from '@/lib/i18n';
+import { findStandardById } from '../standards/standards';
 import { hydrateJams, leaveRoom, removeSetlistSong, useJamsStore } from './use-jams-store';
 
 export function JamRoomScreen() {
@@ -57,8 +58,9 @@ export function JamRoomScreen() {
 
   const handleSetlistEntryPress = (songId: string, title: string) => {
     markFromSetlist(); // set global flag for return nav
+    const realBookPage = findStandardById(songId)?.RealBookPage;
     router.push(
-      `/standards/${encodeURIComponent(songId)}?title=${encodeURIComponent(title)}&returnTo=room&roomId=${encodeURIComponent(currentRoom?.id ?? '')}&roomName=${encodeURIComponent(currentRoom?.name ?? '')}`,
+      `/standards/${encodeURIComponent(songId)}?title=${encodeURIComponent(title)}${realBookPage ? `&realBookPage=${realBookPage}` : ''}&returnTo=room&roomId=${encodeURIComponent(currentRoom?.id ?? '')}&roomName=${encodeURIComponent(currentRoom?.name ?? '')}`,
     );
   };
 

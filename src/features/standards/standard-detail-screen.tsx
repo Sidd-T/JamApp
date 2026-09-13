@@ -39,7 +39,7 @@ export function StandardDetailScreen() {
   if (!standard) {
     return (
       <View className="flex-1 items-center justify-center bg-white dark:bg-neutral-950">
-        <Text className="text-neutral-600 dark:text-neutral-400">Standard not found</Text>
+        <Text className="text-neutral-600 dark:text-neutral-400">404</Text>
       </View>
     );
   }

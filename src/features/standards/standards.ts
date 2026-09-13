@@ -12,6 +12,7 @@ export type Ending = {
 export type Section = {
   Label?: string;
   Repeat?: number; // was: boolean
+  Repeats?: number; // legacy field used by bundled standards
   MainSegment?: { Chords: string };
   Endings?: { Chords: string }[];
 };
@@ -20,6 +21,7 @@ export type Song = {
   id: string; // UUID for user-created songs, or title-based for jazz-standards
   Title: string;
   Composer: string;
+  RealBookPage?: number;
   Key?: string;
   Rhythm?: string;
   TimeSignature?: string;

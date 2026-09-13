@@ -16,6 +16,7 @@ type EndingsCommonProps = {
   onBarPress?: (segment: SegmentRef, localIndex: number) => void;
   onBeatPress?: (segment: SegmentRef, barLocalIndex: number, beatIndex: number) => void;
   endingFits: boolean[];
+  repeat?: number;
 };
 
 function endingActiveBar(
@@ -52,6 +53,7 @@ function Ending({ ending, endingIndex, endingCount, sectionIndex, props, showOpe
     activeBeatIndex,
     onBarPress,
     onBeatPress,
+    repeat,
   } = props;
 
   const endingRef: SegmentRef = { segment: 'ending', endingIndex };
@@ -84,7 +86,7 @@ function Ending({ ending, endingIndex, endingCount, sectionIndex, props, showOpe
       <ChordDisplay
         chordString={ending.Chords}
         timeSignature={timeSignature}
-        repeat={undefined} // no repeat for endings
+        repeat={isLastEnding ? repeat : 1}
         editMode={editMode}
         activeBarLocalIndex={endingActiveBar(endingIndex, activeSegment, activeBarLocalIndex)}
         activeBeatIndex={activeBeatIndex}
