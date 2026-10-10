@@ -75,11 +75,11 @@
   },
   "onboarding": {
     "cta": "开始吧",
-    "message": "JamTime",
+    "message": "OpenChord",
     "namePlaceholder": "姓名",
     "namePrompt": "继续之前请输入姓名：",
     "subtitle": "开源、跨平台的Real Book与即兴演奏应用",
-    "title": "JamTime"
+    "title": "OpenChord"
   },
   "settings": {
     "about": "关于",
@@ -143,5 +143,5 @@
     },
     "title": "标准曲"
   },
-  "welcome": "欢迎使用 JamTime"
+  "welcome": "欢迎使用 OpenChord"
 }

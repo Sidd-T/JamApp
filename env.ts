@@ -24,24 +24,24 @@ const EXPO_PUBLIC_APP_ENV = (process.env.EXPO_PUBLIC_APP_ENV
   ?? 'development') as z.infer<typeof envSchema>['EXPO_PUBLIC_APP_ENV'];
 
 const BUNDLE_IDS = {
-  development: 'com.jamtime.development',
-  preview: 'com.jamtime.preview',
-  production: 'com.jamtime',
+  development: 'com.openchord.development',
+  preview: 'com.openchord.preview',
+  production: 'com.openchord',
 } as const;
 
 const PACKAGES = {
-  development: 'com.jamtime.development',
-  preview: 'com.jamtime.preview',
-  production: 'com.jamtime',
+  development: 'com.openchord.development',
+  preview: 'com.openchord.preview',
+  production: 'com.openchord',
 } as const;
 
 const SCHEMES = {
-  development: 'JamTime',
-  preview: 'JamTime.preview',
-  production: 'JamTime',
+  development: 'OpenChord',
+  preview: 'OpenChord.preview',
+  production: 'OpenChord',
 } as const;
 
-const NAME = 'JamTime';
+const NAME = 'OpenChord';
 
 // Check if strict validation is required (before prebuild)
 const STRICT_ENV_VALIDATION = process.env.STRICT_ENV_VALIDATION === '1';

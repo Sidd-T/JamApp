@@ -97,14 +97,14 @@ export function JamsHomeScreen() {
   if (ready) {
     return (
       <ScrollView className="flex-1 bg-white px-4 py-6 dark:bg-neutral-900">
-        <View className="-mt-6">
-          <Text className="text-sm text-neutral-500 dark:text-neutral-400">{translate('jams.home.description')}</Text>
+        <View className="-mt-5">
+          <Text className="text-sm text-neutral-600 dark:text-neutral-300">{translate('jams.home.description')}</Text>
         </View>
 
         {!currentRoom || isCreating || isJoining
           ? (
               <View>
-                <Text className="py-4 text-xl font-bold text-black dark:text-white">{translate('jams.home.createRoomTitle')}</Text>
+                <Text className="pt-4 text-xl font-bold text-black dark:text-white">{translate('jams.home.createRoomTitle')}</Text>
                 <Input
                   label={translate('jams.home.roomNameLabel')}
                   value={roomName}
@@ -114,7 +114,7 @@ export function JamsHomeScreen() {
                 />
                 <Button label={translate('jams.home.createRoomButton')} onPress={handleCreateRoom} variant="secondary" disabled={isCreating} />
 
-                <Text className="py-4 text-xl font-bold text-black dark:text-white">{translate('jams.home.joinRoomTitle')}</Text>
+                <Text className="pt-4 text-xl font-bold text-black dark:text-white">{translate('jams.home.joinRoomTitle')}</Text>
                 <Input
                   label={translate('jams.home.roomCodeLabel')}
                   value={joinCode}
