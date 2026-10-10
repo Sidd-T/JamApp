@@ -78,7 +78,7 @@ export function StandardsScreen() {
             <FlashList
               data={filteredStandards}
               renderItem={({ item }) => (
-                <View className="px-4">
+                <View className="px-2">
                   <StandardCard
                     standard={item}
                     onPress={() => handleCardPress(item)}
@@ -91,7 +91,7 @@ export function StandardsScreen() {
               )}
               keyExtractor={item => item.Title}
               contentContainerStyle={pickMode ? { paddingBottom: 72 } : undefined}
-              className="pt-4"
+              className="pt-2"
             />
           )
         : (

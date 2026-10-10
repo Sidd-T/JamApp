@@ -75,11 +75,11 @@
   },
   "onboarding": {
     "cta": "はじめる",
-    "message": "JamTime",
+    "message": "OpenChord",
     "namePlaceholder": "名前",
     "namePrompt": "続ける前に名前を入力してください:",
     "subtitle": "オープンソースでクロスプラットフォームなリアルブック＆ジャムセッションアプリ",
-    "title": "JamTime"
+    "title": "OpenChord"
   },
   "settings": {
     "about": "アプリについて",
@@ -143,5 +143,5 @@
     },
     "title": "スタンダード"
   },
-  "welcome": "JamTimeへようこそ"
+  "welcome": "OpenChordへようこそ"
 }

@@ -79,7 +79,7 @@
     "namePlaceholder": "الاسم",
     "namePrompt": "أدخل الاسم قبل المتابعة:",
     "subtitle": "تطبيق مفتوح المصدر ومتعدد المنصات لكتاب الأغاني الحقيقي وجلسات الجاز",
-    "title": "JamTime"
+    "title": "OpenChord"
   },
   "settings": {
     "about": "حول التطبيق ",
@@ -143,5 +143,5 @@
     },
     "title": "المعايير"
   },
-  "welcome": "مرحبًا بك في JamTime"
+  "welcome": "مرحبًا بك في OpenChord"
 }

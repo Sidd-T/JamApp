@@ -75,11 +75,11 @@
   },
   "onboarding": {
     "cta": "Let's Get Started",
-    "message": "JamTime",
+    "message": "OpenChord",
     "namePlaceholder": "Name",
     "namePrompt": "Enter Name Before Continuing:",
     "subtitle": "Open source, cross-platform, Real Book and jam session app",
-    "title": "JamTime"
+    "title": "OpenChord"
   },
   "settings": {
     "about": "About",
@@ -143,5 +143,5 @@
     },
     "title": "Standards"
   },
-  "welcome": "Welcome to JamTime"
+  "welcome": "Welcome to OpenChord"
 }
