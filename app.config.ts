@@ -9,7 +9,7 @@ import 'tsx/cjs';
 import Env from './env';
 
 const EXPO_ACCOUNT_OWNER = 'sidd-t';
-const EAS_PROJECT_ID = '6124fa8b-88e9-4e91-813c-120e40bb17db';
+const EAS_PROJECT_ID = 'a2e082e0-1c34-4779-99ea-66b437e3731e';
 
 const appIconBadgeConfig: AppIconBadgeConfig = {
   enabled: Env.EXPO_PUBLIC_APP_ENV !== 'production',
