@@ -36,21 +36,17 @@ export function CreateScreen() {
   return (
     <View className="flex-1 bg-white dark:bg-neutral-800">
       <FocusAwareStatusBar />
-      <ScrollView
-        className="flex-1 bg-white dark:bg-neutral-800"
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <SafeAreaView className="flex-1">
-          <View className="-mt-8 px-4" style={{ backgroundColor: theme.colors.background }}>
-            {/* Header */}
-            <View className="mb-2">
-              <Text className="text-sm text-neutral-600 dark:text-neutral-300">{translate('create.headerSubtitle')}</Text>
-            </View>
+      <View className="bg-white px-4 dark:bg-charcoal-950">
+        {/* Header */}
+        <View className="mb-2">
+          <Text className="text-sm text-neutral-600 dark:text-neutral-300">{translate('create.headerSubtitle')}</Text>
+        </View>
 
-            {/* Add New Song Button */}
-            <Button label={translate('create.addNewSong')} onPress={handleAddPress} className="mt-0 mb-4" variant="secondary" />
-          </View>
-
+        {/* Add New Song Button */}
+        <Button label={translate('create.addNewSong')} onPress={handleAddPress} className="mt-0 mb-4" variant="secondary" />
+      </View>
+      <ScrollView className="flex-1 grow bg-white dark:bg-neutral-800">
+        <SafeAreaView className="flex-1" edges={['bottom']}>
           {/* Songs List or Empty State */}
           <View className="flex-1 bg-white dark:bg-neutral-800">
             {songs.length === 0
@@ -66,13 +62,13 @@ export function CreateScreen() {
                     {songs.map(song => (
                       <Pressable
                         key={song.id}
-                        className="rounded-md border border-neutral-200 bg-white p-2.5 dark:border-neutral-800 dark:bg-neutral-900"
+                        className="min-h-25 rounded-md border border-neutral-200 bg-white p-2.5 dark:border-neutral-800 dark:bg-neutral-900"
                         onPress={() => handleEditPress(song.id)}
                       >
                         {/* Song Header */}
                         <View className="mb-1.5 flex-row items-start justify-between">
                           <View className="flex-1 pr-2">
-                            <View className="mb-0.5 self-start border-b border-primary-700">
+                            <View className="mb-0.5 self-start border-b border-primary-800 dark:border-primary-300">
                               <Text className="text-base font-semibold text-neutral-900 dark:text-white">{song.Title}</Text>
                             </View>
                             <Text className="text-sm text-neutral-600 dark:text-neutral-400">{song.Composer}</Text>
@@ -147,8 +143,6 @@ export function CreateScreen() {
           </View>
         </SafeAreaView>
       </ScrollView>
-
-      {/* Song form is rendered as its own screen via routing */}
     </View>
   );
 }
