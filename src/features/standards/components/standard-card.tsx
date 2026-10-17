@@ -26,8 +26,8 @@ export function StandardCard({
 }: StandardCardProps) {
   const theme = useThemeConfig();
   const realBookPage = standard.RealBookPage;
-  const favouriteColor = isFavourite ? colors.primary[600] : colors.neutral[500];
-  const favouriteFill = isFavourite ? colors.primary[600] : 'none';
+  const favouriteColor = isFavourite ? colors.primary[300] : colors.neutral[500];
+  const favouriteFill = isFavourite ? colors.primary[300] : 'none';
   return (
     <Pressable onPress={onPress} className="flex-1">
       <View className={`mb-1 rounded-md border bg-white p-2.5 dark:bg-neutral-900 ${
@@ -39,7 +39,7 @@ export function StandardCard({
         <View className="flex-row items-stretch gap-3">
           <View className="min-w-0 flex-1">
             <View className="mb-0.5 flex-row items-center">
-              <View className="shrink border-b border-primary-700">
+              <View className="shrink border-b border-primary-800 dark:border-primary-100">
                 <Text className="text-base font-semibold text-neutral-900 dark:text-white">
                   {standard.Title}
                 </Text>

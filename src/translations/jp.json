@@ -75,11 +75,11 @@
   },
   "onboarding": {
     "cta": "はじめる",
-    "message": "OpenChord",
+    "message": "OpenChords",
     "namePlaceholder": "名前",
     "namePrompt": "続ける前に名前を入力してください:",
     "subtitle": "オープンソースでクロスプラットフォームなリアルブック＆ジャムセッションアプリ",
-    "title": "OpenChord"
+    "title": "OpenChords"
   },
   "settings": {
     "about": "アプリについて",
@@ -143,5 +143,5 @@
     },
     "title": "スタンダード"
   },
-  "welcome": "OpenChordへようこそ"
+  "welcome": "OpenChordsへようこそ"
 }

@@ -75,11 +75,11 @@
   },
   "onboarding": {
     "cta": "Allons-y !",
-    "message": "OpenChord",
+    "message": "OpenChords",
     "namePlaceholder": "Nom",
     "namePrompt": "Entrez votre nom avant de continuer :",
     "subtitle": "Application open source, multiplateforme, de Real Book et de jam sessions",
-    "title": "OpenChord"
+    "title": "OpenChords"
   },
   "settings": {
     "about": "À propos",
@@ -143,5 +143,5 @@
     },
     "title": "Standards"
   },
-  "welcome": "Bienvenue sur OpenChord"
+  "welcome": "Bienvenue sur OpenChords"
 }

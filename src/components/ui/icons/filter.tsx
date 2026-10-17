@@ -1,8 +1,9 @@
 import type { SvgProps } from 'react-native-svg';
 import Svg, { Path } from 'react-native-svg';
+import colors from '../colors';
 
 export function Filter({ color, active = false, ...props }: SvgProps & { active?: boolean }) {
-  const fillColor = active ? '#FF6C00' : (color || '#71717A');
+  const fillColor = active ? colors.primary[600] : (color || colors.neutral[500]);
   return (
     <Svg
       width={24}

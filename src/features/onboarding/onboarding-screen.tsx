@@ -22,13 +22,13 @@ export function OnboardingScreen() {
   const canContinue = profileName.trim().length > 0;
 
   return (
-    <View className="flex h-full items-center justify-center p-16">
+    <View className="flex h-full items-center justify-center p-8">
       <FocusAwareStatusBar />
       <View className="w-full flex-1">
         <Cover />
       </View>
       <View className="flex items-center justify-start px-6">
-        <Text className="my-3 text-center text-5xl font-bold">
+        <Text className="my-3 border-b-4 border-primary-400 text-center text-5xl font-bold">
           {translate('onboarding.title')}
         </Text>
         <Text className="mb-2 text-center text-lg text-neutral-600">
@@ -58,6 +58,7 @@ export function OnboardingScreen() {
             router.replace('/standards');
           }}
           disabled={!canContinue}
+          variant="secondary"
         />
       </SafeAreaView>
     </View>
