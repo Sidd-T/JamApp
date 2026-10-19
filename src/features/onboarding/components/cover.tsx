@@ -7,7 +7,7 @@ export function Cover() {
     <Image
       source={require('../../../../assets/open_chords_illustration.png')}
       contentFit="contain"
-      style={{ width: '100%', height: '100%' }}
+      className="size-full"
     />
   );
 }
