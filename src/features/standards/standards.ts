@@ -33,10 +33,14 @@ export type SongWithSource = Song & {
 };
 
 function getAllJazzStandards(): Song[] {
-  return (jazzStandards as Omit<Song, 'id'>[]).map(song => ({
-    ...song,
-    id: song.Title, // Use title as ID for built-in standards
-  }));
+  return (jazzStandards as Omit<Song, 'id'>[]).map((song) => {
+    const Title = song.Title.trim();
+    return {
+      ...song,
+      Title,
+      id: Title, // Use title as ID for built-in standards
+    };
+  });
 }
 
 export function getAllStandards(userSongs: Song[] = []): Song[] {
@@ -44,11 +48,14 @@ export function getAllStandards(userSongs: Song[] = []): Song[] {
 }
 
 export function findStandardByTitle(title: string, userSongs: Song[] = []): Song | undefined {
-  return getAllStandards(userSongs).find(song => song.Title === title);
+  const normalizedTitle = title.trim();
+  return getAllStandards(userSongs).find(song => song.Title === normalizedTitle);
 }
 
 export function findStandardById(id: string, userSongs: Song[] = []): Song | undefined {
-  return getAllStandards(userSongs).find(song => song.id === id);
+  const standards = getAllStandards(userSongs);
+  return standards.find(song => song.id === id)
+    ?? standards.find(song => song.id === id.trim());
 }
 
 export function getUniqueRhythms(userSongs: Song[] = []): string[] {
@@ -130,6 +137,10 @@ export function getUniqueSources(userSongs: Song[] = []): SongSource[] {
   return Array.from(sources);
 }
 
+export function isFavouriteSong(songId: string, favouriteSongIds: string[]): boolean {
+  return favouriteSongIds.some(id => id === songId || id.trim() === songId);
+}
+
 export function getFilteredStandards(
   filter: FilterState,
   userSongs: Song[] = [],
@@ -168,7 +179,7 @@ export function getFilteredStandards(
   }
 
   if (filter.showFavouritesOnly) {
-    results = results.filter(song => favoriteSongIds.includes(song.id));
+    results = results.filter(song => isFavouriteSong(song.id, favoriteSongIds));
   }
 
   return results;

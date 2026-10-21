@@ -8,6 +8,7 @@ import { Button, Text } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 import { addSetlistSong, removeSetlistSong, useJamsStore } from '../jams/use-jams-store';
 import { StandardCard, StandardsFilter } from './components';
+import { isFavouriteSong } from './standards';
 import { useStandardsStore } from './use-standards-store';
 
 export function StandardsScreen() {
@@ -84,7 +85,7 @@ export function StandardsScreen() {
                     onPress={() => handleCardPress(item)}
                     onAdd={pickMode ? () => handleAddToSetlist(item) : undefined}
                     added={addedSongs.has(item.Title)}
-                    isFavourite={favouriteSongIds.includes(item.id)}
+                    isFavourite={isFavouriteSong(item.id, favouriteSongIds)}
                     onToggleFavourite={() => toggleFavourite(item.id)}
                   />
                 </View>

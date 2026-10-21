@@ -9,6 +9,7 @@ import {
   getUniqueRhythms,
   getUniqueSources,
   getUniqueTimeSignatures,
+  isFavouriteSong,
 } from './standards';
 
 const FAVORITES_STORAGE_KEY = 'standards_favourites';
@@ -117,9 +118,9 @@ export const useStandardsStore = create<StandardsStore>(set => ({
   toggleFavourite: (songId) => {
     set((state) => {
       const userSongs = useSongsStore.getState().songs;
-      const isFavourite = state.favouriteSongIds.includes(songId);
+      const isFavourite = isFavouriteSong(songId, state.favouriteSongIds);
       const favouriteSongIds = isFavourite
-        ? state.favouriteSongIds.filter(id => id !== songId)
+        ? state.favouriteSongIds.filter(id => id !== songId && id.trim() !== songId)
         : [...state.favouriteSongIds, songId];
 
       setItem(FAVORITES_STORAGE_KEY, favouriteSongIds);
