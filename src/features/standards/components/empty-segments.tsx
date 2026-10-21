@@ -43,6 +43,7 @@ function BeatGrid({ n, isActive, activeBeatIndex, onBeatPress }: BeatGridProps) 
 
 type EmptyMainSegmentProps = {
   timeSignature?: string;
+  createMode?: boolean;
   editMode: boolean;
   isMainActive: boolean;
   activeBarLocalIndex?: number;
@@ -55,6 +56,7 @@ const mainSegmentRef: SegmentRef = { segment: 'main' };
 
 export function EmptyMainSegment({
   timeSignature,
+  createMode = true,
   editMode,
   isMainActive,
   activeBarLocalIndex,
@@ -78,7 +80,7 @@ export function EmptyMainSegment({
 
   return (
     <>
-      {editMode
+      {createMode
         ? (
             <PressableBar onPress={onBarPress ? () => onBarPress(mainSegmentRef, 0) : undefined}>
               <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">

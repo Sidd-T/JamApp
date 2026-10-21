@@ -15,6 +15,7 @@ type SectionDisplayProps = {
   activeBarLocalIndex?: number;
   activeBeatIndex?: number;
   onBeatPress?: (segment: SegmentRef, barLocalIndex: number, beatIndex: number) => void;
+  createMode?: boolean;
 };
 
 export function SectionDisplay({
@@ -26,6 +27,7 @@ export function SectionDisplay({
   activeBarLocalIndex,
   activeBeatIndex,
   onBeatPress,
+  createMode,
 }: SectionDisplayProps) {
   const label = section.Label || `${index + 1}`;
   const hasEndingItems = !!section.Endings && section.Endings.length > 0;
@@ -116,6 +118,7 @@ export function SectionDisplay({
               : (
                   <EmptyMainSegment
                     timeSignature={timeSignature}
+                    createMode={createMode}
                     editMode={editMode}
                     isMainActive={isMainActive}
                     activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
@@ -158,6 +161,7 @@ export function SectionDisplay({
     return (
       <EmptyMainSegment
         timeSignature={timeSignature}
+        createMode={createMode}
         editMode={editMode}
         isMainActive={isMainActive}
         activeBarLocalIndex={isMainActive ? activeBarLocalIndex : undefined}
