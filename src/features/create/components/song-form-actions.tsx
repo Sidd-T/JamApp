@@ -3,7 +3,15 @@ import { View } from 'react-native';
 import { Button } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 
-export function SongFormActions({ isLoading, isEditing, onCancel, onSave }: any) {
+type SongFormActionsProps = {
+  isLoading: boolean;
+  isEditing: boolean;
+  isSaveDisabled: boolean;
+  onCancel: () => void;
+  onSave: () => void;
+};
+
+export function SongFormActions({ isLoading, isEditing, isSaveDisabled, onCancel, onSave }: SongFormActionsProps) {
   return (
     <View className="flex-row gap-2">
       <Button
@@ -18,7 +26,7 @@ export function SongFormActions({ isLoading, isEditing, onCancel, onSave }: any)
         onPress={onSave}
         variant="secondary"
         className="flex-1"
-        disabled={isLoading}
+        disabled={isLoading || isSaveDisabled}
       />
     </View>
   );

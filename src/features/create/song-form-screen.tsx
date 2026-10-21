@@ -55,16 +55,20 @@ export function SongFormScreen({
   const [activeTarget, setActiveTarget] = useState<ActiveTarget>(null);
 
   const isEditing = !!song;
+  const requiredFields = [
+    'Title',
+    'Key',
+    'Rhythm',
+    'TimeSignature',
+  ] as const;
+  const isSaveDisabled = requiredFields.some((field) => {
+    const value = formData[field];
+    return typeof value !== 'string' || !value.trim();
+  });
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    const stringFields: (keyof Omit<Song, 'id'>)[] = [
-      'Title',
-      'Key',
-      'Rhythm',
-      'TimeSignature',
-    ];
-    stringFields.forEach((field) => {
+    requiredFields.forEach((field) => {
       const value = formData[field];
       if (typeof value !== 'string' || !value.trim()) {
         newErrors[field] = `${field} is required`;
@@ -259,6 +263,7 @@ export function SongFormScreen({
         <SongFormActions
           isLoading={isLoading}
           isEditing={isEditing}
+          isSaveDisabled={isSaveDisabled}
           onCancel={onCancel}
           onSave={handleSave}
         />
