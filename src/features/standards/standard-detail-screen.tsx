@@ -85,6 +85,7 @@ export function StandardDetailScreen() {
                   section={section}
                   index={index}
                   timeSignature={standard.TimeSignature}
+                  createMode={false}
                 />
               ))}
             </View>
