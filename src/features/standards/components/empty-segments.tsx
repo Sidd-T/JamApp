@@ -77,11 +77,18 @@ export function EmptyMainSegment({
   }
 
   return (
-    <PressableBar onPress={onBarPress ? () => onBarPress(mainSegmentRef, 0) : undefined}>
-      <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
-        <Text className="text-base text-primary-800 dark:text-primary-200">{translate('create.form.emptyChordPlaceholder')}</Text>
-      </View>
-    </PressableBar>
+    <>
+      {editMode
+        ? (
+            <PressableBar onPress={onBarPress ? () => onBarPress(mainSegmentRef, 0) : undefined}>
+              <View className="min-h-10 flex-1 items-start justify-center px-1 py-2">
+                <Text className="text-base text-primary-800 dark:text-primary-200">{translate('create.form.emptyChordPlaceholder')}</Text>
+              </View>
+            </PressableBar>
+          )
+        : <View className="min-h-2" />}
+    </>
+
   );
 }
 
