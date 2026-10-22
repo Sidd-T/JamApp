@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
-import { colors } from '@/components/ui';
+import { colors, FocusAwareStatusBar } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Trash, User } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
@@ -71,6 +71,7 @@ export function JamRoomScreen() {
   if (!ready) {
     return (
       <View className="flex-1 items-center justify-center bg-white dark:bg-black">
+        <FocusAwareStatusBar />
         <Text className="text-base text-neutral-600 dark:text-neutral-300">{translate('jams.room.loading')}</Text>
       </View>
     );
@@ -79,6 +80,7 @@ export function JamRoomScreen() {
   if (!currentRoom || currentRoom.id !== roomId) {
     return (
       <View className="flex-1 items-center justify-center bg-white px-4 dark:bg-black">
+        <FocusAwareStatusBar />
         <Text className="text-center text-lg font-semibold text-black dark:text-white">{translate('jams.room.notFoundTitle')}</Text>
         <Text className="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">
           {translate('jams.room.notFoundDescription')}
@@ -90,6 +92,7 @@ export function JamRoomScreen() {
 
   return (
     <ScrollView className="flex-1 bg-white p-4 dark:bg-black">
+      <FocusAwareStatusBar />
       {/* Header: code + host + leave */}
       <View className="items-center">
         <Text className="text-xs font-medium tracking-widest text-neutral-400 uppercase dark:text-neutral-500">

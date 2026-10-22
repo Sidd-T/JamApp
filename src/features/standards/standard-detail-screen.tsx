@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp, LinearTransition } from 'react-native-reanimated';
 
-import { Text } from '@/components/ui';
+import { FocusAwareStatusBar, Text } from '@/components/ui';
 import { useJamsStore } from '@/features/jams/use-jams-store';
 import { useImmersiveMode } from '@/lib/hooks/use-is-immersive';
 import { SectionDisplay, TransposeControl } from './components';
@@ -39,6 +39,7 @@ export function StandardDetailScreen() {
   if (!standard) {
     return (
       <View className="flex-1 items-center justify-center bg-white dark:bg-neutral-950">
+        <FocusAwareStatusBar />
         <Text className="text-neutral-600 dark:text-neutral-400">404</Text>
       </View>
     );
@@ -46,6 +47,7 @@ export function StandardDetailScreen() {
 
   return (
     <View className="flex-1 bg-white dark:bg-black">
+      <FocusAwareStatusBar />
       {!isImmersive && (
         <Animated.View
           entering={FadeInUp.duration(200)}

@@ -1,6 +1,7 @@
 import type { ActiveTarget, Section, Song } from '@/features/standards/standards';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { FocusAwareStatusBar } from '@/components/ui';
 import { useProfileStore } from '@/lib/hooks/use-profile';
 import {
   SongFormActions,
@@ -230,6 +231,7 @@ export function SongFormScreen({
 
   return (
     <View className="flex-1 bg-white dark:bg-black">
+      <FocusAwareStatusBar />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         className="flex-1 px-3 pt-4"

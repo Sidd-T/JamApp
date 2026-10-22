@@ -4,7 +4,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import { Button, Text } from '@/components/ui';
+import { Button, FocusAwareStatusBar, Text } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 import { addSetlistSong, removeSetlistSong, useJamsStore } from '../jams/use-jams-store';
 import { StandardCard, StandardsFilter } from './components';
@@ -59,6 +59,7 @@ export function StandardsScreen() {
 
   return (
     <View className="flex-1 bg-white dark:bg-neutral-800">
+      <FocusAwareStatusBar />
       <StandardsFilter
         searchTerm={filter.searchTerm}
         onSearchChange={setSearchTerm}

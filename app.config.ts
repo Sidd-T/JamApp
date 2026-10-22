@@ -58,6 +58,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#2E3C4B',
     },
+    edgeToEdgeEnabled: true,
     package: Env.EXPO_PUBLIC_PACKAGE,
   },
   web: {
@@ -115,7 +116,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-router',
     'expo-web-browser',
     ['app-icon-badge', appIconBadgeConfig],
-    ['react-native-edge-to-edge'],
     './plugins/with-short-cmake-path.js',
   ],
   extra: {
