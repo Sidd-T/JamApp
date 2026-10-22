@@ -51,7 +51,7 @@ export function CreateScreen() {
           <View className="flex-1 bg-white dark:bg-neutral-800">
             {songs.length === 0
               ? (
-                  <View className="mx-2 flex-1 items-center justify-center rounded-lg border border-dashed border-neutral-300 py-12">
+                  <View className="mx-2 mt-4 flex-1 items-center justify-center rounded-lg border border-dashed border-neutral-300 py-12">
                     <Text className="text-center text-neutral-500">
                       {translate('create.emptyState')}
                     </Text>
