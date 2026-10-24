@@ -92,6 +92,10 @@ export function SettingsScreen() {
               text="settings.version"
               value={Env.EXPO_PUBLIC_VERSION}
             />
+            <SettingsItem
+              text="settings.privacy"
+              onPress={() => { router.push('/privacy'); }}
+            />
           </SettingsContainer>
 
           <SettingsContainer title="settings.support">

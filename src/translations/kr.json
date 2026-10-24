@@ -81,6 +81,15 @@
     "subtitle": "오픈소스, 크로스플랫폼 리얼북 & 잼 세션 앱",
     "title": "OpenChords"
   },
+  "privacy": {
+    "contactLink": "문의해 주세요",
+    "contactPrompt": "질문이나 우려 사항이 있으면 언제든지",
+    "contactTitle": "문의",
+    "information": "OpenChords는 개인정보를 수집하거나 인터넷에 연결하지 않습니다. 작성한 코드 시트는 기기에만 존재하며 다른 곳에는 저장되지 않습니다. 곡 데이터도 기기에만 로컬로 저장됩니다.",
+    "informationTitle": "어떤 정보를 수집하나요?",
+    "intro": "OpenChords는 개인정보를 수집하는 데 관심이 없습니다. 이러한 정보는 오직 사용자에게만 속한다고 믿습니다. 개인정보를 저장하거나 전송하지 않으며, 제3자와 통신하는 광고 또는 분석 소프트웨어도 포함하지 않습니다.",
+    "title": "개인정보 처리방침"
+  },
   "settings": {
     "about": "정보",
     "app_name": "앱 이름",

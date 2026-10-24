@@ -15,6 +15,7 @@ import { hydrateSongs } from '@/features/create/use-songs-store';
 import { APIProvider } from '@/lib/api';
 import { hydrateProfile } from '@/lib/hooks/use-profile';
 import { loadSelectedTheme } from '@/lib/hooks/use-selected-theme';
+import { translate } from '@/lib/i18n';
 // Import  global CSS file
 import '../global.css';
 
@@ -46,6 +47,13 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="privacy"
+          options={{
+            title: translate('privacy.title'),
+            headerShadowVisible: false,
+          }}
+        />
       </Stack>
     </Providers>
   );
