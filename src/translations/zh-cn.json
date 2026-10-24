@@ -81,6 +81,15 @@
     "subtitle": "开源、跨平台的Real Book与即兴演奏应用",
     "title": "OpenChords"
   },
+  "privacy": {
+    "contactLink": "联系我",
+    "contactPrompt": "如有任何问题或疑虑，请随时",
+    "contactTitle": "联系方式",
+    "information": "OpenChords 不会收集任何个人信息，也不会连接互联网。你创建的和弦谱仅存在于你的设备上，不会存放在其他地方。歌曲数据也仅存储在你的设备本地。",
+    "informationTitle": "我们会收集哪些信息？",
+    "intro": "OpenChords 无意收集任何个人信息。我们相信这些信息只属于你自己。我们不会存储或传输你的个人信息，也不包含会与第三方通信的广告或分析软件。",
+    "title": "隐私政策"
+  },
   "settings": {
     "about": "关于",
     "app_name": "应用名称",

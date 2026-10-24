@@ -81,6 +81,15 @@
     "subtitle": "Application open source, multiplateforme, de Real Book et de jam sessions",
     "title": "OpenChords"
   },
+  "privacy": {
+    "contactLink": "me contacter",
+    "contactPrompt": "Pour toute question ou préoccupation, n'hésitez pas à",
+    "contactTitle": "Contact",
+    "information": "OpenChords ne collecte aucune information personnelle et ne se connecte pas à Internet. Toutes les grilles d'accords que vous créez existent uniquement sur votre appareil. Les données des morceaux sont également stockées uniquement sur votre appareil.",
+    "informationTitle": "Quelles informations collectons-nous ?",
+    "intro": "OpenChords ne souhaite recueillir aucune information personnelle. Nous pensons que ces informations vous appartiennent exclusivement. Nous ne stockons ni ne transmettons vos informations personnelles, et nous n'incluons aucun logiciel publicitaire ou d'analyse communiquant avec des tiers.",
+    "title": "Politique de confidentialité"
+  },
   "settings": {
     "about": "À propos",
     "app_name": "Nom de l'app",
