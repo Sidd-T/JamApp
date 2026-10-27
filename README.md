@@ -1,6 +1,10 @@
 <h1 align="center">
   <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
-Mobile App </h1>
+OpenChords </h1>
+
+## About
+
+A cross-platform app for viewing, creating, and jamming with chord sheets. The app contains over 400 chord sheets of jazz standards, and users can also create their own. Users can create local sessions with other users to set up a jam session with setlist made of both existing or user-made chord sheets.
 
 > This Project is based on [Obytes starter](https://starter.obytes.com)
 
@@ -37,7 +41,7 @@ To run the app on Android
 pnpm android
 ```
 
-## ✍️ Documentation
+## ✍️ Obytes Documentation
 
 - [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
 - [Project structure](https://starter.obytes.com/getting-started/project-structure)
