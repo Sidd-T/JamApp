@@ -41,6 +41,10 @@ To run the app on Android
 pnpm android
 ```
 
+## Web-only Real Book PDFs
+
+Keep the PDF source files in `web-assets/realbooks/`. Run `pnpm run build:web` to export the web app and copy the PDFs into `dist/realbooks/`; they are then served from `/realbooks/<filename>`. The Vercel build configuration runs this command and publishes `dist`. Do not move these PDFs into Expo's `public/` or `assets/` directories, or import them from app code, because Expo includes `public/` files in native exports too.
+
 ## ✍️ Obytes Documentation
 
 - [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
