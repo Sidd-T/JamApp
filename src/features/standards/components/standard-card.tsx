@@ -41,7 +41,12 @@ export function StandardCard({
                   {standard.Title}
                 </Text>
               </View>
-              <RealBookButton title={standard.Title} keyName={standard.Key ?? 'C'} className="ml-2" />
+              <RealBookButton
+                title={standard.Title}
+                originalKey={standard.Key ?? 'C'}
+                currentKey={standard.Key ?? 'C'}
+                className="ml-2"
+              />
             </View>
             <Text className="mb-1.5 text-sm text-neutral-600 dark:text-neutral-400">
               {standard.Composer}

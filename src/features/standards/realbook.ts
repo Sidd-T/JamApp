@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import realBookPages from '../../../data/realbook-index/realbook-pages.generated.json';
-import { normalizeKey } from './helpers/music-keys';
+import { keyDistance, normalizeKey, transposeKey } from './helpers/music-keys';
 
 type BookKey = 'a-flat' | 'a' | 'b-flat' | 'b' | 'c-sharp' | 'c' | 'd' | 'e-flat' | 'e' | 'f' | 'g-flat' | 'g';
 
@@ -29,14 +29,18 @@ const BOOK_BY_KEY: Record<string, BookKey> = {
 const REALBOOK_LOOKUP = realBookPages as RealBookLookup;
 const NATIVE_REALBOOKS_ORIGIN = 'https://www.openchords.top';
 
-export function getRealBookViewerUrl(title: string, key: string): string | undefined {
-  const bookKey = BOOK_BY_KEY[normalizeKey(key).replace(/m$/, '')];
+export function getRealBookViewerUrl(title: string, originalKey: string, currentKey: string): string | undefined {
+  const transposition = keyDistance(originalKey, currentKey);
+  const transposedFromC = normalizeKey(transposeKey('C', transposition)).replace(/m$/, '');
+  const bookKey = BOOK_BY_KEY[transposedFromC];
   const pageRange = REALBOOK_LOOKUP[title.trim()]?.[bookKey];
 
   if (!bookKey || !pageRange)
     return undefined;
 
-  const origin = Platform.OS === 'web' && typeof window !== 'undefined'
+  const origin = Platform.OS === 'web'
+    && process.env.NODE_ENV !== 'development'
+    && typeof window !== 'undefined'
     ? window.location.origin
     : NATIVE_REALBOOKS_ORIGIN;
 

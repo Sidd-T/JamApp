@@ -66,6 +66,13 @@ export default function StandardsLayout() {
           };
         }}
       />
+      <Stack.Screen
+        name="realbook"
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}
+      />
     </Stack>
   );
 }

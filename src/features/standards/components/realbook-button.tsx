@@ -1,21 +1,24 @@
-import * as WebBrowser from 'expo-web-browser';
-import { Platform, Pressable } from 'react-native';
+import type { ExternalPathString } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
 import { Link as LinkIcon } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
-import { openLinkInBrowser } from '@/lib/utils';
 import { getRealBookViewerUrl } from '../realbook';
 
 type RealBookButtonProps = {
   title: string;
-  keyName?: string;
+  originalKey?: string;
+  currentKey?: string;
   className?: string;
 };
 
-export function RealBookButton({ title, keyName = 'C', className }: RealBookButtonProps) {
+export function RealBookButton({ title, originalKey = 'C', currentKey = originalKey, className }: RealBookButtonProps) {
+  const router = useRouter();
   const theme = useThemeConfig();
-  const url = getRealBookViewerUrl(title, keyName);
+  const viewerUrl = getRealBookViewerUrl(title, originalKey, currentKey);
+  const routePath = title.trim() ? '/standards/realbook' as ExternalPathString : undefined;
 
-  if (!url)
+  if (!routePath || !viewerUrl)
     return null;
 
   return (
@@ -25,10 +28,10 @@ export function RealBookButton({ title, keyName = 'C', className }: RealBookButt
       hitSlop={8}
       onPress={(event) => {
         event.stopPropagation();
-        if (Platform.OS === 'web')
-          openLinkInBrowser(url);
-        else
-          void WebBrowser.openBrowserAsync(url);
+        router.push({
+          pathname: routePath,
+          params: { title, originalKey, currentKey },
+        });
       }}
       className={className}
     >
