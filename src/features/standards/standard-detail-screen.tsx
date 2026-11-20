@@ -69,7 +69,12 @@ export function StandardDetailScreen() {
             onChange={setCurrentKey}
             testID="transpose-control"
           />
-          <RealBookButton title={standard.Title} keyName={currentKey} className="ml-2" />
+          <RealBookButton
+            title={standard.Title}
+            originalKey={standard.Key ?? 'C'}
+            currentKey={currentKey}
+            className="ml-2"
+          />
 
           <View className="flex-1 items-end">
             <Text className="text-base text-neutral-700 dark:text-neutral-300">
