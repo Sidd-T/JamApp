@@ -7,6 +7,7 @@ import { FocusAwareStatusBar, Text } from '@/components/ui';
 import { useJamsStore } from '@/features/jams/use-jams-store';
 import { useImmersiveMode } from '@/lib/hooks/use-is-immersive';
 import { SectionDisplay, TransposeControl } from './components';
+import { RealBookButton } from './components/realbook-button';
 import { normalizeKey } from './helpers/music-keys';
 import { transposeSections } from './helpers/transpose-chords';
 import { findStandardById } from './standards';
@@ -68,6 +69,7 @@ export function StandardDetailScreen() {
             onChange={setCurrentKey}
             testID="transpose-control"
           />
+          <RealBookButton title={standard.Title} keyName={currentKey} className="ml-2" />
 
           <View className="flex-1 items-end">
             <Text className="text-base text-neutral-700 dark:text-neutral-300">

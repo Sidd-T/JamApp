@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#20252b">
+    <title>Real Book | OpenChords</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #171a1f;
+        color: #f3f4f6;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+      header {
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        background: #20252b;
+        border-bottom: 1px solid #363d45;
+      }
+      .brand { color: #fff; font-size: 15px; font-weight: 650; text-decoration: none; white-space: nowrap; }
+      .controls { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+      button, input, .download {
+        min-height: 36px;
+        border: 1px solid #505963;
+        border-radius: 4px;
+        background: #2b323a;
+        color: #f3f4f6;
+        font: inherit;
+      }
+      button, .download { padding: 0 11px; cursor: pointer; }
+      button:hover, .download:hover { background: #39434d; }
+      button:disabled { cursor: default; opacity: .45; }
+      input { width: 58px; padding: 0 6px; text-align: center; }
+      .page-count { min-width: 46px; color: #c4cbd2; font-size: 13px; }
+      .separator { color: #77818b; }
+      .download { display: inline-flex; align-items: center; text-decoration: none; font-size: 13px; }
+      main { flex: 1; min-height: 0; overflow: auto; padding: 24px; display: grid; place-items: start center; }
+      canvas { display: none; background: white; box-shadow: 0 8px 28px #0008; }
+      #status { align-self: center; color: #ccd2d8; text-align: center; }
+      #status[data-error="true"] { color: #ffaaa5; }
+      @media (max-width: 620px) {
+        header { flex-wrap: wrap; gap: 8px; padding: 9px 10px; }
+        .controls { width: 100%; margin-left: 0; justify-content: space-between; gap: 5px; }
+        button { padding: 0 8px; }
+        main { padding: 10px 4px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">OpenChords · Real Book</a>
+      <nav class="controls" aria-label="PDF controls">
+        <button id="previous" type="button" aria-label="Previous page">Previous</button>
+        <input id="page" type="number" min="1" value="1" aria-label="Page number">
+        <span class="page-count">of <span id="page-count">…</span></span>
+        <button id="next" type="button" aria-label="Next page">Next</button>
+        <span class="separator" aria-hidden="true">|</span>
+        <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
+        <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+        <a id="download" class="download" download>PDF</a>
+      </nav>
+    </header>
+    <main id="viewport">
+      <p id="status" role="status">Loading score…</p>
+      <canvas id="page-canvas" aria-label="Real Book page"></canvas>
+    </main>
+    <script type="module" src="/realbook-viewer.mjs"></script>
+  </body>
+</html>

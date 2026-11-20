@@ -2,10 +2,9 @@ import type { Song } from '../standards';
 import { Pressable, View } from 'react-native';
 import { Button, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
-import { Link as LinkIcon, Support } from '@/components/ui/icons';
-import { useThemeConfig } from '@/components/ui/use-theme-config';
+import { Support } from '@/components/ui/icons';
 import { translate } from '@/lib/i18n';
-import { openLinkInBrowser } from '@/lib/utils';
+import { RealBookButton } from './realbook-button';
 
 type StandardCardProps = {
   standard: Song;
@@ -24,8 +23,6 @@ export function StandardCard({
   isFavourite = false,
   onToggleFavourite,
 }: StandardCardProps) {
-  const theme = useThemeConfig();
-  const realBookPage = standard.RealBookPage;
   const favouriteColor = isFavourite ? colors.primary[300] : colors.neutral[500];
   const favouriteFill = isFavourite ? colors.primary[300] : 'none';
   return (
@@ -44,21 +41,7 @@ export function StandardCard({
                   {standard.Title}
                 </Text>
               </View>
-              {realBookPage && (
-                <Pressable
-                  accessibilityLabel="Open Real Book page"
-                  hitSlop={8}
-                  onPress={(e) => {
-                    e.stopPropagation();
-                    openLinkInBrowser(
-                      `https://archive.org/details/The_Real_Book_Sixth_Edition_volume_1/page/n${realBookPage + 1}/mode/1up`,
-                    );
-                  }}
-                  className="ml-2"
-                >
-                  <LinkIcon color={theme.colors.text} />
-                </Pressable>
-              )}
+              <RealBookButton title={standard.Title} keyName={standard.Key ?? 'C'} className="ml-2" />
             </View>
             <Text className="mb-1.5 text-sm text-neutral-600 dark:text-neutral-400">
               {standard.Composer}
