@@ -42,7 +42,7 @@ export function StandardsScreen() {
 
   const handleCardPress = (standard: Song) => {
     router.push(
-      `/standards/${encodeURIComponent(standard.id)}?title=${encodeURIComponent(standard.Title)}${standard.RealBookPage ? `&realBookPage=${standard.RealBookPage}` : ''}`,
+      `/standards/${encodeURIComponent(standard.id)}?title=${encodeURIComponent(standard.Title)}`,
     );
   };
 
