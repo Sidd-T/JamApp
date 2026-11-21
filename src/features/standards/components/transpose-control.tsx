@@ -1,9 +1,8 @@
-import * as React from 'react';
 import { Pressable, View } from 'react-native';
 import { useUniwind } from 'uniwind';
-import { Select, Text } from '@/components/ui';
+import { Select } from '@/components/ui';
 import colors from '@/components/ui/colors';
-import { ArrowRight, Edit, Refresh } from '@/components/ui/icons';
+import { ArrowRight, Refresh } from '@/components/ui/icons';
 import { keyOptionsFor, transposeKey } from '../helpers/music-keys';
 
 type TransposeControlProps = {
@@ -19,17 +18,14 @@ export function TransposeControl({
   onChange,
   testID,
 }: TransposeControlProps) {
-  const [open, setOpen] = React.useState(false);
   const { theme } = useUniwind();
   const isDark = theme === 'dark';
   const iconColor = isDark ? colors.neutral[300] : colors.neutral[500];
-  const editColor = open ? colors.primary[500] : iconColor;
 
   const isTransposed = originalKey !== undefined && originalKey !== currentKey;
 
   const handleSelect = (value: string | number) => {
     onChange(String(value));
-    setOpen(false);
   };
 
   const handleStep = (semitones: number) => {
@@ -42,57 +38,45 @@ export function TransposeControl({
   };
 
   return (
-    <View className="relative z-30" testID={testID}>
-      <Pressable
-        onPress={() => setOpen(prev => !prev)}
-        hitSlop={8}
-        className="flex-row items-start justify-center gap-1 px-2 py-1"
-        testID={testID ? `${testID}-trigger` : undefined}
-      >
-        <Text className="text-base font-semibold text-neutral-700 dark:text-neutral-300">
-          {currentKey}
-        </Text>
-        <Edit color={editColor} width={20} height={20} />
-        {isTransposed
-          && (
-            <Pressable
-              onPress={handleReset}
-              hitSlop={8}
-              className="z-99 ml-1"
-              testID={testID ? `${testID}-reset` : undefined}
-            >
-              <Refresh color={iconColor} width={20} height={20} />
-            </Pressable>
-          )}
-      </Pressable>
+    <View className="relative z-30 flex-row items-center" testID={testID}>
+      <Select
+        value={currentKey}
+        options={keyOptionsFor(currentKey)}
+        onSelect={handleSelect}
+        className="mb-0 min-w-28"
+        inputClassName="px-2 py-1"
+        inputValueClassName="text-center"
+        testID={testID ? `${testID}-select` : undefined}
+      />
 
-      {open && (
-        <View className="absolute top-full left-1/2 z-50 -translate-x-1/2 flex-row items-start rounded-xl border border-neutral-200 bg-white p-2 shadow-lg dark:border-neutral-700 dark:bg-neutral-900">
-          <Select
-            value={currentKey}
-            options={keyOptionsFor(currentKey)}
-            onSelect={handleSelect}
-            className="mb-0 min-w-28"
-            testID={testID ? `${testID}-select` : undefined}
-          />
+      <View className="ml-1 flex-col items-center">
+        <Pressable
+          onPress={() => handleStep(1)}
+          className="-rotate-90 items-center justify-center rounded-sm"
+          testID={testID ? `${testID}-up` : undefined}
+        >
+          <ArrowRight color={iconColor} width={16} height={16} />
+        </Pressable>
+        <Pressable
+          onPress={() => handleStep(-1)}
+          className="rotate-90 items-center justify-center rounded-sm"
+          testID={testID ? `${testID}-down` : undefined}
+        >
+          <ArrowRight color={iconColor} width={16} height={16} />
+        </Pressable>
+      </View>
 
-          <View className="ml-2 flex-col gap-1">
-            <Pressable
-              onPress={() => handleStep(1)}
-              className="-rotate-90 items-center justify-center rounded-sm p-1"
-              testID={testID ? `${testID}-up` : undefined}
-            >
-              <ArrowRight color={iconColor} />
-            </Pressable>
-            <Pressable
-              onPress={() => handleStep(-1)}
-              className="rotate-90 items-center justify-center rounded-sm p-1"
-              testID={testID ? `${testID}-down` : undefined}
-            >
-              <ArrowRight color={iconColor} />
-            </Pressable>
-          </View>
-        </View>
+      {isTransposed && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Reset transposition"
+          onPress={handleReset}
+          hitSlop={8}
+          className="ml-1"
+          testID={testID ? `${testID}-reset` : undefined}
+        >
+          <Refresh color={iconColor} width={18} height={18} />
+        </Pressable>
       )}
     </View>
   );

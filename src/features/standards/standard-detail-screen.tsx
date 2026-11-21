@@ -1,9 +1,10 @@
-import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
 import * as React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp, LinearTransition } from 'react-native-reanimated';
 
 import { FocusAwareStatusBar, Text } from '@/components/ui';
+import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { useJamsStore } from '@/features/jams/use-jams-store';
 import { useImmersiveMode } from '@/lib/hooks/use-is-immersive';
 import { SectionDisplay, TransposeControl } from './components';
@@ -17,12 +18,38 @@ export function StandardDetailScreen() {
   const decodedId = id ? decodeURIComponent(id) : '';
   const jamSong = useJamsStore.use.setlist().find(entry => entry.song.id === decodedId)?.song;
   const standard = jamSong ?? findStandardById(decodedId);
+  const navigation = useNavigation();
+  const theme = useThemeConfig();
 
   const [currentKey, setCurrentKey] = React.useState(() => normalizeKey(standard?.Key ?? 'C'));
 
   const isImmersive = useImmersiveMode(s => s.isImmersive);
   const toggleImmersive = useImmersiveMode(s => s.toggle);
   const showChrome = useImmersiveMode(s => s.show);
+
+  React.useLayoutEffect(() => {
+    if (!standard)
+      return;
+
+    navigation.setOptions({
+      headerTitle: () => (
+        <View className="flex-row items-center">
+          <Text
+            numberOfLines={1}
+            style={{ maxWidth: 240, fontSize: 20, color: theme.colors.text }}
+          >
+            {standard.Title}
+          </Text>
+          <RealBookButton
+            title={standard.Title}
+            originalKey={standard.Key ?? 'C'}
+            currentKey={currentKey}
+            className="ml-2"
+          />
+        </View>
+      ),
+    });
+  }, [currentKey, navigation, standard, theme.colors.text]);
 
   // Always bring the header/tab bar back when leaving this screen
   useFocusEffect(
@@ -68,12 +95,6 @@ export function StandardDetailScreen() {
             originalKey={normalizeKey(standard.Key ?? 'C')}
             onChange={setCurrentKey}
             testID="transpose-control"
-          />
-          <RealBookButton
-            title={standard.Title}
-            originalKey={standard.Key ?? 'C'}
-            currentKey={currentKey}
-            className="ml-2"
           />
 
           <View className="flex-1 items-end">

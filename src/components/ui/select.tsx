@@ -10,6 +10,7 @@ import { FlashList } from '@shopify/flash-list';
 import * as React from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
 import { useUniwind } from 'uniwind';
@@ -138,6 +139,8 @@ export type SelectProps = {
   placeholder?: string;
   testID?: string;
   className?: string;
+  inputClassName?: string;
+  inputValueClassName?: string;
 };
 
 export function Select(props: SelectProps) {
@@ -151,6 +154,8 @@ export function Select(props: SelectProps) {
     onSelect,
     testID,
     className,
+    inputClassName,
+    inputValueClassName,
   } = props;
   const modal = useModal();
 
@@ -191,13 +196,13 @@ export function Select(props: SelectProps) {
           </Text>
         )}
         <Pressable
-          className={styles.input()}
+          className={twMerge(styles.input(), inputClassName)}
           disabled={disabled}
           onPress={modal.present}
           testID={testID ? `${testID}-trigger` : undefined}
         >
           <View className="flex-1">
-            <Text className={styles.inputValue()}>{textValue}</Text>
+            <Text className={twMerge(styles.inputValue(), inputValueClassName)}>{textValue}</Text>
           </View>
           <CaretDown />
         </Pressable>

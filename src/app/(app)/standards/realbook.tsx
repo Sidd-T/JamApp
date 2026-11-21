@@ -1,5 +1,4 @@
-import { ActivityIndicator, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { RealBookScreenControls } from '@/features/standards/components/realbook-screen-controls';
@@ -9,7 +8,7 @@ export default function RealBookRoute() {
   const { title, viewerUrl, isFullscreen, toggleFullscreen, close } = useRealBookScreen();
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-black">
+    <View className="flex-1 bg-white dark:bg-black">
       <FocusAwareStatusBar hidden={isFullscreen} />
       <RealBookScreenControls
         title={title}
@@ -21,16 +20,7 @@ export default function RealBookRoute() {
         ? (
             <WebView
               source={{ uri: viewerUrl }}
-              originWhitelist={['https://www.openchords.top']}
-              javaScriptEnabled
-              domStorageEnabled
-              allowsBackForwardNavigationGestures
-              startInLoadingState
-              renderLoading={() => (
-                <View className="flex-1 items-center justify-center bg-neutral-950">
-                  <ActivityIndicator color="#ffffff" />
-                </View>
-              )}
+              style={{ flex: 1 }}
             />
           )
         : (
@@ -40,6 +30,6 @@ export default function RealBookRoute() {
               </Text>
             </View>
           )}
-    </SafeAreaView>
+    </View>
   );
 }
