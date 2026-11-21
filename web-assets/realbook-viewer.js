@@ -39,6 +39,7 @@ function showError(message) {
   status.textContent = message;
   status.dataset.error = 'true';
   canvas.style.display = 'none';
+  window.ReactNativeWebView?.postMessage(JSON.stringify({ type: 'viewer-error', message }));
 }
 
 function updateControls() {
@@ -114,8 +115,8 @@ async function loadBook() {
     document.title = `${book.replace(/^realbook-/, '').replace(/\.pdf$/, '')} Real Book · OpenChords`;
     await renderPage();
   }
-  catch {
-    showError('Could not load this Real Book. Check your connection and try again.');
+  catch (error) {
+    showError(`Could not load this Real Book: ${error.message ?? 'unknown error'}`);
   }
 }
 

@@ -1,4 +1,5 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, useColorScheme, View } from 'react-native';
+import { Close, Compress, Expand } from '@/components/ui/icons';
 
 type RealBookScreenControlsProps = {
   title: string;
@@ -13,15 +14,17 @@ export function RealBookScreenControls({
   onClose,
   onToggleFullscreen,
 }: RealBookScreenControlsProps) {
+  const iconColor = useColorScheme() === 'dark' ? '#fff' : '#171717';
+
   return (
-    <View className="h-12 flex-row items-center gap-2 border-b border-neutral-200 bg-white px-2 dark:border-neutral-800 dark:bg-neutral-900">
+    <View className="mt-6 h-12 flex-row items-center gap-2 border-b border-neutral-200 bg-white px-2 dark:border-neutral-800 dark:bg-neutral-900">
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Close Real Book viewer"
         onPress={onClose}
         className="min-w-14 items-center p-2"
       >
-        <Text className="text-sm font-medium text-neutral-800 dark:text-neutral-100">Close</Text>
+        <Close color={iconColor} />
       </Pressable>
       <Text numberOfLines={1} className="min-w-0 flex-1 text-center text-sm font-semibold text-neutral-900 dark:text-white">
         {title}
@@ -32,9 +35,7 @@ export function RealBookScreenControls({
         onPress={onToggleFullscreen}
         className="min-w-24 items-center p-2"
       >
-        <Text className="text-sm font-medium text-neutral-800 dark:text-neutral-100">
-          {isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
-        </Text>
+        {isFullscreen ? <Compress color={iconColor} /> : <Expand color={iconColor} />}
       </Pressable>
     </View>
   );

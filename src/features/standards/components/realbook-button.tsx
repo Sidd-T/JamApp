@@ -1,7 +1,7 @@
 import type { ExternalPathString } from 'expo-router';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
-import { Link as LinkIcon } from '@/components/ui/icons';
+import { MusicFile } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { getRealBookViewerUrl } from '../realbook';
 
@@ -35,7 +35,7 @@ export function RealBookButton({ title, originalKey = 'C', currentKey = original
       }}
       className={className}
     >
-      <LinkIcon color={theme.colors.text} />
+      <MusicFile color={theme.colors.text} />
     </Pressable>
   );
 }
