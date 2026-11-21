@@ -8,6 +8,9 @@
       "autoIncrement": true,
       "distribution": "store",
       "environment": "production",
+      "buildArtifactPaths": [
+        "android/app/build/outputs/mapping/release/mapping.txt"
+      ],
       "ios": {
         "image": "latest"
       },
