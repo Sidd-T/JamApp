@@ -117,6 +117,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-web-browser',
     ['app-icon-badge', appIconBadgeConfig],
     './plugins/with-short-cmake-path.js',
+    './plugins/with-optional-hardware-features.js',
   ],
   extra: {
     eas: {
