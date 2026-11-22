@@ -67,6 +67,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     [
+      'expo-build-properties',
+      {
+        android: {
+          enableMinifyInReleaseBuilds: true,
+        },
+      },
+    ],
+    [
       'expo-splash-screen',
       {
         backgroundColor: '#2E3C4B',
