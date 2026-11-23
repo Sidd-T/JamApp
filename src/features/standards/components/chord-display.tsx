@@ -34,6 +34,8 @@ type ChordDisplayProps = {
   showOpeningLine?: boolean;
   /** Controls whether the segment renders a trailing closing bar line on the last bar. */
   showClosingLine?: boolean;
+  /** Right-align a final row containing fewer than four bars. */
+  rightAlignPartialLastRow?: boolean;
 };
 
 function normalizeBar(bar: string) {
@@ -55,6 +57,7 @@ export function ChordDisplay({
   onBeatPress,
   showOpeningLine = true,
   showClosingLine = true,
+  rightAlignPartialLastRow = false,
 }: ChordDisplayProps) {
   const closing = repeat != null
     ? <BarLineEnd repeat={repeat} />
@@ -106,6 +109,10 @@ export function ChordDisplay({
       {rows.map((rowBars, rowIndex) => {
         const isFirstRow = rowIndex === 0;
         const isLastRow = rowIndex === rows.length - 1;
+        const alignPartialRow = rightAlignPartialLastRow
+          && isLastRow
+          && rowBars.length < 4;
+        const spacerBars = alignPartialRow ? 4 - rowBars.length : 0;
         const rowStartIndex = rowIndex * 4;
         const rowKey = `row-${rowStartIndex}-${rowBars.length}-${editMode ? 'edit' : 'view'}`;
         const shouldRenderOpeningLine = rowIndex > 0 || showOpeningLine;
@@ -115,6 +122,7 @@ export function ChordDisplay({
 
         return (
           <View key={rowKey} className="mb-2 flex-row">
+            {spacerBars > 0 && <View style={{ flex: spacerBars }} />}
             {shouldRenderOpeningLine && <OpeningBarLine timeSignature={rowTimeSignature} />}
             {rowBars.map((bar, barIndex) => {
               const absoluteBarIndex = rowStartIndex + barIndex;
@@ -122,7 +130,13 @@ export function ChordDisplay({
               const showTrailingLine = !isLastBar || showClosingLine;
 
               return (
-                <View key={`bar-${barIndex}`} style={{ flex: 1 / rowBars.length }} className="flex-row">
+                <View
+                  key={`bar-${barIndex}`}
+                  style={{
+                    flex: alignPartialRow ? 1 : 1 / rowBars.length,
+                  }}
+                  className="flex-row"
+                >
                   <BarCell
                     bar={bar}
                     absoluteBarIndex={absoluteBarIndex}

@@ -2,7 +2,7 @@ import type { Section, SegmentRef } from '../standards';
 import { View } from 'react-native';
 import { ChordDisplay } from './chord-display';
 import { EmptyEndingSegment } from './empty-segments';
-import { countBars, isEmptyChords } from './section-display-utils';
+import { countBars, isEmptyChords, MAX_BARS_PER_ROW } from './section-display-utils';
 import { VoltaBracket } from './volta-bracket';
 
 type EndingsCommonProps = {
@@ -17,6 +17,7 @@ type EndingsCommonProps = {
   onBeatPress?: (segment: SegmentRef, barLocalIndex: number, beatIndex: number) => void;
   endingFits: boolean[];
   repeat?: number;
+  rightAlignPartialLastRow?: boolean;
 };
 
 function endingActiveBar(
@@ -54,6 +55,7 @@ function Ending({ ending, endingIndex, endingCount, sectionIndex, props, showOpe
     onBarPress,
     onBeatPress,
     repeat,
+    rightAlignPartialLastRow,
   } = props;
 
   const endingRef: SegmentRef = { segment: 'ending', endingIndex };
@@ -92,6 +94,7 @@ function Ending({ ending, endingIndex, endingCount, sectionIndex, props, showOpe
         activeBeatIndex={activeBeatIndex}
         emptyContent={emptyContent}
         showOpeningLine={showOpeningLine}
+        rightAlignPartialLastRow={rightAlignPartialLastRow}
         onBeatPress={
           onBeatPress
             ? (localBar, bi) => onBeatPress(endingRef, localBar, bi)
@@ -145,16 +148,40 @@ export function OverflowEndings(props: EndingsCommonProps) {
       {section.Endings!.map((ending, endingIndex) => {
         if (endingFits[endingIndex])
           return null;
+        const barCount = isEmptyChords(ending.Chords)
+          ? 1
+          : countBars(ending.Chords);
+        if (barCount > MAX_BARS_PER_ROW) {
+          return (
+            <Ending
+              key={`section-${sectionIndex}-ending-${endingIndex}-of-${endingCount}`}
+              ending={ending}
+              endingIndex={endingIndex}
+              endingCount={endingCount}
+              sectionIndex={sectionIndex}
+              props={{ ...props, rightAlignPartialLastRow: true }}
+              showOpeningLine={true}
+            />
+          );
+        }
+        const spacerBars = Math.max(0, MAX_BARS_PER_ROW - barCount);
         return (
-          <Ending
+          <View
             key={`section-${sectionIndex}-ending-${endingIndex}-of-${endingCount}`}
-            ending={ending}
-            endingIndex={endingIndex}
-            endingCount={endingCount}
-            sectionIndex={sectionIndex}
-            props={props}
-            showOpeningLine={true}
-          />
+            className="flex-row"
+          >
+            {spacerBars > 0 && <View style={{ flex: spacerBars }} />}
+            <View style={{ flex: barCount }}>
+              <Ending
+                ending={ending}
+                endingIndex={endingIndex}
+                endingCount={endingCount}
+                sectionIndex={sectionIndex}
+                props={props}
+                showOpeningLine={true}
+              />
+            </View>
+          </View>
         );
       })}
     </View>

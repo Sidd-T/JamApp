@@ -30,7 +30,8 @@ const REALBOOK_LOOKUP = realBookPages as RealBookLookup;
 const NATIVE_REALBOOKS_ORIGIN = 'https://www.openchords.top';
 
 export function getRealBookViewerUrl(title: string, originalKey: string, currentKey: string): string | undefined {
-  const transposition = keyDistance(originalKey, currentKey);
+  // The PDF variants are labeled opposite to the desired score transposition.
+  const transposition = keyDistance(currentKey, originalKey);
   const transposedFromC = normalizeKey(transposeKey('C', transposition)).replace(/m$/, '');
   const bookKey = BOOK_BY_KEY[transposedFromC];
   const pageRange = REALBOOK_LOOKUP[title.trim()]?.[bookKey];
