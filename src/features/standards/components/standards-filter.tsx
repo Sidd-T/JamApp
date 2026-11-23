@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { Button, Checkbox, Text } from '@/components/ui';
 import colors from '@/components/ui/colors';
-import { Filter } from '@/components/ui/icons';
+import { Close, Filter } from '@/components/ui/icons';
 import { MultiSelect } from '@/components/ui/multi-select';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { translate } from '@/lib/i18n';
@@ -71,6 +71,16 @@ export function StandardsFilter({
           className="flex-1 px-4 py-3 text-base font-medium dark:text-white"
           placeholderTextColor={colors.neutral[400]}
         />
+        {searchTerm.length > 0 && (
+          <Pressable
+            onPress={() => onSearchChange('')}
+            accessibilityRole="button"
+            accessibilityLabel="Clear search"
+            className="items-center justify-center"
+          >
+            <Close width={18} height={18} color={filterIconColor} />
+          </Pressable>
+        )}
         <Pressable
           onPress={() => setIsFilterModalVisible(true)}
           className="flex-row items-center gap-1 pr-4"

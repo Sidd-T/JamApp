@@ -4,6 +4,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp, LinearTransition } from 'react-native-reanimated';
 
 import { FocusAwareStatusBar, Text } from '@/components/ui';
+import { Settings } from '@/components/ui/icons';
 import { useThemeConfig } from '@/components/ui/use-theme-config';
 import { useJamsStore } from '@/features/jams/use-jams-store';
 import { useImmersiveMode } from '@/lib/hooks/use-is-immersive';
@@ -22,6 +23,7 @@ export function StandardDetailScreen() {
   const theme = useThemeConfig();
 
   const [currentKey, setCurrentKey] = React.useState(() => normalizeKey(standard?.Key ?? 'C'));
+  const [isTransposePopupVisible, setIsTransposePopupVisible] = React.useState(false);
 
   const isImmersive = useImmersiveMode(s => s.isImmersive);
   const toggleImmersive = useImmersiveMode(s => s.toggle);
@@ -48,8 +50,19 @@ export function StandardDetailScreen() {
           />
         </View>
       ),
+      headerRight: () => (
+        <Pressable
+          onPress={() => setIsTransposePopupVisible(visible => !visible)}
+          accessibilityRole="button"
+          accessibilityLabel="Transpose settings"
+          accessibilityState={{ expanded: isTransposePopupVisible }}
+          className="mr-3"
+        >
+          <Settings color={theme.colors.text} width={22} height={22} />
+        </Pressable>
+      ),
     });
-  }, [currentKey, navigation, standard, theme.colors.text]);
+  }, [currentKey, isTransposePopupVisible, navigation, standard, theme.colors.text]);
 
   // Always bring the header/tab bar back when leaving this screen
   useFocusEffect(
@@ -90,13 +103,6 @@ export function StandardDetailScreen() {
             )}
           </View>
 
-          <TransposeControl
-            currentKey={currentKey}
-            originalKey={normalizeKey(standard.Key ?? 'C')}
-            onChange={setCurrentKey}
-            testID="transpose-control"
-          />
-
           <View className="flex-1 items-end">
             <Text className="text-base text-neutral-700 dark:text-neutral-300">
               {standard.Composer}
@@ -107,7 +113,10 @@ export function StandardDetailScreen() {
 
       <Animated.View layout={LinearTransition.duration(200)} style={{ flex: 1 }}>
         <Pressable style={{ flex: 1 }} onPress={toggleImmersive}>
-          <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <ScrollView
+            className="flex-1"
+            showsVerticalScrollIndicator={false}
+          >
             <View className="px-1">
               {transposedSections.map((section, index) => (
                 <SectionDisplay
@@ -122,6 +131,15 @@ export function StandardDetailScreen() {
           </ScrollView>
         </Pressable>
       </Animated.View>
+
+      <TransposeControl
+        currentKey={currentKey}
+        originalKey={normalizeKey(standard.Key ?? 'C')}
+        onChange={setCurrentKey}
+        visible={isTransposePopupVisible}
+        onClose={() => setIsTransposePopupVisible(false)}
+        testID="transpose-control"
+      />
     </View>
   );
 }
